@@ -1,16 +1,14 @@
 import cv2
-print(cv2.__version__)
 
 # Load the cascade
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 # Read the input image
-img = cv2.imread('./Picture/a.jpg')
+img = cv2.imread('a.jpg')
 result_image = img.copy()
 
 # Convert into grayscale
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
 
 # Detect faces
 faces = face_cascade.detectMultiScale(gray, 1.1, 4)
@@ -18,7 +16,6 @@ faces = face_cascade.detectMultiScale(gray, 1.1, 4)
 # Draw rectangle around the faces
 # for (x, y, w, h) in faces:
 #     # cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
-
 
 if len(faces) != 0:         # If there are faces in the images
     for f in faces:         # For each face in the image
