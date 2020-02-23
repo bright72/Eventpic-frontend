@@ -1,10 +1,11 @@
 import cv2
+print (cv2.__version__)
 
 # Load the cascade
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 # Read the input image
-img = cv2.imread('a.jpg')
+img = cv2.imread('./Picture/a.jpg')
 result_image = img.copy()
 
 # Convert into grayscale
