@@ -5,7 +5,7 @@ print(cv2.__version__)
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 # Read the input image
-img = cv2.imread('/Users/harits/Documents/Dev/Face-Detection/OpenCV_Main_Project/Picture/Kevin Burrell, CEO of DHL Supply Chain Thailand.JPG')
+img = cv2.imread('./Picture/a.jpg')
 result_image = img.copy()
 
 # Convert into grayscale
