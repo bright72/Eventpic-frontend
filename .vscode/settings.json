@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/Users/harits/.virtualenvs/facecourse-py3/bin/python",
+    "python.pythonPath": "/Users/harits/Documents/Dev/Face-Detection/.venv/bin/python3",
     "python.testing.pytestArgs": [
         "OpenCV_Main_Project"
     ],
