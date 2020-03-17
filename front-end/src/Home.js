@@ -1,10 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-
-
-
-
 class Home extends React.Component {
 
   getHello() {
@@ -13,10 +9,10 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div className = "App">
+      <div className="App">
         <header className="App-header">
-          <Link to="/Todo"> <h1>{this.getHello()}</h1></Link>
           <Link to="/Login"> <h1>Login</h1></Link>
+          <Link to="/Upload"> <h1>Upload</h1></Link>
         </header >
       </div>
 
@@ -24,8 +20,5 @@ class Home extends React.Component {
     )
   }
 }
-
-
-
 
 export default Home
