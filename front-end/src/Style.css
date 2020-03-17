@@ -1,0 +1,18 @@
+@font-face{
+    font-family: Kanit-Regular;
+    src: url("./font/Kanit-Regular.ttf")
+}
+
+body{
+    font-family: Kanit-Regular;
+}
+.Loginbox{
+    border-style: solid;
+    border-color: dimgray;
+    border-radius: 15px;
+    
+}
+
+.btn-custom{
+    border-radius: 20px;
+}
