@@ -13,6 +13,7 @@ class Home extends React.Component {
         <header className="App-header">
           <Link to="/Login"> <h1>Login</h1></Link>
           <Link to="/Upload"> <h1>Upload</h1></Link>
+          <Link to="/AddEvent"> <h1>Add Event</h1> </Link>
         </header >
       </div>
 
