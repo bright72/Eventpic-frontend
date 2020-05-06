@@ -10,7 +10,7 @@ body{
     border-style: solid;
     border-color: dimgray;
     border-radius: 15px;
-    
+    border-width: 1px;
 }
 
 .btn-custom{
