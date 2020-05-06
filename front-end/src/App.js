@@ -9,9 +9,10 @@ import ImageUpload from './components/ImageUpload.jsx';
 const App = () => (
   <Router>
     <Switch>
-      <Route exact path="/" component={Home} />
+      <Route exact path="/Home" component={Home} />
       <Route exact path="/Login" component={Login} />
       <Route exact path="/Upload" component={ImageUpload} />
+
     </Switch>
   </Router>
 )

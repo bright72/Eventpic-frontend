@@ -9,7 +9,7 @@ const Nevbar = () => {
             <Navbar.Brand href="#home">NoName WEBSITE</Navbar.Brand>
             <Navbar.Collapse className="justify-content-end">
                 <Navbar.Text>
-                    <Link to="#Home" className="mr-3"><Button variant="light">หน้าแรก</Button></Link>
+                    <Link to="/Home" className="mr-3"><Button variant="light">หน้าแรก</Button></Link>
                     <Link to="#login" className="mr-3"><Button variant="light">เข้าสู่ระบบ</Button></Link>
                     <Link to="#Register" className="mr-3"><Button variant="light">ลงทะเบียน</Button></Link>
                 </Navbar.Text>
