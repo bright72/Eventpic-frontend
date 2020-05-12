@@ -4,6 +4,7 @@ import firebase, { storage } from '../firebase';
 const Upload = (props) => {
 
     const [files, setFiles] = useState([])
+    const [URL, setURL] = useState([])
 
     const onFileChange = e => {
         for (let i = 0; i < e.target.files.length; i++) {
@@ -17,6 +18,7 @@ const Upload = (props) => {
     const onUploadSubmission = e => {
         e.preventDefault(); // prevent page refreshing
         const promises = [];
+        const url = [];
         files.forEach(file => {
             const uploadTask =
                 firebase.storage().ref().child(`image/${file.name}`).put(file);
@@ -29,11 +31,14 @@ const Upload = (props) => {
                     if (snapshot.state === firebase.storage.TaskState.RUNNING) {
                         console.log(`Progress: ${progress}%`);
                     }
+
                 },
                 error => console.log(error.code),
                 async () => {
                     const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
                     // do something with the url
+                    url.push(downloadURL)
+                    console.log(url);
                 }
             );
         });
@@ -48,6 +53,7 @@ const Upload = (props) => {
             <input type="file" multiple onChange={onFileChange} />
             </label>
             <button onClick={onUploadSubmission}>Upload</button>
+            {URL.map}
         </form>
     )
 
