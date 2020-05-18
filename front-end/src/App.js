@@ -12,7 +12,7 @@ import AddEvent from './AddEvent.js';
 const App = () => (
   <Router>
     <Switch>
-      <Route exact path="/Home" component={Home} />
+      <Route exact path="/" component={Home} />
       <Route exact path="/Login" component={Login} />
       <Route exact path="/Register" component={Register} />
       {/* <Route exact path="/Upload" component={ImageUpload} /> */}
