@@ -11,9 +11,10 @@ class Home extends React.Component {
   render() {
     return (
       <div className="App">
-        <Nevbar />
-        
 
+        <Nevbar />
+          {/* <Link to="/Upload"> <h1>Upload</h1></Link> */}
+          <Link to="/TestUpPic"> <h1>Upload</h1></Link>
       </div>
 
 
