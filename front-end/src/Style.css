@@ -16,3 +16,7 @@ body{
 .btn-custom{
     border-radius: 20px;
 }
+
+.btn-custom-sm{
+    border-radius: 10px;
+}

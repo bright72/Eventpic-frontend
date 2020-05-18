@@ -16,6 +16,7 @@ const App = () => (
       <Route exact path="/Register" component={Register} />
       <Route exact path="/Upload" component={ImageUpload} />
       <Route exact path="/AddEvent" component={AddEvent} />
+      
     </Switch>
   </Router>
 )

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Nevbar from './Nevbar.js'
 
 class Home extends React.Component {
 
@@ -10,11 +11,9 @@ class Home extends React.Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <Link to="/Login"> <h1>Login</h1></Link>
-          <Link to="/Upload"> <h1>Upload</h1></Link>
-          <Link to="/AddEvent"> <h1>Add Event</h1> </Link>
-        </header >
+        <Nevbar />
+        
+
       </div>
 
 
