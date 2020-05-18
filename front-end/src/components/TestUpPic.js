@@ -1,10 +1,12 @@
-import React, { useState, Component } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import firebase, { storage } from '../firebase';
+import '../Style.css';
 
 const Upload = (props) => {
 
     const [files, setFiles] = useState([])
-    const [URL, setURL] = useState([])
+    const [URLs, setURL] = useState([])
+    //const urls2 = [];
 
     const onFileChange = e => {
         for (let i = 0; i < e.target.files.length; i++) {
@@ -18,10 +20,9 @@ const Upload = (props) => {
     const onUploadSubmission = e => {
         e.preventDefault(); // prevent page refreshing
         const promises = [];
-        const url = [];
         files.forEach(file => {
             const uploadTask =
-                firebase.storage().ref().child(`image/${file.name}`).put(file);
+                firebase.storage().ref().child(`images/${file.name}`).put(file);
             promises.push(uploadTask);
             uploadTask.on(
                 firebase.storage.TaskEvent.STATE_CHANGED,
@@ -37,24 +38,41 @@ const Upload = (props) => {
                 async () => {
                     const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
                     // do something with the url
-                    url.push(downloadURL)
-                    console.log(url);
+                    //urls2.push({index: url.length, value: downloadURL});
+
+                    setURL(URLs => [...URLs, { index: URLs.length, value: downloadURL }])
+                    console.log(URLs);
+                    // console.log(url)
                 }
             );
         });
         Promise.all(promises)
             .then(() => alert('All files uploaded'))
             .catch(err => console.log(err.code));
+
+        //setURL([...URLs, { url }]);
+        //console.log(url);
     }
 
+    // useEffect(() => {
+    //     // Should not ever set state during rendering, so do this in useEffect instead.
+    //     setURL(url);
+    //   }, []);
+
+
     return (
-        <form>
-            <label>Select Files
+        <div>
+            <form>
+                <label>Select Files
             <input type="file" multiple onChange={onFileChange} />
-            </label>
-            <button onClick={onUploadSubmission}>Upload</button>
-            {URL.map}
-        </form>
+                </label>
+                <button onClick={onUploadSubmission}>Upload</button>
+            </form>
+                {URLs.map(url => <div class="crop">
+                                    <img src={url.value}/>
+                                </div>)}
+            {/* <li key={URLs.index}><img src = {URLs.value}/></li> */}
+        </div>
     )
 
 }
