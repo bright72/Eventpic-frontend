@@ -14,7 +14,7 @@ class Home extends React.Component {
 
         <Nevbar />
           {/* <Link to="/Upload"> <h1>Upload</h1></Link> */}
-          <Link to="/TestUpPic"> <h1>Upload</h1></Link>
+          
       </div>
 
 

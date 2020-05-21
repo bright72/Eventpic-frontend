@@ -14,7 +14,7 @@ const Nevbar = () => {
                 <Link to="/login" className="mr-3"><Button variant="light">เข้าสู่ระบบ</Button></Link>
                 <Link to="/Register" className="mr-3"><Button variant="light">ลงทะเบียน</Button></Link>
                 <Link to="/AddEvent" className="mr-3"><Button variant="light">Add Event</Button></Link>
-                <Link to="/ListofEvent" className="mr-3"><Button variant="light">List Event</Button></Link>
+                <Link to="/TestUpPic" className="mr-3"><Button variant="light">Upload Picture</Button></Link>
             </Navbar.Text>
         </Navbar.Collapse>
     </Navbar>
