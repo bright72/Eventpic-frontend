@@ -8,7 +8,7 @@ import firebase, { database } from './firebase/index';
 
 
 
-class AddEvent extends Component {
+class ListofEvent extends Component {
 
     constructor() {
         super();
@@ -20,10 +20,6 @@ class AddEvent extends Component {
             date: '',
             dateline: ''
         }
-
-        this.handleChange = this.handleChange.bind(this)
-        this.handleUpdate = this.handleUpdate.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this)
 
     }
 
@@ -45,45 +41,6 @@ class AddEvent extends Component {
                 events: newState
             })
         })
-    }
-
-    handleChange(e) {
-        this.setState({
-            [e.target.name]: e.target.value
-
-        })
-    }
-
-    handleSubmit(e) {
-        e.preventDefault();
-
-        if (this.state.name, this.state.date, this.state.detail == '') {
-            // return this.updateItem();
-            alert("กรุณากรอกรายละเอียดให้ครบถ้วน :)")
-        }
-        else {
-            const itemsRef = firebase.database().ref('events')
-            const item = {
-                name: this.state.name,
-                detail: this.state.detail,
-                date: this.state.date,
-                dateline: this.state.dateline
-
-
-            }
-            itemsRef.push(item)
-            this.setState({
-                event_id: '',
-                name: '',
-                detail: '',
-                date: '',
-                dateline: ''
-
-            })
-
-        }
-
-
 
     }
 
@@ -116,6 +73,9 @@ class AddEvent extends Component {
 
 
 
+
+
+
     render() {
         return (
             <Container fluid >
@@ -125,52 +85,12 @@ class AddEvent extends Component {
                         xs={12}
                         sm={{ span: 10 }}
                         md={{ span: 4, offset: 2 }}
-                        lg={{ span: 4, offset: 1 }}
+                        lg={{ span: 10, offset: 1 }}
                         className="p-5 Loginbox">
-
-                        <h1 className="text-center mt-2"> Add Event</h1>
-
-                        <Form onSubmit={this.handleSubmit} className="mt-4">
-                            <Form.Label>Name of Event</Form.Label>
-                            <Form.Group >
-                                <Form.Control name="name" value={this.state.name} onChange={this.handleChange} type="text" placeholder="Name of Event" />
-                            </Form.Group>
-
-                            <Form.Label>Detail of event</Form.Label>
-                            <Form.Group className="mt-1">
-                                <Form.Control name="detail" value={this.state.detail} onChange={this.handleChange} type="text" placeholder="Detail of event" />
-                            </Form.Group>
-
-                            <Form.Label>Date of Event</Form.Label>
-                            <Form.Group >
-                                <Form.Control name="date" value={this.state.date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
-                            </Form.Group>
-
-                            <Form.Label>Dateline</Form.Label>
-                            <Form.Group >
-                                <Form.Control name="dateline" value={this.state.dateline} onChange={this.handleChange} type="date" placeholder="Dateline" />
-                            </Form.Group>
-
-
-
-
-                            <Button variant="dark" block className=" mt-4 btn-custom" onClick={this.handleSubmit} >
-                                Submit Event
-                                </Button>
-
-
-                        </Form>
-                    </Col>
-                    <Col
-                        xs={12}
-                        sm={{ span: 10 }}
-                        md={{ span: 4, offset: 2 }}
-                        lg={{ span: 6, offset: 5 }}
-                        className="p-5 ml-4 Loginbox">
 
                         <h1 className="text-center mt-3 ">List of Event</h1>
 
-                        <table className="table table-sm table-bordered">
+                        <table className="table table-sm table-bordered" ท5>
                             <tr className="thead-dark">
                                 <th width="20%">Name</th>
                                 <th width="50%">Detail</th>
@@ -205,7 +125,7 @@ class AddEvent extends Component {
     }
 }
 
-export default AddEvent;
+export default ListofEvent;
 
 
 
