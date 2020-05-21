@@ -1,5 +1,7 @@
 import React, { useState, useEffect, Component } from 'react';
 import firebase, { storage } from '../firebase';
+import { Form, Button, Container, Row, Col, Image, Modal } from 'react-bootstrap'
+import Nevbar from '../Nevbar.js'
 import '../Style.css';
 
 const Upload = (props) => {
@@ -20,35 +22,42 @@ const Upload = (props) => {
     const onUploadSubmission = e => {
         e.preventDefault(); // prevent page refreshing
         const promises = [];
-        files.forEach(file => {
-            const uploadTask =
-                firebase.storage().ref().child(`images/${file.name}`).put(file);
-            promises.push(uploadTask);
-            uploadTask.on(
-                firebase.storage.TaskEvent.STATE_CHANGED,
-                snapshot => {
-                    const progress =
-                        ((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-                    if (snapshot.state === firebase.storage.TaskState.RUNNING) {
-                        console.log(`Progress: ${progress}%`);
+
+        if (files.length > 0) {
+            files.forEach(file => {
+                const uploadTask =
+                    firebase.storage().ref().child(`images/${file.name}`).put(file);
+                promises.push(uploadTask);
+                uploadTask.on(
+                    firebase.storage.TaskEvent.STATE_CHANGED,
+                    snapshot => {
+                        const progress =
+                            ((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                        if (snapshot.state === firebase.storage.TaskState.RUNNING) {
+                            console.log(`Progress: ${progress}%`);
+                        }
+
+                    },
+                    error => console.log(error.code),
+                    async () => {
+                        const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+                        // do something with the url
+                        //urls2.push({index: url.length, value: downloadURL});
+
+                        setURL(URLs => [...URLs, { index: URLs.length, value: downloadURL }])
+                        console.log(URLs);
+                        // console.log(url)
                     }
-
-                },
-                error => console.log(error.code),
-                async () => {
-                    const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
-                    // do something with the url
-                    //urls2.push({index: url.length, value: downloadURL});
-
-                    setURL(URLs => [...URLs, { index: URLs.length, value: downloadURL }])
-                    console.log(URLs);
-                    // console.log(url)
-                }
-            );
-        });
-        Promise.all(promises)
-            .then(() => alert('All files uploaded'))
-            .catch(err => console.log(err.code));
+                );
+            });
+            Promise.all(promises)
+                .then(() => alert('All files uploaded'))
+                .catch(err => console.log(err.code));
+        } else {
+            return (
+                alert('No files uploaded!')
+            )
+        }
 
         //setURL([...URLs, { url }]);
         //console.log(url);
@@ -62,15 +71,32 @@ const Upload = (props) => {
 
     return (
         <div>
-            <form>
-                <label>Select Files
-            <input type="file" multiple onChange={onFileChange} />
-                </label>
-                <button onClick={onUploadSubmission}>Upload</button>
-            </form>
-                {URLs.map(url => <div class="crop">
-                                    <img src={url.value}/>
-                                </div>)}
+            <Nevbar />
+
+            <h1 className="text-center mt-3"> Upload Event Pictures</h1>
+
+            <Container fluid="md">
+
+                <Row className="image-preview-area">
+                    {URLs.map(url =>
+                        <div className="image-preview">
+
+                            <div className="crop"><Image src={url.value} /></div>
+
+                        </div>)}
+                </Row>
+
+                <Form>
+                    <table className="upload-table">
+                        <tr>
+                            <td width="85%"><input type="file" multiple onChange={onFileChange} className="file-input" /></td>
+                            <td width="15%"><Button variant="dark" onClick={onUploadSubmission}>Upload</Button></td>
+                        </tr>
+                    </table>
+                </Form>
+
+            </Container>
+
             {/* <li key={URLs.index}><img src = {URLs.value}/></li> */}
         </div>
     )

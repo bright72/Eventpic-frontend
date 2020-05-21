@@ -20,3 +20,63 @@ body{
 .btn-custom-sm{
     border-radius: 10px;
 }
+
+.upload-table {
+    margin-bottom: 1%;
+    margin-top: 2%;
+}
+
+.file-input {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.image-preview-area {
+    width: 100%;
+    height: 550px;
+    padding: 10px 15px;
+    border-style: solid;
+    border-color: dimgray;
+    border-radius: 15px;
+    border-width: 1px;
+}
+
+.image-preview {
+    margin: 15px auto;
+}
+
+.crop {
+   /* width: 200px;
+   height: 150px;
+   overflow: hidden;
+   border-style: solid;
+   border-radius: 5px;
+   border-width: 1px;
+   margin: 5px; */
+    position: relative;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    margin: auto 5px;
+    padding-bottom: 0%;
+    box-shadow: 2px, 2px, 5px, dimgray;
+}
+    
+.crop img {
+    /* width: 400px;
+    height: 300px;
+    margin: -75px 0 0 -100px; */
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 100%;
+    width: auto;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+}
+
