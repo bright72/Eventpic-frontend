@@ -194,7 +194,9 @@ class AddEvent extends Component {
                                 })
                             }
                         </table>
-
+                        <Link to="/TestUpPic"> <Button variant="dark" block className=" mt-4 btn-custom"  >
+                                Next to Upload Picture
+                                </Button></Link>
                     </Col>
 
 

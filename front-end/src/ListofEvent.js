@@ -114,6 +114,7 @@ class ListofEvent extends Component {
                                 })
                             }
                         </table>
+                        
 
                     </Col>
 
