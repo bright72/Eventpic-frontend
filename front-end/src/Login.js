@@ -13,7 +13,7 @@ const Login = (props) => {
 
 
     const handleSubmit = event => {
-        if (email == 'Phasit') {
+        if (email == 'phasit_earth@hotmail.com') {
             if (password == '1234')
                 alert(' Correct: ');
         }
@@ -57,7 +57,7 @@ const Login = (props) => {
                         <Form.Group controlId="formBasicPassword" className="mt-1">
                             <Form.Control value={password} onChange={handleChangePassword} type="password" placeholder="รหัสผ่าน" />
                         </Form.Group>
-                        <Link to="/Counter">
+                        <Link to="/AddEvent">
                             <Button variant="secondary" block onClick={handleSubmit} className="mt-4 btn-custom" >
                                 เข้าสู่ระบบ
                             </Button>
