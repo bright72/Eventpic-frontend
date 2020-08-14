@@ -5,6 +5,7 @@ import Nevbar from './Nevbar.js'
 import './Style.css'
 import List from './List';
 import firebase, { database } from './firebase/index';
+import { withRouter } from 'react-router-dom';
 
 const {Group, Label, Control} = Form
 
@@ -16,8 +17,11 @@ class AddEvent extends Component {
             event_id: '',
             name: '',
             detail: '',
-            date: '',
-            dateline: ''
+            start_date: '',
+            end_date: '',
+            start_time: '',
+            end_time: '',
+            dateline: '',
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -36,7 +40,10 @@ class AddEvent extends Component {
                     event_id: item,
                     name: events[item].name,
                     detail: events[item].detail,
-                    date: events[item].date,
+                    start_date: events[item].start_date,
+                    end_date: events[item].end_date,
+                    start_time: events[item].start_time,
+                    end_time: events[item].end_time,
                     dateline: events[item].dateline
                 })
             }
@@ -55,18 +62,26 @@ class AddEvent extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        const {name, date, detail, event_id, dateline} = this.state
-        if (name && date && detail == '') {
+        const {name, start_date, end_date, start_time, end_time, detail, event_id, dateline} = this.state
+        if (name && start_date && end_date && start_time && end_time && detail == '') {
             // return this.updateItem();
             alert("กรุณากรอกรายละเอียดให้ครบถ้วน :)")
         } else if(event_id != ''){
+            if (start_date > end_date || start_date > dateline || end_date > dateline) {
+                alert("กรุณากรอกวันที่ให้ถูกต้อง")
+            }
             return this.updateItem();
+        } else if (start_date > end_date || start_date > dateline || end_date > dateline) {
+            alert("กรุณากรอกวันที่ให้ถูกต้อง")
         } else {
             const itemsRef = firebase.database().ref('events')
             const item = {
                 name,
                 detail,
-                date,
+                start_date,
+                end_date,
+                start_time,
+                end_time,
                 dateline
             }
             itemsRef.push(item)
@@ -74,21 +89,29 @@ class AddEvent extends Component {
                 event_id: '',
                 name: '',
                 detail: '',
-                date: '',
+                start_date: '',
+                end_date: '',
+                start_time: '',
+                end_time: '',
                 dateline: ''
             })
+
+            this.props.history.push('/ListofEvent');
         }
     }
 
-    handleUpdate = (event_id = null, name = null, date = null, detail = null, dateline = null) => {
-        this.setState({ event_id, name, date, detail, dateline })
+    handleUpdate = (event_id = null, name = null, start_date = null, end_date = null, start_time = null, end_time = null, detail = null, dateline = null) => {
+        this.setState({ event_id, name, start_date, end_date, start_time, end_time, detail, dateline })
     }
 
     updateItem = () => {
-        const {name, date, detail, dateline} = this.state
+        const {name, start_date, end_date, start_time, end_time, detail, dateline} = this.state
         const obj = {
             name,
-            date,
+            start_date,
+            end_date,
+            start_time,
+            end_time,
             detail,
             dateline
         }
@@ -101,7 +124,10 @@ class AddEvent extends Component {
             event_id: '',
             name: '',
             detail: '',
-            date: '',
+            start_date: '',
+            end_date: '',
+            start_time: '',
+            end_time: '',
             dateline: ''
         })
     }
@@ -120,7 +146,7 @@ class AddEvent extends Component {
                         xs={12}
                         sm={{ span: 10 }}
                         md={{ span: 4, offset: 2 }}
-                        lg={{ span: 4, offset: 1 }}
+                        lg={{ span: 4, offset: 4 }}
                         className="p-5 Loginbox"
                     >
                         <h1 className="text-center mt-2"> Add Event</h1>
@@ -133,53 +159,32 @@ class AddEvent extends Component {
                             <Group className="mt-1">
                                 <Control name="detail" value={this.state.detail} onChange={this.handleChange} type="text" placeholder="Detail of event" />
                             </Group>
-
-                            <Label>Date of Event</Label>
+                            <Label>Start date of Event</Label>
                             <Group >
-                                <Control name="date" value={this.state.date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
+                                <Control name="start_date" value={this.state.start_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
+                            </Group>
+                            <Label>End date of Event</Label>
+                            <Group >
+                                <Control name="end_date" value={this.state.end_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
+                            </Group>
+                            <Label>Start time of Event</Label>
+                            <Group >
+                                <Control name="start_time" value={this.state.start_time} onChange={this.handleChange} type="time" placeholder="Date of Event" />
+                            </Group>
+                            <Label>End time of Event</Label>
+                            <Group >
+                                <Control name="end_time" value={this.state.end_time} onChange={this.handleChange} type="time" placeholder="Date of Event" />
                             </Group>
                             <Label>Dateline</Label>
                             <Group >
                                 <Control name="dateline" value={this.state.dateline} onChange={this.handleChange} type="date" placeholder="Dateline" />
                             </Group>
-                            <Button variant="dark" block className=" mt-4 btn-custom" onClick={this.handleSubmit} >
-                                Submit Event
-                            </Button>
+                            <Link to="/ListofEvent">
+                                <Button variant="dark" block className=" mt-4 btn-custom" onClick={this.handleSubmit} >
+                                    Submit Event
+                                </Button>
+                            </Link>
                         </Form>
-                    </Col>
-                    <Col
-                        xs={12}
-                        sm={{ span: 10 }}
-                        md={{ span: 4, offset: 2 }}
-                        lg={{ span: 6, offset: 5 }}
-                        className="p-5 ml-4 Loginbox"
-                    >
-                        <h1 className="text-center mt-3 ">List of Event</h1>
-                        <table className="table table-sm table-bordered">
-                            <tr className="thead-dark">
-                                <th width="20%">Name</th>
-                                <th width="50%">Detail</th>
-                                <th width="10%">Date</th>
-                                <th width="10%">Dateline</th>
-                                <th width="5%">Edit</th>
-                                <th width="5%">Delete</th>
-                            </tr>
-                            {this.state.events.map((item) =>  (
-                                <tr>
-                                    <td>{item.name}</td>
-                                    <td>{item.detail}</td>
-                                    <td>{item.date}</td>
-                                    <td>{item.dateline}</td>
-                                    <td> <Button variant="outline-dark" size="sm" className='btn-custom-sm' onClick={() => this.handleUpdate(item.event_id, item.name, item.date, item.detail)}>Edit</Button></td>
-                                    <td> <Button variant="outline-dark" size="sm" className='btn-custom-sm' onClick={() => this.removeItem(item.event_id)}>Delete</Button></td>
-                                </tr>
-                            ))}
-                        </table>
-                        <Link to="/TestUpPic">
-                            <Button variant="dark" block className=" mt-4 btn-custom">
-                                Next to Upload Picture
-                            </Button>
-                        </Link>
                     </Col>
                 </Row>
             </Container>
@@ -187,7 +192,7 @@ class AddEvent extends Component {
     }
 }
 
-export default AddEvent;
+export default withRouter(AddEvent);
 
 
 
