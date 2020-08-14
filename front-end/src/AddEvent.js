@@ -7,6 +7,7 @@ import List from './List';
 import firebase, { database } from './firebase/index';
 import { withRouter } from 'react-router-dom';
 
+const { Group, Label, Control } = Form
 
 class AddEvent extends Component {
     constructor() {
@@ -53,6 +54,7 @@ class AddEvent extends Component {
     }
 
     handleChange = e => {
+        const { name, value } = e.target
         this.setState({
             [name]: value
         })
@@ -60,9 +62,11 @@ class AddEvent extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
+        const { name, start_date, end_date, start_time, end_time, detail, event_id, dateline } = this.state
         if (name && start_date && end_date && start_time && end_time && detail == '') {
             // return this.updateItem();
             alert("กรุณากรอกรายละเอียดให้ครบถ้วน :)")
+        } else if (event_id != '') {
             if (start_date > end_date || start_date > dateline || end_date > dateline) {
                 alert("กรุณากรอกวันที่ให้ถูกต้อง")
             }
@@ -101,6 +105,7 @@ class AddEvent extends Component {
     }
 
     updateItem = () => {
+        const { name, start_date, end_date, start_time, end_time, detail, dateline } = this.state
         const obj = {
             name,
             start_date,
@@ -141,6 +146,7 @@ class AddEvent extends Component {
                         xs={12}
                         sm={{ span: 10 }}
                         md={{ span: 4, offset: 2 }}
+                        lg={{ span: 6, offset: 3 }}
                         className="p-5 Loginbox"
                     >
                         <h1 className="text-center mt-2"> Add Event</h1>
