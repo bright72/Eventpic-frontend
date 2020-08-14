@@ -7,7 +7,6 @@ import List from './List';
 import firebase, { database } from './firebase/index';
 import { withRouter } from 'react-router-dom';
 
-const {Group, Label, Control} = Form
 
 class AddEvent extends Component {
     constructor() {
@@ -54,7 +53,6 @@ class AddEvent extends Component {
     }
 
     handleChange = e => {
-        const {name, value} = e.target
         this.setState({
             [name]: value
         })
@@ -62,11 +60,9 @@ class AddEvent extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        const {name, start_date, end_date, start_time, end_time, detail, event_id, dateline} = this.state
         if (name && start_date && end_date && start_time && end_time && detail == '') {
             // return this.updateItem();
             alert("กรุณากรอกรายละเอียดให้ครบถ้วน :)")
-        } else if(event_id != ''){
             if (start_date > end_date || start_date > dateline || end_date > dateline) {
                 alert("กรุณากรอกวันที่ให้ถูกต้อง")
             }
@@ -105,7 +101,6 @@ class AddEvent extends Component {
     }
 
     updateItem = () => {
-        const {name, start_date, end_date, start_time, end_time, detail, dateline} = this.state
         const obj = {
             name,
             start_date,
@@ -146,7 +141,6 @@ class AddEvent extends Component {
                         xs={12}
                         sm={{ span: 10 }}
                         md={{ span: 4, offset: 2 }}
-                        lg={{ span: 4, offset: 4 }}
                         className="p-5 Loginbox"
                     >
                         <h1 className="text-center mt-2"> Add Event</h1>
@@ -155,26 +149,34 @@ class AddEvent extends Component {
                             <Group >
                                 <Control name="name" value={this.state.name} onChange={this.handleChange} type="text" placeholder="Name of Event" />
                             </Group>
-                            <Label>Detail of event</Label>
-                            <Group className="mt-1">
-                                <Control name="detail" value={this.state.detail} onChange={this.handleChange} type="text" placeholder="Detail of event" />
-                            </Group>
-                            <Label>Start date of Event</Label>
-                            <Group >
-                                <Control name="start_date" value={this.state.start_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
-                            </Group>
-                            <Label>End date of Event</Label>
-                            <Group >
-                                <Control name="end_date" value={this.state.end_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
-                            </Group>
-                            <Label>Start time of Event</Label>
-                            <Group >
-                                <Control name="start_time" value={this.state.start_time} onChange={this.handleChange} type="time" placeholder="Date of Event" />
-                            </Group>
-                            <Label>End time of Event</Label>
-                            <Group >
-                                <Control name="end_time" value={this.state.end_time} onChange={this.handleChange} type="time" placeholder="Date of Event" />
-                            </Group>
+                            <Form.Group controlId="exampleForm.ControlTextarea1">
+                                <Form.Label>Detail of event</Form.Label>
+                                <Form.Control name="detail" value={this.state.detail} onChange={this.handleChange} type="text" placeholder="Detail of event" as="textarea" rows="3" />
+                            </Form.Group>
+                            <Form>
+                                <Form.Row>
+                                    <Col>
+                                        <Label>Start date of Event</Label>
+                                        <Control name="start_date" value={this.state.start_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
+                                    </Col>
+                                    <Col>
+                                        <Label>End date of Event</Label>
+                                        <Control name="end_date" value={this.state.end_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
+                                    </Col>
+                                </Form.Row>
+                            </Form>
+                            <Form>
+                                <Form.Row>
+                                    <Col>
+                                        <Label>Start time of Event</Label>
+                                        <Control name="start_time" value={this.state.start_time} onChange={this.handleChange} type="time" placeholder="Date of Event" />
+                                    </Col>
+                                    <Col>
+                                        <Label>End time of Event</Label>
+                                        <Control name="end_time" value={this.state.end_time} onChange={this.handleChange} type="time" placeholder="Date of Event" />
+                                    </Col>
+                                </Form.Row>
+                            </Form>
                             <Label>Dateline</Label>
                             <Group >
                                 <Control name="dateline" value={this.state.dateline} onChange={this.handleChange} type="date" placeholder="Dateline" />
