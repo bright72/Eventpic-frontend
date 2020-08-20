@@ -1,15 +1,13 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
-import List from './List';
 import firebase, { database } from './firebase/index';
-import { withRouter } from 'react-router-dom';
 
 const { Group, Label, Control } = Form
 
-class AddEvent extends Component {
+class EditEvent extends Component {
     constructor() {
         super();
         this.state = {
@@ -25,31 +23,27 @@ class AddEvent extends Component {
         }
 
         this.handleChange = this.handleChange.bind(this)
+        this.handleUpdate = this.handleUpdate.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
 
     }
 
     componentDidMount() {
-        const itemsRef = firebase.database().ref('events');
-        itemsRef.on('value', (snapshot) => {
-            let events = snapshot.val();
-            let newState = [];
-            for (let item in events) {
-                newState.push({
-                    event_id: item,
-                    name: events[item].name,
-                    detail: events[item].detail,
-                    start_date: events[item].start_date,
-                    end_date: events[item].end_date,
-                    start_time: events[item].start_time,
-                    end_time: events[item].end_time,
-                    dateline: events[item].dateline
-                })
-            }
+        const itemsRef = firebase.database().ref('/events')
+        itemsRef.child(this.props.match.params.id).on("value", (snapshot) => {
+            let value = snapshot.val()
             this.setState({
-                events: newState
+                event_id: this.props.match.params.id,
+                name: value.name,
+                detail: value.detail,
+                start_date: value.start_date,
+                end_date: value.end_date,
+                start_time: value.start_time,
+                end_time: value.end_time,
+                dateline: value.dateline
             })
         })
+
     }
 
     handleChange = e => {
@@ -95,8 +89,40 @@ class AddEvent extends Component {
                 dateline: ''
             })
 
-            this.props.history.push('/ListofEvent');
         }
+    }
+
+    handleUpdate = (event_id = null, name = null, start_date = null, end_date = null, start_time = null, end_time = null, detail = null, dateline = null) => {
+        this.setState({ event_id, name, start_date, end_date, start_time, end_time, detail, dateline })
+    }
+
+    updateItem = () => {
+        const { name, start_date, end_date, start_time, end_time, detail, dateline } = this.state
+        const obj = {
+            name,
+            start_date,
+            end_date,
+            start_time,
+            end_time,
+            detail,
+            dateline
+        }
+
+        const itemsRef = firebase.database().ref('/events')
+
+        itemsRef.child(this.state.event_id).update(obj);
+
+        this.setState({
+            event_id: '',
+            name: '',
+            detail: '',
+            start_date: '',
+            end_date: '',
+            start_time: '',
+            end_time: '',
+            dateline: ''
+        })
+        this.props.history.push('/MoreDetail/'+this.state.event_id);
     }
 
 
@@ -112,7 +138,7 @@ class AddEvent extends Component {
                         lg={{ span: 6, offset: 3 }}
                         className="p-5 Loginbox"
                     >
-                        <h1 className="text-center mt-2"> Add Event</h1>
+                        <h1 className="text-center mt-2"> Edit Event</h1>
                         <Form onSubmit={this.handleSubmit} className="mt-4">
                             <Label>Name of Event</Label>
                             <Group >
@@ -150,11 +176,11 @@ class AddEvent extends Component {
                             <Group >
                                 <Control name="dateline" value={this.state.dateline} onChange={this.handleChange} type="date" placeholder="Dateline" />
                             </Group>
-                            <Link to="/ListofEvent">
-                                <Button variant="dark" block className=" mt-4 btn-custom" onClick={this.handleSubmit} >
-                                    Submit Event
-                                </Button>
-                            </Link>
+
+                            <Button variant="dark" block className=" mt-4 btn-custom" onClick={this.handleSubmit} >
+                                Submit Edit Event
+                            </Button>
+
                         </Form>
                     </Col>
                 </Row>
@@ -163,7 +189,7 @@ class AddEvent extends Component {
     }
 }
 
-export default withRouter(AddEvent);
+export default withRouter(EditEvent);
 
 
 
