@@ -57,10 +57,15 @@ const Login = (props) => {
                         <Form.Group controlId="formBasicPassword" className="mt-1">
                             <Form.Control value={password} onChange={handleChangePassword} type="password" placeholder="รหัสผ่าน" />
                         </Form.Group>
-                        <Link to="/AddEvent">
+                        <Link to="/ListofEvent">
                             <Button variant="secondary" block onClick={handleSubmit} className="mt-4 btn-custom" >
-                                เข้าสู่ระบบ
+                            Login
                             </Button>
+                        </Link>
+                        <Link to="/Register">
+                        <Button variant="secondary" block  className="mt-4 btn-custom" >
+                            Register
+                        </Button>
                         </Link>
                         <Row className="mt-3">
                             <Col>

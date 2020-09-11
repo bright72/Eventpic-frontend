@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import './App.css'
 import './Style.css'
 import Home from './Home.js'
-import Login from './Login.js'
+// import Login from './Login.js'
+import Login from './components/LoginForm.js'
 import Register from './Register.js'
 // import ImageUpload from './components/ImageUpload.jsx';
 import TestUpload from './components/TestUpPic.js';
