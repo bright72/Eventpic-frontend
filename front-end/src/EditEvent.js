@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
-import firebase, { database } from './firebase/index';
+import firebase, { database } from './firebase/indexstore'
 
 const { Group, Label, Control } = Form
 

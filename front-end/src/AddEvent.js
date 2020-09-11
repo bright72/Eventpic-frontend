@@ -4,7 +4,7 @@ import { Form, Button, Container, Row, Col } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
 import List from './List';
-import firebase, { database } from './firebase/index';
+import firebase, { database } from './firebase/indexstore'
 import { withRouter } from 'react-router-dom';
 
 const { Group, Label, Control } = Form

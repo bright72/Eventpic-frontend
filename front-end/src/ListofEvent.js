@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Form, Button, Container, Col, Card, } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
-import firebase, { database } from './firebase/indexstore';
+import firebase, { database } from './firebase/indexstore'
 
 class ListofEvent extends Component {
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useParams, Link, Redirect } from 'react-router-dom'
 import { Button, Container, Row, Col, Card } from 'react-bootstrap'
-import firebase, { database } from './firebase/index'
+import firebase, { database } from './firebase/indexstore'
 import Nevbar from './Nevbar.js'
 
 
