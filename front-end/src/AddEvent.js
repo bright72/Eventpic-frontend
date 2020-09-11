@@ -120,17 +120,17 @@ class AddEvent extends Component {
                             </Group>
                             <Form.Group controlId="exampleForm.ControlTextarea1">
                                 <Form.Label>Detail of event</Form.Label>
-                                <Form.Control name="detail" value={this.state.detail} onChange={this.handleChange} type="text" placeholder="Detail of event" as="textarea" rows="3" />
+                                <Form.Control required name="detail" value={this.state.detail} onChange={this.handleChange} type="text" placeholder="Detail of event" as="textarea" rows="3" />
                             </Form.Group>
                             <Form>
                                 <Form.Row>
                                     <Col>
                                         <Label>Start date of Event</Label>
-                                        <Control name="start_date" value={this.state.start_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
+                                        <Control required name="start_date" value={this.state.start_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
                                     </Col>
                                     <Col>
                                         <Label>End date of Event</Label>
-                                        <Control name="end_date" value={this.state.end_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
+                                        <Control required  name="end_date" value={this.state.end_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
                                     </Col>
                                 </Form.Row>
                             </Form>
@@ -138,17 +138,17 @@ class AddEvent extends Component {
                                 <Form.Row>
                                     <Col>
                                         <Label>Start time of Event</Label>
-                                        <Control name="start_time" value={this.state.start_time} onChange={this.handleChange} type="time" placeholder="Date of Event" />
+                                        <Control required name="start_time" value={this.state.start_time} onChange={this.handleChange} type="time" placeholder="Date of Event" />
                                     </Col>
                                     <Col>
                                         <Label>End time of Event</Label>
-                                        <Control name="end_time" value={this.state.end_time} onChange={this.handleChange} type="time" placeholder="Date of Event" />
+                                        <Control required name="end_time" value={this.state.end_time} onChange={this.handleChange} type="time" placeholder="Date of Event" />
                                     </Col>
                                 </Form.Row>
                             </Form>
                             <Label>Dateline</Label>
                             <Group >
-                                <Control name="dateline" value={this.state.dateline} onChange={this.handleChange} type="date" placeholder="Dateline" />
+                                <Control required name="dateline" value={this.state.dateline} onChange={this.handleChange} type="date" placeholder="Dateline" />
                             </Group>
                             <Link to="/ListofEvent">
                                 <Button variant="dark" block className=" mt-4 btn-custom" onClick={this.handleSubmit} >

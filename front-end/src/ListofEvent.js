@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Link  } from 'react-router-dom'
-import { Form, Button, Container, Col,  Card, } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { Form, Button, Container, Col, Card, } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
 import firebase, { database } from './firebase/index';
@@ -31,29 +31,31 @@ class ListofEvent extends Component {
             let events = snapshot.val();
             let newState = [];
             for (let item in events) {
-                newState.push({
-                    event_id: item,
-                    name: events[item].name,
-                    detail: events[item].detail,
-                    start_date: events[item].start_date,
-                    end_date: events[item].end_date,
-                    start_time: events[item].start_time,
-                    end_time: events[item].end_time,
-                    dateline: events[item].dateline
-                })
+                if (item) {
+                    newState.push({
+                        event_id: item,
+                        name: events[item].name,
+                        detail: events[item].detail,
+                        start_date: events[item].start_date,
+                        end_date: events[item].end_date,
+                        start_time: events[item].start_time,
+                        end_time: events[item].end_time,
+                        dateline: events[item].dateline
+                    })
+                }
+
             }
 
             this.setState({
                 events: newState
             })
-            console.log(newState)
         })
     }
 
 
 
     render() {
-        
+
         return (
             <Container fluid >
                 <Nevbar />

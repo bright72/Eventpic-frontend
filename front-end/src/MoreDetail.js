@@ -26,17 +26,19 @@ class MoreDetail extends React.Component {
         const itemsRef = firebase.database().ref(`events`)
         itemsRef.child(this.state.event_id).on("value", (snapshot) => {
             let item = snapshot.val()
-            console.log(this.state.event_id + " : " + item.name)
-            this.setState({
-                event_id: this.state.event_id,
-                name: item.name,
-                detail: item.detail,
-                start_date: item.start_date,
-                end_date: item.end_date,
-                start_time: item.start_time,
-                end_time: item.end_time,
-                dateline: item.dateline
-            })
+            // console.log(this.state.event_id + " : " + item.name)
+            if (item) {
+                this.setState({
+                    event_id: this.state.event_id,
+                    name: item.name,
+                    detail: item.detail,
+                    start_date: item.start_date,
+                    end_date: item.end_date,
+                    start_time: item.start_time,
+                    end_time: item.end_time,
+                    dateline: item.dateline
+                })
+            }
         })
 
     }
@@ -44,7 +46,7 @@ class MoreDetail extends React.Component {
     removeItem = event_id => {
         const itemsRef = firebase.database().ref('/events')
         itemsRef.child(event_id).remove()
-        this.props.history.goBack()
+        this.props.history.push('/ListofEvent')
     }
 
     render() {
