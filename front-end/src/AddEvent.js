@@ -22,6 +22,7 @@ class AddEvent extends Component {
             start_time: '',
             end_time: '',
             dateline: '',
+            imagelink: '',
         }
 
         this.handleChange = this.handleChange.bind(this)

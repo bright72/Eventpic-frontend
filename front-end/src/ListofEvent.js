@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Form, Button, Container, Col, Card, } from 'react-bootstrap'
+import { Button, Container, Col, Card, } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
 import firebase, { database } from './firebase/indexstore'
@@ -50,11 +50,10 @@ class ListofEvent extends Component {
     }
 
     render() {
-
         return (
             <Container fluid >
                 <Nevbar />
-                {   
+                {
                     this.state.events.map((item) => {
                         return (
                             <Col
@@ -84,6 +83,3 @@ class ListofEvent extends Component {
 }
 
 export default ListofEvent;
-
-
-

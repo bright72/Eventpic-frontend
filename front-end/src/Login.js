@@ -11,18 +11,6 @@ const Login = (props) => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-
-    const handleSubmit = event => {
-        if (email == 'phasit_earth@hotmail.com') {
-            if (password == '1234')
-                alert(' Correct: ');
-        }
-        else {
-            alert('Username or password not Correct: ');
-            event.preventDefault();
-        }
-    }
-
     const handleChangeEmail = event => {
         setEmail(event.target.value)
     }
@@ -31,13 +19,7 @@ const Login = (props) => {
         setPassword(event.target.value)
     }
 
-
-
-
-
     return (
-
-
         <Container fluid >
             <Nevbar />
             <Row className=" mt-5">

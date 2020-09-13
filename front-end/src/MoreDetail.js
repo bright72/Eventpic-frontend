@@ -68,7 +68,10 @@ class MoreDetail extends React.Component {
                             <Card.Text> วันที่จัดงาน : {this.state.start_date} - {this.state.end_date} </Card.Text>
                             <Card.Text> เวลา : {this.state.start_time} - {this.state.end_time} </Card.Text>
                             <Card.Text> วันสิ้นสุดการประมวลผล : {this.state.dateline}</Card.Text>
-                            <Link to={"/TestUpPic"} >
+                            <Link to={"/ShowPicture"} >
+                                <Button variant="dark m-1">Picture</Button>
+                            </Link >
+                            <Link to={"/UpPicture"} >
                                 <Button variant="dark m-1">Upload Picture</Button>
                             </Link >
                             <Link to={"/EditEvent/" + this.state.event_id} >

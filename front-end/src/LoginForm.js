@@ -1,8 +1,8 @@
-import auth from '../firebase/index'
+import auth from './firebase/index'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Form, Button, Container, Row, Col, Input, label } from 'react-bootstrap'
-import Nevbar from '../Nevbar.js'
+import Nevbar from './Nevbar.js'
 
 class LoginForm extends React.Component {
 
@@ -68,61 +68,10 @@ class LoginForm extends React.Component {
     render() {
         const { message, currentUser } = this.state
 
-        if (currentUser) {
-            return (
-                <div>
-                    <p>Hello {currentUser.email}</p>
-                    <button onClick={this.logout}>Logout</button>
-                </div>
-            )
-        }
-
-
         return (
-            // <section className="section container">
-            //     {message ? <p className="help is-danger">{message}</p> : null}
-            //     <div className="columns is-centered">
-            //         <div className="column is-half">
-            //             <form onSubmit={this.onSubmit}>
-            //                 <div className="field">
-            //                     <label className="label">Email</label>
-            //                     <div className="control">
-            //                         <input
-            //                             className="input"
-            //                             type="email"
-            //                             name="email"
-            //                             onChange={this.onChange}
-            //                         />
-            //                     </div>
-            //                 </div>
 
-            //                 <div className="field">
-            //                     <label className="label">Password</label>
-            //                     <div className="control">
-            //                         <input
-            //                             className="input"
-            //                             type="password"
-            //                             name="password"
-            //                             onChange={this.onChange}
-            //                         />
-            //                     </div>
-            //                 </div>
-
-            //                 <div className="field is-grouped">
-            //                     <div className="control">
-            //                         <button className="button is-link">Submit</button>
-            //                     </div>
-            //                     <div className="control">
-            //                         <button className="button is-text">Cancel</button>
-            //                     </div>
-            //                 </div>
-            //             </form>
-            //         </div>
-            //     </div>
-            // </section>
             <Container fluid >
             <Nevbar />
-            
             <Row className=" mt-5">
                 <Col xs={12} sm={{ span: 10 }} md={{ span: 4, offset: 2 }} lg={{ span: 3, offset: 4 }} className="p-5 Loginbox">
 
@@ -137,11 +86,13 @@ class LoginForm extends React.Component {
                         <Form.Group controlId="formBasicPassword" className="mt-1">
                             <Form.Control name="password" onChange={this.onChange} type="password" placeholder="รหัสผ่าน" />
                         </Form.Group>
-                            <Button variant="secondary" block  className="mt-4 btn-custom" onClick={this.onSubmit} >
+                        <Link to="/">
+                            <Button variant="secondary" block className="mt-4 btn-custom" onClick={this.onSubmit} >
                             Login
                             </Button>
+                        </Link>
                         <Link to="/Register">
-                        <Button variant="secondary" block  className="mt-4 btn-custom" >
+                        <Button variant="secondary" block className="mt-4 btn-custom" >
                             Register
                         </Button>
                         </Link>
@@ -159,9 +110,6 @@ class LoginForm extends React.Component {
                 </Col>
             </Row>
         </Container>
-
-
-            
         )
     }
 }

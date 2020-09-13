@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
-import { storage } from '../firebase';
+import React, { Component, useState, } from 'react';
+import firebase, { storage } from '../firebase';
+import '../Style.css';
 
 class ImageUpload extends Component {
+    
     constructor(props) {
         super(props);
         this.state = {
@@ -22,7 +24,7 @@ class ImageUpload extends Component {
     }
     handleUpload = () => {
         const { image } = this.state;
-        const uploadTask = storage.ref(`images/${image.name}`).put(image);
+        const uploadTask = firebase.storage.ref(`images/${image.name}`).put(image);
         uploadTask.on('state_changed',
             (snapshot) => {
                 // progrss function ....
@@ -35,7 +37,7 @@ class ImageUpload extends Component {
             },
             () => {
                 // complete function ....
-                storage.ref('images').child(image.name).getDownloadURL().then(url => {
+                firebase.storage.ref('images').child(image.name).getDownloadURL().then(url => {
                     console.log(url);
                     this.setState({ url });
                 })
