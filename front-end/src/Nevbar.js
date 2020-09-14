@@ -1,8 +1,9 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { Navbar, Container, Button, FormControl, NavDropdown, Nav, Row, col } from 'react-bootstrap'
 import auth from './firebase/index'
-import LoginForm from './LoginForm'
+
+
 
 class Nevbar extends React.Component {
 
@@ -71,33 +72,33 @@ class Nevbar extends React.Component {
         if (currentUser) {
             return (
                 <Navbar>
-                <Navbar.Brand href="/">Event Picture Management</Navbar.Brand>
-                <Navbar.Collapse className="justify-content-end">
-                    <Navbar.Text>
-                        {/* <Link to="/ListofEvent" className="mr-3"><Button variant="light">Event</Button></Link> */}
-                        <Link to="/AddEvent" className="mr-3"><Button variant="light">Add Event</Button></Link>
-                        <Link to="/" className="mr-3"><Button variant="light">{currentUser.email}</Button></Link>
-                        <Link to="/ListofEvent" className="mr-3"><Button onClick={this.logout} variant="light">Logout</Button></Link>
-                    </Navbar.Text>
-                </Navbar.Collapse>
-            </Navbar>
+                    <Navbar.Brand href="/">Event Picture Management</Navbar.Brand>
+                    <Navbar.Collapse className="justify-content-end">
+                        <Navbar.Text>
+                            {/* <Link to="/ListofEvent" className="mr-3"><Button variant="light">Event</Button></Link> */}
+                            <Link to="/AddEvent" className="mr-3"><Button variant="light">Add Event</Button></Link>
+                            <Link to="/" className="mr-3"><Button variant="light">{currentUser.email}</Button></Link>
+                            <Button onClick={this.logout} variant="light">Logout</Button>
+                        </Navbar.Text>
+                    </Navbar.Collapse>
+                </Navbar>
             )
-            }
+        }
 
-            if (!currentUser) {
-                return (
-                    <Navbar>
-                        <Navbar.Brand href="/ListofEvent">Event Picture Management</Navbar.Brand>
-                        <Navbar.Collapse className="justify-content-end">
-                            <Navbar.Text>
-                                {/* <Link to="/ListofEvent" className="mr-3"><Button variant="light">Event</Button></Link> */}
-                                <Link to="/AddEvent" className="mr-3"><Button variant="light">Add Event</Button></Link>
-                                <Link to="/Login" className="mr-3"><Button variant="light">Login</Button></Link>
-                            </Navbar.Text>
-                        </Navbar.Collapse>
-                    </Navbar>
-                )
-                }
+        if (!currentUser) {
+            return (
+                <Navbar>
+                    <Navbar.Brand href="/ListofEvent">Event Picture Management</Navbar.Brand>
+                    <Navbar.Collapse className="justify-content-end">
+                        <Navbar.Text>
+                            {/* <Link to="/ListofEvent" className="mr-3"><Button variant="light">Event</Button></Link> */}
+                            {/* <Link to="/AddEvent" className="mr-3"><Button variant="light">Add Event</Button></Link> */}
+                            <Link to="/Login" className="mr-3"><Button variant="light">Login</Button></Link>
+                        </Navbar.Text>
+                    </Navbar.Collapse>
+                </Navbar>
+            )
+        }
     }
 
 }

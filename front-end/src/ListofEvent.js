@@ -4,6 +4,8 @@ import { Button, Container, Col, Card, } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
 import firebase, { database } from './firebase/indexstore'
+import auth from './firebase/index'
+import Login from './LoginForm.js'
 
 class ListofEvent extends Component {
 
@@ -19,6 +21,7 @@ class ListofEvent extends Component {
             start_time: '',
             end_time: '',
             dateline: '',
+            currentUser: null
         }
 
     }
@@ -43,6 +46,14 @@ class ListofEvent extends Component {
 
             }
 
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    this.setState({
+                        currentUser: user
+                    })
+                }
+            })
+
             this.setState({
                 events: newState
             })
@@ -50,35 +61,44 @@ class ListofEvent extends Component {
     }
 
     render() {
-        return (
-            <Container fluid >
-                <Nevbar />
-                {
-                    this.state.events.map((item) => {
-                        return (
-                            <Col
-                                xs={12}
-                                sm={{ span: 10 }}
-                                md={{ span: 8, offset: 2 }}
-                                lg={{ span: 8, offset: 2 }}
-                                className="p-3 Loginbox mt-3"
-                            >
-                                <Card>
-                                    <Card.Body>
-                                        <Card.Title>{item.name}</Card.Title>
-                                        <Card.Text>{item.detail}</Card.Text>
-                                        <Card.Text>{item.start_date}</Card.Text>
-                                        <Link to={"/MoreDetail/" + item.event_id} >
-                                            <Button variant="dark m-1" >View Detail</Button>
-                                        </Link>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        )
-                    })
-                }
-            </Container >
-        );
+        const { message, currentUser } = this.state
+        if (currentUser) {
+            return (
+                <Container fluid >
+                    <Nevbar />
+                    {
+                        this.state.events.map((item) => {
+                            return (
+                                <Col
+                                    xs={12}
+                                    sm={{ span: 10 }}
+                                    md={{ span: 8, offset: 2 }}
+                                    lg={{ span: 8, offset: 2 }}
+                                    className="p-3 Loginbox mt-3"
+                                >
+                                    <Card>
+                                        <Card.Body>
+                                            <Card.Title>{item.name}</Card.Title>
+                                            <Card.Text>{item.detail}</Card.Text>
+                                            <Card.Text>{item.start_date}</Card.Text>
+                                            <Link to={"/MoreDetail/" + item.event_id} >
+                                                <Button variant="dark m-1" >View Detail</Button>
+                                            </Link>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                            )
+                        })
+                    }
+                </Container >
+            )
+        }
+        if (!currentUser) {
+            return (
+                <Login />
+            )
+        }
+
     }
 }
 
