@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link ,Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Form, Button, Container, Row, Col } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
@@ -106,7 +106,7 @@ class AddEvent extends Component {
                 dateline: ''
             })
 
-            this.props.history.push('/ListofEvent')
+            this.props.history.push('/ListofEvent');
         }
     }
 

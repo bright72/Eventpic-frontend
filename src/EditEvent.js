@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { withRouter , Redirect} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
@@ -201,7 +201,7 @@ class EditEvent extends Component {
         }
         if (!currentUser) {
             return (
-                <Login/>
+                <Login />
             )
         }
 

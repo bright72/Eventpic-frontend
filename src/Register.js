@@ -66,6 +66,10 @@ const Register = (props) => {
                                 ลงทะเบียน
                             </Button>
                         </Link>
+
+
+
+
                     </Form>
                 </Col>
             </Row>
