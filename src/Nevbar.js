@@ -14,38 +14,39 @@ class Nevbar extends React.Component {
             email: '',
             password: '',
             currentUser: null,
-            message: ''
+            message: '',
+            redirect: false,
         }
     }
 
-    onChange = e => {
-        const { name, value } = e.target
+    // onChange = e => {
+    //     const { name, value } = e.target
 
-        this.setState({
-            [name]: value
-        })
-    }
+    //     this.setState({
+    //         [name]: value
+    //     })
+    // }
 
-    onSubmit = e => {
-        e.preventDefault()
+    // onSubmit = e => {
+    //     e.preventDefault()
 
-        const { email, password } = this.state
-        // TODO: implement signInWithEmailAndPassword()
+    //     const { email, password } = this.state
+    //     // TODO: implement signInWithEmailAndPassword()
 
-        auth
-            .signInWithEmailAndPassword(email, password)
-            .then(response => {
-                this.setState({
-                    currentUser: response.user
-                })
-            })
-            .catch(error => {
-                this.setState({
-                    message: error.message
-                })
-            })
+    //     auth
+    //         .signInWithEmailAndPassword(email, password)
+    //         .then(response => {
+    //             this.setState({
+    //                 currentUser: response.user
+    //             })
+    //         })
+    //         .catch(error => {
+    //             this.setState({
+    //                 message: error.message
+    //             })
+    //         })
 
-    }
+    // }
 
     componentDidMount() {
         auth.onAuthStateChanged(user => {
@@ -61,14 +62,17 @@ class Nevbar extends React.Component {
         e.preventDefault()
         auth.signOut().then(response => {
             this.setState({
-                currentUser: null
+                currentUser: null,
+                redirect: true,
             })
         })
     }
 
     render() {
-
-        const { message, currentUser } = this.state
+        const { message, currentUser, redirect } = this.state
+        if (redirect) {
+            return <Redirect to="/login" />
+        }
         if (currentUser) {
             return (
                 <Navbar>

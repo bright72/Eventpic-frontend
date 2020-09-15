@@ -1,6 +1,6 @@
 import auth from './firebase/index'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 
@@ -15,6 +15,7 @@ class LoginForm extends React.Component {
             currentUser: null,
             showAlert: false,
             validate: false,
+            auth: false
         }
     }
 
@@ -45,11 +46,11 @@ class LoginForm extends React.Component {
                         showAlert: true
                     })
                 })
-            }
-            this.setState({
-                validate: true
-            })
-            e.stopPropagation();
+        }
+        this.setState({
+            validate: true
+        })
+        e.stopPropagation();
     }
 
     componentDidMount() {
@@ -59,59 +60,74 @@ class LoginForm extends React.Component {
                     currentUser: user
                 })
             }
+            this.setState({
+                auth: true
+            })
         })
     }
 
     render() {
-        const { showAlert, currentUser, validate } = this.state
-
-        return (
-
-            <Container fluid >
-                <Nevbar />
-                {showAlert ?
-                    <Alert variant="danger">
-                        อีเมล์หรือรหัสผ่านไม่ถูกต้อง กรุณากรอกใหม่อีกครั้ง
+        const { showAlert, currentUser, validate, auth } = this.state
+        if (auth) {
+            if (!currentUser) {
+                return (
+                    <Container fluid >
+                        <Nevbar />
+                        {showAlert ?
+                            <Alert variant="danger">
+                                อีเมล์หรือรหัสผ่านไม่ถูกต้อง กรุณากรอกใหม่อีกครั้ง
                         </Alert>
-                    :
-                    ""
-                }
-                <Row className=" mt-5">
-                    <Col xs={12} sm={{ span: 10 }} md={{ span: 4, offset: 2 }} lg={{ span: 3, offset: 4 }} className="p-5 Loginbox">
-                        <h1 className="text-center mt-3"> เข้าสู่ระบบ</h1>
-                        <Form noValidate validated={validate} onSubmit={this.onSubmit} className="mt-4">
-                            <Form.Label>Email address</Form.Label>
-                            <Form.Group controlId="formBasicEmail" >
-                                <Form.Control name="email" type="email" onChange={this.onChange} placeholder="อีเมล์" required />
-                                <Form.Control.Feedback type="invalid">
-                                    กรุณากรอกอีเมล์
+                            :
+                            ""
+                        }
+                        <Row className=" mt-5">
+                            <Col xs={12} sm={{ span: 10 }} md={{ span: 4, offset: 2 }} lg={{ span: 3, offset: 4 }} className="p-5 Loginbox">
+                                <h1 className="text-center mt-3"> เข้าสู่ระบบ</h1>
+                                <Form noValidate validated={validate} onSubmit={this.onSubmit} className="mt-4">
+                                    <Form.Label>Email address</Form.Label>
+                                    <Form.Group controlId="formBasicEmail" >
+                                        <Form.Control name="email" type="email" onChange={this.onChange} placeholder="อีเมล์" required />
+                                        <Form.Control.Feedback type="invalid">
+                                            กรุณากรอกอีเมล์
                                 </Form.Control.Feedback>
-                            </Form.Group>
-                            <Form.Label>Password</Form.Label>
-                            <Form.Group controlId="formBasicPassword" className="mt-1">
-                                <Form.Control name="password" onChange={this.onChange} type="password" placeholder="รหัสผ่าน" required />
-                                <Form.Control.Feedback type="invalid">
-                                    กรุณารหัสผ่าน
+                                    </Form.Group>
+                                    <Form.Label>Password</Form.Label>
+                                    <Form.Group controlId="formBasicPassword" className="mt-1">
+                                        <Form.Control name="password" onChange={this.onChange} type="password" placeholder="รหัสผ่าน" required />
+                                        <Form.Control.Feedback type="invalid">
+                                            กรุณารหัสผ่าน
                                 </Form.Control.Feedback>
-                            </Form.Group>
-                            <Button variant="secondary" block className="mt-4 btn-custom" type="submit" >
-                                Login
+                                    </Form.Group>
+                                    <Button variant="secondary" block className="mt-4 btn-custom" type="submit" >
+                                        Login
                             </Button>
-                            <Link to="/Register">
-                                <Button variant="secondary" block className="mt-4 btn-custom" >
-                                    Register
+                                    <Link to="/Register">
+                                        <Button variant="secondary" block className="mt-4 btn-custom" >
+                                            Register
                                 </Button>
-                            </Link>
-                            <Row className="mt-3">
-                                <Col className="text-right">
-                                    <Link to="#">ลืมรหัสผ่าน</Link>
-                                </Col>
-                            </Row>
-                        </Form>
-                    </Col>
-                </Row>
-            </Container>
-        )
+                                    </Link>
+                                    <Row className="mt-3">
+                                        <Col className="text-right">
+                                            <Link to="#">ลืมรหัสผ่าน</Link>
+                                        </Col>
+                                    </Row>
+                                </Form>
+                            </Col>
+                        </Row>
+                    </Container>
+                )
+            }
+            if (currentUser) {
+                return (
+                    <Redirect to="/" />
+                )
+            }
+        } else {
+            return (
+                <div>Loading</div>
+            )
+        }
+
     }
 }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom';
+import { withRouter,Redirect } from 'react-router-dom';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
@@ -22,7 +22,8 @@ class EditEvent extends Component {
             start_time: '',
             end_time: '',
             dateline: '',
-            currentUser: null
+            currentUser: null,
+            auth: false
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -32,16 +33,19 @@ class EditEvent extends Component {
     }
 
     componentDidMount() {
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                this.setState({
+                    currentUser: user
+                })
+            }
+            this.setState({
+                auth: true
+            })
+        })
         const itemsRef = firebase.database().ref('/events')
         itemsRef.child(this.props.match.params.id).on("value", (snapshot) => {
             let value = snapshot.val()
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    this.setState({
-                        currentUser: user
-                    })
-                }
-            })
             this.setState({
                 event_id: this.props.match.params.id,
                 name: value.name,
@@ -137,76 +141,82 @@ class EditEvent extends Component {
 
 
     render() {
-        const { currentUser } = this.state
-        if (currentUser) {
-            return (
-                <Container fluid >
-                    <Nevbar />
-                    <Row className=" m-4">
-                        <Col
-                            xs={12}
-                            sm={{ span: 10 }}
-                            md={{ span: 4, offset: 2 }}
-                            lg={{ span: 6, offset: 3 }}
-                            className="p-5 Loginbox"
-                        >
-                            <h1 className="text-center mt-2"> Edit Event</h1>
-                            <Form onSubmit={this.handleSubmit} className="mt-4">
-                                <Label>Name of Event</Label>
-                                <Group >
-                                    <Control name="name" value={this.state.name} onChange={this.handleChange} type="text" placeholder="Name of Event" />
-                                </Group>
-                                <Form.Group controlId="exampleForm.ControlTextarea1">
-                                    <Form.Label>Detail of event</Form.Label>
-                                    <Form.Control name="detail" value={this.state.detail} onChange={this.handleChange} type="text" placeholder="Detail of event" as="textarea" rows="3" />
-                                </Form.Group>
-                                <Form>
-                                    <Form.Row>
-                                        <Col>
-                                            <Label>Start date of Event</Label>
-                                            <Control name="start_date" value={this.state.start_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
-                                        </Col>
-                                        <Col>
-                                            <Label>End date of Event</Label>
-                                            <Control name="end_date" value={this.state.end_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
-                                        </Col>
-                                    </Form.Row>
-                                </Form>
-                                <Form>
-                                    <Form.Row>
-                                        <Col>
-                                            <Label>Start time of Event</Label>
-                                            <Control name="start_time" value={this.state.start_time} onChange={this.handleChange} type="time" placeholder="Date of Event" />
-                                        </Col>
-                                        <Col>
-                                            <Label>End time of Event</Label>
-                                            <Control name="end_time" value={this.state.end_time} onChange={this.handleChange} type="time" placeholder="Date of Event" />
-                                        </Col>
-                                    </Form.Row>
-                                </Form>
-                                <Label>Dateline</Label>
-                                <Group >
-                                    <Control name="dateline" value={this.state.dateline} onChange={this.handleChange} type="date" placeholder="Dateline" />
-                                </Group>
+        const { currentUser, auth } = this.state
+        if (auth) {
+            if (currentUser) {
+                return (
+                    <Container fluid >
+                        <Nevbar />
+                        <Row className=" m-4">
+                            <Col
+                                xs={12}
+                                sm={{ span: 10 }}
+                                md={{ span: 4, offset: 2 }}
+                                lg={{ span: 6, offset: 3 }}
+                                className="p-5 Loginbox"
+                            >
+                                <h1 className="text-center mt-2"> Edit Event</h1>
+                                <Form onSubmit={this.handleSubmit} className="mt-4">
+                                    <Label>Name of Event</Label>
+                                    <Group >
+                                        <Control name="name" value={this.state.name} onChange={this.handleChange} type="text" placeholder="Name of Event" />
+                                    </Group>
+                                    <Form.Group controlId="exampleForm.ControlTextarea1">
+                                        <Form.Label>Detail of event</Form.Label>
+                                        <Form.Control name="detail" value={this.state.detail} onChange={this.handleChange} type="text" placeholder="Detail of event" as="textarea" rows="3" />
+                                    </Form.Group>
+                                    <Form>
+                                        <Form.Row>
+                                            <Col>
+                                                <Label>Start date of Event</Label>
+                                                <Control name="start_date" value={this.state.start_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
+                                            </Col>
+                                            <Col>
+                                                <Label>End date of Event</Label>
+                                                <Control name="end_date" value={this.state.end_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
+                                            </Col>
+                                        </Form.Row>
+                                    </Form>
+                                    <Form>
+                                        <Form.Row>
+                                            <Col>
+                                                <Label>Start time of Event</Label>
+                                                <Control name="start_time" value={this.state.start_time} onChange={this.handleChange} type="time" placeholder="Date of Event" />
+                                            </Col>
+                                            <Col>
+                                                <Label>End time of Event</Label>
+                                                <Control name="end_time" value={this.state.end_time} onChange={this.handleChange} type="time" placeholder="Date of Event" />
+                                            </Col>
+                                        </Form.Row>
+                                    </Form>
+                                    <Label>Dateline</Label>
+                                    <Group >
+                                        <Control name="dateline" value={this.state.dateline} onChange={this.handleChange} type="date" placeholder="Dateline" />
+                                    </Group>
 
-                                <Button variant="dark" block className=" mt-4 btn-custom" onClick={this.handleSubmit} >
-                                    Submit Edit Event
+                                    <Button variant="dark" block className=" mt-4 btn-custom" onClick={this.handleSubmit} >
+                                        Submit Edit Event
                             </Button>
-
-                            </Form>
-                        </Col>
-                    </Row>
-                </Container>
-            )
-        }
-        if (!currentUser) {
+                                </Form>
+                            </Col>
+                        </Row>
+                    </Container>
+                )
+            }
+            if (!currentUser) {
+                return (
+                    <Redirect to ="/Login" />
+                )
+            }
+        } else {
             return (
-                <Login />
+                <div>Loading</div>
             )
         }
 
     }
 }
+
 
 export default withRouter(EditEvent);
 
