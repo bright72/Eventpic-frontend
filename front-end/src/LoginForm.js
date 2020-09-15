@@ -45,11 +45,11 @@ class LoginForm extends React.Component {
                         showAlert: true
                     })
                 })
-            }
-            this.setState({
-                validate: true
-            })
-            e.stopPropagation();
+        }
+        this.setState({
+            validate: true
+        })
+        e.stopPropagation();
     }
 
     componentDidMount() {
@@ -64,9 +64,7 @@ class LoginForm extends React.Component {
 
     render() {
         const { showAlert, currentUser, validate } = this.state
-
         return (
-
             <Container fluid >
                 <Nevbar />
                 {showAlert ?

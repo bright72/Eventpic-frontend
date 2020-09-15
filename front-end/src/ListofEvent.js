@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { Button, Container, Col, Card, } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
@@ -95,7 +95,7 @@ class ListofEvent extends Component {
         }
         if (!currentUser) {
             return (
-                <Login />
+                <Login/>
             )
         }
 

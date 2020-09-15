@@ -44,7 +44,6 @@ class Nevbar extends React.Component {
                     message: error.message
                 })
             })
-
     }
 
     componentDidMount() {
