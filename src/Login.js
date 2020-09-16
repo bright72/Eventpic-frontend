@@ -28,7 +28,7 @@ const Login = (props) => {
                 </p>
                 <Col xs={12} sm={{ span: 10 }} md={{ span: 4, offset: 2 }} lg={{ span: 3, offset: 4 }} className="p-5 Loginbox">
 
-                    <h1 className="text-center mt-3"> เข้าสู่ระบบ</h1>
+                    <h1 className="text-center mt-3">เข้าสู่ระบบ</h1>
 
                     <Form onSubmit={handleSubmit} className="mt-4">
                         <Form.Label>Email address</Form.Label>
@@ -39,14 +39,14 @@ const Login = (props) => {
                         <Form.Group controlId="formBasicPassword" className="mt-1">
                             <Form.Control value={password} onChange={handleChangePassword} type="password" placeholder="รหัสผ่าน" />
                         </Form.Group>
-                        <Link to="/ListofEvent">
+                        <Link to="/Login">
                             <Button variant="secondary" block onClick={handleSubmit} className="mt-4 btn-custom" >
-                            Login
+                                Login
                             </Button>
                         </Link>
                         <Link to="/Register">
-                        <Button variant="secondary" block  className="mt-4 btn-custom" >
-                            Register
+                            <Button variant="secondary" block className="mt-4 btn-custom" >
+                                Register
                         </Button>
                         </Link>
                         <Row className="mt-3">
