@@ -1,5 +1,5 @@
 import React, { useState, } from 'react';
-import firebase, { storage } from '../firebase';
+import firebase from '../firebase';
 import { Form, Button, Container, Row, Image } from 'react-bootstrap'
 import Nevbar from '../Nevbar.js'
 import '../Style.css';

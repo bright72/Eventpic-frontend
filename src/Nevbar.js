@@ -1,9 +1,7 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import { Navbar, Container, Button, FormControl, NavDropdown, Nav, Row, col } from 'react-bootstrap'
+import { Navbar, Button, } from 'react-bootstrap'
 import auth from './firebase/index'
-
-
 
 class Nevbar extends React.Component {
 
@@ -69,7 +67,7 @@ class Nevbar extends React.Component {
     }
 
     render() {
-        const { message, currentUser, redirect } = this.state
+        const { currentUser, redirect } = this.state
         if (redirect) {
             return <Redirect to="/login" />
         }

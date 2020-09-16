@@ -3,11 +3,9 @@ import { Link, Redirect } from 'react-router-dom'
 import { Form, Button, Container, Row, Col } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
-import List from './List';
-import firebase, { database } from './firebase/indexstore'
+import firebase from './firebase/indexstore'
 import { withRouter } from 'react-router-dom'
 import auth from './firebase/index'
-import Login from './LoginForm.js'
 
 const { Group, Label, Control } = Form
 
@@ -77,10 +75,10 @@ class AddEvent extends Component {
     handleSubmit = e => {
         e.preventDefault();
         const { name, start_date, end_date, start_time, end_time, detail, event_id, dateline } = this.state
-        if (name && start_date && end_date && start_time && end_time && detail == '') {
+        if (name && start_date && end_date && start_time && end_time && detail === '') {
             // return this.updateItem();
             alert("กรุณากรอกรายละเอียดให้ครบถ้วน :)")
-        } else if (event_id != '') {
+        } else if (event_id !== '') {
             if (start_date > end_date || start_date > dateline || end_date > dateline) {
                 alert("กรุณากรอกวันที่ให้ถูกต้อง")
             }
@@ -180,13 +178,13 @@ class AddEvent extends Component {
                 )
             }
             if (!currentUser) {
-                return ( 
+                return (
                     <Redirect to="/Login" />
                 )
             }
         } else {
             return (
-               <div>Loading</div>
+                <div>Loading</div>
             )
         }
 

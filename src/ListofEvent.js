@@ -3,9 +3,8 @@ import { Link, Redirect } from 'react-router-dom'
 import { Button, Container, Col, Card, } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
-import firebase, { database } from './firebase/indexstore'
+import firebase from './firebase/indexstore'
 import auth from './firebase/index'
-import Login from './LoginForm.js'
 
 class ListofEvent extends Component {
 
@@ -66,7 +65,7 @@ class ListofEvent extends Component {
     }
 
     render() {
-        const { message, currentUser, auth } = this.state
+        const { currentUser, auth } = this.state
         if (auth) {
             if (currentUser) {
                 return (

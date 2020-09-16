@@ -1,10 +1,9 @@
 import React from 'react'
-import { useParams, Link, Redirect } from 'react-router-dom'
-import { Button, Container, Row, Col, Card } from 'react-bootstrap'
-import firebase, { database } from './firebase/indexstore'
+import { Link, Redirect } from 'react-router-dom'
+import { Button, Container, Col, Card } from 'react-bootstrap'
+import firebase from './firebase/indexstore'
 import Nevbar from './Nevbar.js'
 import auth from './firebase/index'
-import Login from './LoginForm.js'
 
 
 class MoreDetail extends React.Component {

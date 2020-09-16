@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Form, Button, Container, Row, Col, Input, label,Alert } from 'react-bootstrap'
+import { Form, Button, Container, Row, Col } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
 
@@ -13,8 +13,8 @@ const Register = (props) => {
     const [conPassword, setConPassword] = useState("")
 
     const handleSubmit = event => {
-        if (password == conPassword) {
-                alert(' Password Correct: ');
+        if (password === conPassword) {
+            alert(' Password Correct: ');
         }
         else {
             alert(' Password not Correct: ');
