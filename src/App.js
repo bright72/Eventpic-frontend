@@ -10,6 +10,17 @@ import ListofEvent from './ListofEvent.js';
 import EditEvent from './EditEvent.js';
 import MoreDetail from './MoreDetail.js';
 import ShowPicture from './ShowPicture.js';
+//Import npm bulma
+import 'bulma/css/bulma.css'
+//Import npm react-filepond
+// import { FilePond, File, registerPlugin } from 'react-filepond';
+// // Import FilePond styles
+// import 'filepond/dist/filepond.min.css';
+
+// FilePond Register plugin
+// import FilePondImagePreview from 'filepond-plugin-image-preview';
+// import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+// registerPlugin(FilePondImagePreview);
 
 const App = () => (
   <Router>
@@ -25,6 +36,7 @@ const App = () => (
       <Route exact path="/ShowPicture" component={ShowPicture} />
     </Switch>
   </Router>
+
 )
 
 export default App
