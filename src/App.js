@@ -25,7 +25,7 @@ const App = () => (
       <Route exact path="/EditEvent/:id" component={EditEvent} />
       <Route exact path="/MoreDetail/:id" component={MoreDetail} />
       <Route exact path="/ShowPicture" component={ShowPicture} />
-      <Route exact path="/Upload" component={Upload} />
+      <Route exact path="/Upload/:id" component={Upload} />
     </Switch>
   </Router>
 

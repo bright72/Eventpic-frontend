@@ -116,7 +116,7 @@ class AddEvent extends Component {
                 dateline: ''
             })
 
-            this.props.history.push('/ListofEvent');
+            this.props.history.push('/ListofEvent/' + this.state.event_id);
         }
     }
 

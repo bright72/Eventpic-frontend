@@ -94,7 +94,7 @@ class MoreDetail extends React.Component {
                                     <Link to={"/ShowPicture"} >
                                         <Button variant="dark m-1">Picture</Button>
                                     </Link >
-                                    <Link to={"/UpPicture"} >
+                                    <Link to={"/Upload/" + this.state.event_id} >
                                         <Button variant="dark m-1">Upload Picture</Button>
                                     </Link >
                                     <Link to={"/EditEvent/" + this.state.event_id} >
