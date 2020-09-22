@@ -1,11 +1,49 @@
+
 @font-face{
-    font-family: Kanit-Regular;
-    src: url("./font/Kanit-Regular.ttf")
+    /*font-family: Kanit-Regular;*/
+    font-family: Kanit;
+    /*src: url("./font/Kanit-Regular.ttf")*/
+    src: url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;600&display=swap');
 }
 
-body{
-    font-family: Kanit-Regular;
+h1, .form-lable, .btn-custom {
+    font-family: Kanit;
+    font-weight: 600;
 }
+
+h1, .form-lable{
+    color: #44506A;
+}
+
+.input-form, .form-lable{
+    font-size: 18px;
+    color: #44506A;
+}
+
+body, .input-form {
+    font-family: Kanit;
+    font-weight: 300;
+}
+
+.input-form, .form-card {
+    border-radius: 20px;
+}
+
+h1 {
+    font-size: 48px;
+}
+
+.input-form {
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+.form-card {
+    background: #FFFFFF;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.15);
+    border: none;
+}
+
 .Loginbox{
     border-style: solid;
     border-color: dimgray;
@@ -15,6 +53,7 @@ body{
 
 .btn-custom{
     border-radius: 20px;
+    height: 40px;
 }
 
 .btn-custom-sm{
