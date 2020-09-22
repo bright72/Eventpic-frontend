@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { Navbar, Button, } from 'react-bootstrap'
-import auth from './firebase/index'
+import firebase from './firebase/index'
 
 class Nevbar extends React.Component {
 
@@ -47,7 +47,7 @@ class Nevbar extends React.Component {
     // }
 
     componentDidMount() {
-        auth.onAuthStateChanged(user => {
+        firebase.auth().onAuthStateChanged(user => {
             if (user) {
                 this.setState({
                     currentUser: user
@@ -58,7 +58,7 @@ class Nevbar extends React.Component {
 
     logout = e => {
         e.preventDefault()
-        auth.signOut().then(response => {
+        firebase.auth().signOut().then(response => {
             this.setState({
                 currentUser: null,
                 redirect: true,

@@ -1,4 +1,4 @@
-import auth from './firebase/index'
+import firebase from './firebase'
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap'
@@ -32,7 +32,7 @@ class LoginForm extends React.Component {
         const form = e.currentTarget
         const { email, password } = this.state
         if (form.checkValidity() === true) {
-            auth
+            firebase.auth()
                 .signInWithEmailAndPassword(email, password)
                 .then(response => {
                     console.log("OK")
@@ -54,7 +54,7 @@ class LoginForm extends React.Component {
     }
 
     componentDidMount() {
-        auth.onAuthStateChanged(user => {
+        firebase.auth().onAuthStateChanged(user => {
             if (user) {
                 this.setState({
                     currentUser: user

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import auth from './firebase/index'
-import firebase, { database } from './firebase/indexstore'
+import firebase, { database } from './firebase'
 import { Link, Redirect } from 'react-router-dom'
 import { Form, Button, Container, Row, Col, Input, label, Alert } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'

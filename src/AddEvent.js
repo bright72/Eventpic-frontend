@@ -3,9 +3,8 @@ import { Link, Redirect } from 'react-router-dom'
 import { Form, Button, Container, Row, Col } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
-import firebase from './firebase/indexstore'
+import firebase from './firebase'
 import { withRouter } from 'react-router-dom'
-import auth from './firebase/index'
 
 const { Group, Label, Control } = Form
 
@@ -35,7 +34,7 @@ class AddEvent extends Component {
     }
 
     componentDidMount() {
-        auth.onAuthStateChanged(user => {
+        firebase.auth().onAuthStateChanged(user => {
             if (user) {
                 this.setState({
                     currentUser: user

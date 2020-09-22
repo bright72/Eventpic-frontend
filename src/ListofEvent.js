@@ -3,8 +3,7 @@ import { Link, Redirect } from 'react-router-dom'
 import { Button, Container, Col, Card, } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
-import firebase from './firebase/indexstore'
-import auth from './firebase/index'
+import firebase from './firebase'
 
 class ListofEvent extends Component {
 
@@ -26,9 +25,9 @@ class ListofEvent extends Component {
         }
 
     }
-    
+
     componentDidMount() {
-        auth.onAuthStateChanged( user => {
+        firebase.auth().onAuthStateChanged(user => {
             if (user) {
                 this.setState({
                     currentUser: user
@@ -40,14 +39,14 @@ class ListofEvent extends Component {
             })
             let self = this
             firebase.database().ref("user").orderByChild("email").equalTo(user.email)
-            .on("child_added", async function (snapshot) {
-                const itemsRef = firebase.database().ref(`/user/${snapshot.key}/event`);
-                itemsRef.on('value', (snapshot) => {
-                    let events = snapshot.val();
-                    let newState = [];
-                    for (let item in events) {
-                        if (item) {
-                            newState.push({
+                .on("child_added", async function (snapshot) {
+                    const itemsRef = firebase.database().ref(`/user/${snapshot.key}/event`);
+                    itemsRef.on('value', (snapshot) => {
+                        let events = snapshot.val();
+                        let newState = [];
+                        for (let item in events) {
+                            if (item) {
+                                newState.push({
                                     event_id: item,
                                     name: events[item].name,
                                     detail: events[item].detail,
@@ -58,7 +57,7 @@ class ListofEvent extends Component {
                                     dateline: events[item].dateline
                                 })
                             }
-                            
+
                         }
                         console.log("new", newState)
                         self.setState({
@@ -67,7 +66,7 @@ class ListofEvent extends Component {
                     })
                 })
         })
-       
+
     }
     render() {
         const { currentUser, auth } = this.state

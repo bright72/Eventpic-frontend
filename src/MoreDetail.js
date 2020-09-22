@@ -1,10 +1,8 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { Button, Container, Col, Card } from 'react-bootstrap'
-import firebase from './firebase/indexstore'
+import firebase from './firebase'
 import Nevbar from './Nevbar.js'
-import auth from './firebase/index'
-
 
 class MoreDetail extends React.Component {
 
@@ -25,7 +23,7 @@ class MoreDetail extends React.Component {
     }
 
     componentDidMount() {
-        auth.onAuthStateChanged(user => {
+        firebase.auth().onAuthStateChanged(user => {
             if (user) {
                 this.setState({
                     currentUser: user
@@ -61,13 +59,13 @@ class MoreDetail extends React.Component {
 
     removeItem = event_id => {
         let keypath = ""
-            firebase.database().ref("user").orderByChild("email").equalTo(this.state.currentUser.email)
-                .on("child_added", function (snapshot) {
-                    console.log("นี่คือคีย์")
-                    console.log(snapshot.key)
-                    keypath = snapshot.key
-                })
-            const itemsRef = firebase.database().ref(`user/${keypath}/event`)
+        firebase.database().ref("user").orderByChild("email").equalTo(this.state.currentUser.email)
+            .on("child_added", function (snapshot) {
+                console.log("นี่คือคีย์")
+                console.log(snapshot.key)
+                keypath = snapshot.key
+            })
+        const itemsRef = firebase.database().ref(`user/${keypath}/event`)
         itemsRef.child(event_id).remove()
         this.props.history.push('/ListofEvent')
     }

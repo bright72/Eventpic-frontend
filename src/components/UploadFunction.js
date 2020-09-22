@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FilePond, File, registerPlugin } from 'react-filepond';
-import firebase from '../firebase/indexstore';
+import firebase from '../firebase';
 import StorageDataTable from './StorageDataTable';
 // import '../App.css';
 
@@ -21,21 +21,7 @@ class UploadFunction extends Component {
             uploadValue: 0, //ใช้เพื่อดู Process การ Upload
             filesMetadata: [], //ใช้เพื่อรับข้อมูล Metadata จาก Firebase
             rows: [], //ใช้วาด DataTable
-            messag: ""
         };
-
-        // Initialize Firebase
-        // var config = {
-        //     apiKey: "AIzaSyC2nZWMUc158M6XTvqjuhOaEuyvWYJnHtM",
-        //     authDomain: "test-file-store-d0505.firebaseapp.com",
-        //     databaseURL: "https://test-file-store-d0505.firebaseio.com",
-        //     projectId: "test-file-store-d0505",
-        //     storageBucket: "test-file-store-d0505.appspot.com",
-        //     messagingSenderId: "44569118630",
-        //     appId: "1:44569118630:web:8688c0f60d802eaf3fb167",
-        //     measurementId: "G-X1FJRZFNRB"
-        // };
-        // firebase.initializeApp(config);
 
     }
 
@@ -163,9 +149,15 @@ class UploadFunction extends Component {
                     fullPath: metadata.fullPath,
                     downloadURLs: metadata.downloadURLs[0],
                 }
-
+                let keypath = ""
+                firebase.database().ref("user").orderByChild("email").equalTo(this.state.currentUser.email)
+                    .on("child_added", function (snapshot) {
+                        console.log("นี่คือคีย์")
+                        console.log(snapshot.key)
+                        keypath = snapshot.key
+                    })
                 //Process save metadata
-                const databaseRef = firebase.database().ref('/filepond');
+                const databaseRef = firebase.database().ref(`user/${keypath}/event/image`)
                 databaseRef.push({ metadataFile });
 
             }).catch(function (error) {
