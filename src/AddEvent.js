@@ -26,7 +26,9 @@ class AddEvent extends Component {
             dateline: '',
             imagelink: '',
             currentUser: null,
-            auth: false
+            auth: false,
+            username: '',
+            key: ''
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -45,26 +47,26 @@ class AddEvent extends Component {
                 auth: true
             })
         })
-        const itemsRef = firebase.database().ref('events');
-        itemsRef.on('value', (snapshot) => {
-            let events = snapshot.val();
-            let newState = [];
-            for (let item in events) {
-                newState.push({
-                    event_id: item,
-                    name: events[item].name,
-                    detail: events[item].detail,
-                    start_date: events[item].start_date,
-                    end_date: events[item].end_date,
-                    start_time: events[item].start_time,
-                    end_time: events[item].end_time,
-                    dateline: events[item].dateline
-                })
-            }
-            this.setState({
-                events: newState
-            })
-        })
+        // const itemsRef = firebase.database().ref(`user/${this.state.key}/event`);
+        // itemsRef.on('value', (snapshot) => {
+        //     let events = snapshot.val();
+        //     let newState = [];
+        //     for (let item in events) {
+        //         newState.push({
+        //             event_id: item,
+        //             name: events[item].name,
+        //             detail: events[item].detail,
+        //             start_date: events[item].start_date,
+        //             end_date: events[item].end_date,
+        //             start_time: events[item].start_time,
+        //             end_time: events[item].end_time,
+        //             dateline: events[item].dateline
+        //         })
+        //     }
+        //     this.setState({
+        //         events: newState
+        //     })
+        // })
     }
 
     handleChange = e => {
@@ -88,7 +90,14 @@ class AddEvent extends Component {
         } else if (start_date > end_date || start_date > dateline || end_date > dateline) {
             alert("กรุณากรอกวันที่ให้ถูกต้อง")
         } else {
-            const itemsRef = firebase.database().ref('events')
+            let keypath = ""
+            firebase.database().ref("user").orderByChild("email").equalTo(this.state.currentUser.email)
+                .on("child_added", function (snapshot) {
+                    console.log("นี่คือคีย์")
+                    console.log(snapshot.key)
+                    keypath = snapshot.key
+                })
+            const itemsRef = firebase.database().ref(`user/${keypath}/event`)
             const item = {
                 name,
                 detail,
@@ -180,13 +189,13 @@ class AddEvent extends Component {
                 )
             }
             if (!currentUser) {
-                return ( 
+                return (
                     <Redirect to="/Login" />
                 )
             }
         } else {
             return (
-               <div>Loading</div>
+                <div>Loading</div>
             )
         }
 

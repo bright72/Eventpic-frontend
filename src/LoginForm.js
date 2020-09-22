@@ -3,12 +3,12 @@ import React, { useState } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
+import './Style.css'
 
 class LoginForm extends React.Component {
 
     constructor(props) {
         super(props)
-
         this.state = {
             email: '',
             password: '',

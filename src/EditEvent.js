@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { withRouter,Redirect } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
@@ -42,20 +42,24 @@ class EditEvent extends Component {
             this.setState({
                 auth: true
             })
-        })
-        const itemsRef = firebase.database().ref('/events')
-        itemsRef.child(this.props.match.params.id).on("value", (snapshot) => {
-            let value = snapshot.val()
-            this.setState({
-                event_id: this.props.match.params.id,
-                name: value.name,
-                detail: value.detail,
-                start_date: value.start_date,
-                end_date: value.end_date,
-                start_time: value.start_time,
-                end_time: value.end_time,
-                dateline: value.dateline
-            })
+            let self = this
+            firebase.database().ref("user").orderByChild("email").equalTo(user.email)
+                .on("child_added", function (snapshot) {
+                    const itemsRef = firebase.database().ref(`/user/${snapshot.key}/event`)
+                    itemsRef.child(self.props.match.params.id).on("value", (snapshot) => {
+                        let value = snapshot.val()
+                        self.setState({
+                            event_id: self.props.match.params.id,
+                            name: value.name,
+                            detail: value.detail,
+                            start_date: value.start_date,
+                            end_date: value.end_date,
+                            start_time: value.start_time,
+                            end_time: value.end_time,
+                            dateline: value.dateline
+                        })
+                    })
+                })
         })
 
     }
@@ -81,7 +85,14 @@ class EditEvent extends Component {
         } else if (start_date > end_date || start_date > dateline || end_date > dateline) {
             alert("กรุณากรอกวันที่ให้ถูกต้อง")
         } else {
-            const itemsRef = firebase.database().ref('events')
+            let keypath = ""
+            firebase.database().ref("user").orderByChild("email").equalTo(this.state.currentUser.email)
+                .on("child_added", function (snapshot) {
+                    console.log("นี่คือคีย์")
+                    console.log(snapshot.key)
+                    keypath = snapshot.key
+                })
+            const itemsRef = firebase.database().ref(`user/${keypath}/event`)
             const item = {
                 name,
                 detail,
@@ -122,7 +133,14 @@ class EditEvent extends Component {
             dateline
         }
 
-        const itemsRef = firebase.database().ref('/events')
+        let keypath = ""
+        firebase.database().ref("user").orderByChild("email").equalTo(this.state.currentUser.email)
+            .on("child_added", function (snapshot) {
+                console.log("นี่คือคีย์")
+                console.log(snapshot.key)
+                keypath = snapshot.key
+            })
+        const itemsRef = firebase.database().ref(`user/${keypath}/event`)
 
         itemsRef.child(this.state.event_id).update(obj);
 
@@ -205,12 +223,12 @@ class EditEvent extends Component {
             }
             if (!currentUser) {
                 return (
-                    <Redirect to ="/Login" />
+                    <Redirect to="/Login" />
                 )
             }
         } else {
             return (
-                <div>Loading</div>
+                <div> Loading</div>
             )
         }
 

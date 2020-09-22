@@ -35,29 +35,40 @@ class MoreDetail extends React.Component {
             this.setState({
                 auth: true
             })
-        })
-        const itemsRef = firebase.database().ref(`events`)
-        itemsRef.child(this.state.event_id).on("value", (snapshot) => {
-            let item = snapshot.val()
-            // console.log(this.state.event_id + " : " + item.name)
-            if (item) {
-                this.setState({
-                    event_id: this.state.event_id,
-                    name: item.name,
-                    detail: item.detail,
-                    start_date: item.start_date,
-                    end_date: item.end_date,
-                    start_time: item.start_time,
-                    end_time: item.end_time,
-                    dateline: item.dateline
+            let self = this
+            firebase.database().ref("user").orderByChild("email").equalTo(user.email)
+                .on("child_added", async function (snapshot) {
+                    const itemsRef = firebase.database().ref(`/user/${snapshot.key}/event`)
+                    itemsRef.child(self.state.event_id).on("value", (snapshot) => {
+                        let item = snapshot.val()
+                        // console.log(this.state.event_id + " : " + item.name)
+                        if (item) {
+                            self.setState({
+                                event_id: self.state.event_id,
+                                name: item.name,
+                                detail: item.detail,
+                                start_date: item.start_date,
+                                end_date: item.end_date,
+                                start_time: item.start_time,
+                                end_time: item.end_time,
+                                dateline: item.dateline
+                            })
+                        }
+                    })
                 })
-            }
         })
 
     }
 
     removeItem = event_id => {
-        const itemsRef = firebase.database().ref('/events')
+        let keypath = ""
+            firebase.database().ref("user").orderByChild("email").equalTo(this.state.currentUser.email)
+                .on("child_added", function (snapshot) {
+                    console.log("นี่คือคีย์")
+                    console.log(snapshot.key)
+                    keypath = snapshot.key
+                })
+            const itemsRef = firebase.database().ref(`user/${keypath}/event`)
         itemsRef.child(event_id).remove()
         this.props.history.push('/ListofEvent')
     }
@@ -106,7 +117,7 @@ class MoreDetail extends React.Component {
             }
         } else {
             return (
-                <div>Loading</div>
+                <div> Loading</div>
             )
         }
 

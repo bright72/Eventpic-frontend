@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { Button, Container, Col, Card, } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
@@ -9,7 +9,7 @@ import Login from './LoginForm.js'
 
 class ListofEvent extends Component {
 
-    constructor() {
+    constructor(props) {
         super();
         this.state = {
             events: [],
@@ -21,50 +21,55 @@ class ListofEvent extends Component {
             start_time: '',
             end_time: '',
             dateline: '',
+            check: false,
             currentUser: null,
             auth: false
         }
 
     }
+    
     componentDidMount() {
-        auth.onAuthStateChanged(user => {
+        auth.onAuthStateChanged( user => {
             if (user) {
                 this.setState({
                     currentUser: user
                 })
             }
+
             this.setState({
                 auth: true
             })
-        })
-        const itemsRef = firebase.database().ref('/events');
-
-        itemsRef.on('value', (snapshot) => {
-            let events = snapshot.val();
-            let newState = [];
-            for (let item in events) {
-                if (item) {
-                    newState.push({
-                        event_id: item,
-                        name: events[item].name,
-                        detail: events[item].detail,
-                        start_date: events[item].start_date,
-                        end_date: events[item].end_date,
-                        start_time: events[item].start_time,
-                        end_time: events[item].end_time,
-                        dateline: events[item].dateline
+            let self = this
+            firebase.database().ref("user").orderByChild("email").equalTo(user.email)
+            .on("child_added", async function (snapshot) {
+                const itemsRef = firebase.database().ref(`/user/${snapshot.key}/event`);
+                itemsRef.on('value', (snapshot) => {
+                    let events = snapshot.val();
+                    let newState = [];
+                    for (let item in events) {
+                        if (item) {
+                            newState.push({
+                                    event_id: item,
+                                    name: events[item].name,
+                                    detail: events[item].detail,
+                                    start_date: events[item].start_date,
+                                    end_date: events[item].end_date,
+                                    start_time: events[item].start_time,
+                                    end_time: events[item].end_time,
+                                    dateline: events[item].dateline
+                                })
+                            }
+                            
+                        }
+                        console.log("new", newState)
+                        self.setState({
+                            events: newState
+                        })
                     })
-                }
-
-            }
-
-
-            this.setState({
-                events: newState
-            })
+                })
         })
+       
     }
-
     render() {
         const { message, currentUser, auth } = this.state
         if (auth) {
