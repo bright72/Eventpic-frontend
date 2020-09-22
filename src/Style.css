@@ -6,12 +6,12 @@
     src: url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;600&display=swap');
 }
 
-h1, .form-lable, .btn-custom {
+h1, .form-lable, .btn-custom, .card-title {
     font-family: Kanit;
     font-weight: 600;
 }
 
-h1, .form-lable{
+h1, .form-lable, .card-title{
     color: #44506A;
 }
 
@@ -29,7 +29,7 @@ body, .input-form {
     border-radius: 20px;
 }
 
-h1 {
+h1, .card-title {
     font-size: 48px;
 }
 
