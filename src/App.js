@@ -11,7 +11,7 @@ import EditEvent from './EditEvent.js';
 import MoreDetail from './MoreDetail.js';
 import ShowPicture from './ShowPicture.js';
 //Import npm bulma
-import 'bulma/css/bulma.css'
+// import 'bulma/css/bulma.css'
 //Import npm react-filepond
 // import { FilePond, File, registerPlugin } from 'react-filepond';
 // // Import FilePond styles

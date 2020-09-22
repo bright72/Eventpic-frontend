@@ -43,8 +43,13 @@
 
 # after_script:
 #   - sudo docker ps
+before_script:
+  - docker info
+  - docker login -u "gitlab-ci-token" -p "$CI_BUILD_TOKEN" "$CI_REGISTRY"
 
-  stages:
+image: docker:latest
+
+stages:
     - build
     - deploy
 build:
