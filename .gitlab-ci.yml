@@ -9,15 +9,15 @@ build-image-develop:
   only:
     - master
   script:
-    - docker build --pull --no-cache -t $CI_REGISTRY_IMAGE:develop .
+    - sudo docker build --pull --no-cache -t $CI_REGISTRY_IMAGE:develop .
 
 deploy-develop:
   stage: deploy
   only:
     - develop
   script:
-    - docker rm -f Eventpic_frontend-dev || true
-    - docker run -d -p 80:80 --name Eventpic_frontend-dev --restart=always $CI_REGISTRY_IMAGE:develop
+    - sudo docker rm -f Eventpic_frontend-dev || true
+    - sudo docker run -d -p 80:80 --name Eventpic_frontend-dev --restart=always $CI_REGISTRY_IMAGE:develop
   when: manual
 
   # --env-file ./.env
@@ -33,10 +33,10 @@ tags-push-image:
   except:
     - branches
   script:
-    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" "$CI_REGISTRY" --password-stdin
-    - docker build --pull --no-cache -t $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG .
-    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+    - sudo echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" "$CI_REGISTRY" --password-stdin
+    - sudo docker build --pull --no-cache -t $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG .
+    - sudo docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
 
 
 after_script:
-  - docker ps
+  - sudo docker ps
