@@ -3,9 +3,9 @@ stages:
   - deploy
   - tags_push
 
-  variables:
-    GIT_STRATEGY: fetch
-    GIT_CHECKOUT: "false"   
+variables:
+  GIT_STRATEGY: fetch
+  GIT_CHECKOUT: "false"   
 
 ##########  -  develop  -  ##########
 build-image-develop:
