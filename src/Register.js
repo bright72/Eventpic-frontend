@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import auth from './firebase/index'
-import firebase, { database } from './firebase'
+// import auth from './firebase/index'
+import firebase from 'firebase'
 import { Link, Redirect } from 'react-router-dom'
 import { Form, Button, Container, Row, Col, Input, label, Alert, Card } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
@@ -35,7 +35,7 @@ class Register extends React.Component {
         // const form = e.currentTarget
         const { email, password, conPassword, checkPassword, redirect } = this.state
         if (password == conPassword) {
-            const response = await auth.createUserWithEmailAndPassword(
+            const response = await firebase.auth().createUserWithEmailAndPassword(
                 email,
                 password
             )

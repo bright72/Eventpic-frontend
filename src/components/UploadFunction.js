@@ -4,8 +4,6 @@ import firebase from '../firebase/index';
 import StorageDataTable from './StorageDataTable';
 import Nevbar from '../Nevbar.js'
 
-import '../App.css';
-
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css';
 
@@ -17,34 +15,60 @@ registerPlugin(FilePondImagePreview);
 
 class UploadFunction extends Component {
     constructor(props) {
-        super(props);
+        super();
 
         this.state = {
             files: [], //ใช้เก็บข้อมูล File ที่ Upload
             uploadValue: 0, //ใช้เพื่อดู Process การ Upload
             filesMetadata: [], //ใช้เพื่อรับข้อมูล Metadata จาก Firebase
             rows: [], //ใช้วาด DataTable
+            event_id: props.match.params.id,
         };
     }
 
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                this.getMetaDataFromDatabase()
                 this.setState({
                     currentUser: user
                 })
+                this.getMetaDataFromDatabase()
             }
             this.setState({
                 auth: true
             })
+            let self = this
+            firebase.database().ref("user").orderByChild("email").equalTo(user.email)
+                .on("child_added", function (snapshot) {
+                    const itemsRef = firebase.database().ref(`/user/${snapshot.key}/event`)
+                    itemsRef.child(self.props.match.params.id).on("value", (snapshot) => {
+                        let value = snapshot.val()
+                        self.setState({
+                            event_id: self.props.match.params.id,
+                            name: value.name,
+                            detail: value.detail,
+                            start_date: value.start_date,
+                            end_date: value.end_date,
+                            start_time: value.start_time,
+                            end_time: value.end_time,
+                            dateline: value.dateline
+                        })
+                    })
+                })
         })
     }
 
     //โหลดข้อมูล Metadata จาก Firebase
     getMetaDataFromDatabase() {
         console.log("getMetaDataFromDatabase");
-        const databaseRef = firebase.database().ref('/events');
+        let keypath = ""
+        firebase.database().ref("user").orderByChild("email").equalTo(this.state.currentUser.email)
+            .on("child_added", function (snapshot) {
+                console.log("นี่คือคีย์")
+                console.log(snapshot.key)
+                keypath = snapshot.key
+            })
+        const databaseRef = firebase.database().ref(`user/${keypath}/event/${this.state.event_id}/images`);
 
         databaseRef.on('value', snapshot => {
             this.setState({
@@ -57,17 +81,25 @@ class UploadFunction extends Component {
 
     //ลบข้อมูล Metada จาก Firebase
     deleteMetaDataFromDatabase(e, rowData) {
-
-        const storageRef = firebase.storage().ref(`events/${rowData.name}`);
+        const storageRef = firebase.storage().ref(`images/${rowData.name}`);
 
         // Delete the file on storage
         storageRef.delete()
+
             .then(() => {
                 console.log("Delete file success");
 
-                let databaseRef = firebase.database().ref('/events');
-
                 // Delete the file on realtime database
+                let keypath = ""
+                firebase.database().ref("user").orderByChild("email").equalTo(this.state.currentUser.email)
+                    .on("child_added", function (snapshot) {
+                        console.log("นี่คือคีย์")
+                        console.log(snapshot.key)
+                        keypath = snapshot.key
+                    })
+
+                let databaseRef = firebase.database().ref(`user/${keypath}/event/${this.state.event_id}/images/`);
+
                 databaseRef.child(rowData.key).remove()
                     .then(() => {
                         console.log("Delete metada success");
@@ -82,7 +114,6 @@ class UploadFunction extends Component {
             .catch((error) => {
                 console.log("Delete file error : ", error.message);
             });
-
 
     }
 
@@ -128,7 +159,7 @@ class UploadFunction extends Component {
         console.log(file);
 
         const fileUpload = file;
-        const storageRef = firebase.storage().ref(`events/${file.name}`);
+        const storageRef = firebase.storage().ref(`images/${file.name}`);
         const task = storageRef.put(fileUpload)
 
         task.on(`state_changed`, (snapshort) => {
@@ -159,8 +190,15 @@ class UploadFunction extends Component {
                     fullPath: metadata.fullPath,
                     downloadURLs: "https://firebasestorage.googleapis.com",
                 }
+                let keypath = ""
+                firebase.database().ref("user").orderByChild("email").equalTo(this.state.currentUser.email)
+                    .on("child_added", function (snapshot) {
+                        console.log("นี่คือคีย์")
+                        console.log(snapshot.key)
+                        keypath = snapshot.key
+                    })
 
-                const databaseRef = firebase.database().ref('/events');
+                const databaseRef = firebase.database().ref(`user/${keypath}/event/${this.state.event_id}/images`);
 
                 databaseRef.push({
                     metadataFile
@@ -172,33 +210,32 @@ class UploadFunction extends Component {
                 })
             });
         })
+        this.props.history.push('/Upload/' + this.state.event_id);
     }
 
     render() {
-        const { rows, filesMetadata, Container } = this.state;
+        const { rows, filesMetadata } = this.state;
         return (
-            <div>
-                <Nevbar />
-                <h1 className="text-center mt-3"> Upload Event Pictures</h1>
-                <FilePond
-                    allowMultiple={true}
-                    maxFiles={3}
-                    allowReorder={true}
-                    server={{ process: this.handleProcessing.bind(this) }}
-                    ref={ref => (this.pond = ref)}
-                    oninit={() => this.handleInit()}>
-                    {this.state.files.map(file => (
-                        <File key={file} source={file} />
-                    ))}
-                </FilePond>
+            <div className="App">
+                <div className="Margin-25">
+                    <FilePond allowMultiple={true}
+                        maxFiles={3}
+                        ref={ref => this.pond = ref}
+                        server={{ process: this.handleProcessing.bind(this) }}
+                        oninit={() => this.handleInit()}>
 
-                <StorageDataTable
-                    rows={rows}
-                    filesMetadata={filesMetadata}
-                    deleteData={this.deleteMetaDataFromDatabase}
-                />
+                        {this.state.files.map(file => (
+                            <File key={file} source={file} />
+                        ))}
 
-                {/* <li key={URLs.index}><img src = {URLs.value}/></li> */}
+                    </FilePond>
+
+                    <StorageDataTable
+                        rows={rows}
+                        filesMetadata={filesMetadata}
+                        deleteData={this.deleteMetaDataFromDatabase}
+                    />
+                </div>
             </div>
         );
     }
