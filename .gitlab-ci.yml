@@ -3,6 +3,10 @@ stages:
   - deploy
   - tags_push
 
+  variables:
+    GIT_STRATEGY: fetch
+    GIT_CHECKOUT: "false"   
+
 ##########  -  develop  -  ##########
 build-image-develop:
   stage: build
@@ -40,3 +44,5 @@ tags-push-image:
 
 after_script:
   - sudo docker ps
+
+  
