@@ -1,33 +1,14 @@
-version: "3.6"
+version: '3.6'
 services:
-  ### NGINX #####################################
-  nginx:
-    image: nginx:1.17.8-alpine
-    container_name: Eventpic_nginx
-    ports:
-      - 80:80
+sample-app:
+    container_name: Eventpic-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
     volumes:
-      - ./nginx:/etc/nginx
-      - ./www/:/usr/share/nginx/html
-    restart: always
-    networks:
-      - api-network
-
-  ### My SQL #####################################
-#   mysql:
-#     image: mysql:5.7
-#     container_name: hcare_mysql
-#     ports:
-#       - 3306:3306
-#     environment:
-#       MYSQL_DATABASE: $MYSQL_DATABASE
-#       MYSQL_USER: $MYSQL_USER
-#       MYSQL_PASSWORD: $MYSQL_PASSWORD
-#       MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
-#       TZ: Asia/Bangkok
-#     restart: always
-#     networks:
-#       - api-network
-
-networks:
-  api-network:
+      - '.:/usr/src/app'
+      - '/usr/src/app/node_modules'
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=${NODE_ENV}
