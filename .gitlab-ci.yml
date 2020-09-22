@@ -7,7 +7,7 @@ stages:
 build-image-develop:
   stage: build
   only:
-    - develop
+    - master
   script:
     - docker build --pull --no-cache -t $CI_REGISTRY_IMAGE:develop .
 
@@ -16,11 +16,11 @@ deploy-develop:
   only:
     - develop
   script:
-    - docker rm -f RPTUPS_frontend-dev || true
-    - docker run -d -p 8080:80 --name RPTUPS_frontend-dev --env-file ./.env --restart=always $CI_REGISTRY_IMAGE:develop
+    - docker rm -f Eventpic_frontend-dev || true
+    - docker run -d -p 80:80 --name Eventpic_frontend-dev --restart=always $CI_REGISTRY_IMAGE:develop
   when: manual
 
-
+  # --env-file ./.env
 ##########  -  master  -  ##########
 
 ####################################
