@@ -10,7 +10,6 @@ import MoreDetail from './MoreDetail.js';
 import ShowPicture from './ShowPicture.js';
 import Upload from './components/UploadFunction.js'
 import './Style.css'
-//Import npm bulma
 import 'bulma/css/bulma.css'
 
 const App = () => (
