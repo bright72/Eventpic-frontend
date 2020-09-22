@@ -1,0 +1,42 @@
+stages:
+  - build
+  - deploy
+  - tags_push
+
+##########  -  develop  -  ##########
+build-image-develop:
+  stage: build
+  only:
+    - develop
+  script:
+    - docker build --pull --no-cache -t $CI_REGISTRY_IMAGE:develop .
+
+deploy-develop:
+  stage: deploy
+  only:
+    - develop
+  script:
+    - docker rm -f RPTUPS_frontend-dev || true
+    - docker run -d -p 8080:80 --name RPTUPS_frontend-dev --env-file ./.env --restart=always $CI_REGISTRY_IMAGE:develop
+  when: manual
+
+
+##########  -  master  -  ##########
+
+####################################
+
+##########  -  tag  -  ##########
+tags-push-image:
+  stage: tags_push
+  only:
+    - tags
+  except:
+    - branches
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" "$CI_REGISTRY" --password-stdin
+    - docker build --pull --no-cache -t $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+
+
+after_script:
+  - docker ps
