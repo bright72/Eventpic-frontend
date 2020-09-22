@@ -1,4 +1,4 @@
-version: '3.6'
+version: '3.5'
 services:
 sample-app:
     container_name: eventpic-frontend
@@ -6,8 +6,8 @@ sample-app:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - '.:/var/www/build'
-      - '/var/www/node_modules'
+      - '.:/usr/src/app'
+      - '/usr/src/app/node_modules'
     ports:
       - '3000:3000'
     environment:

@@ -1,48 +1,77 @@
-stages:
-  - build
-  - deploy
-  - tags_push
+# stages:
+#   - build
+#   - deploy
+#   - tags_push
 
-variables:
-  GIT_STRATEGY: fetch
-  GIT_CHECKOUT: "false"   
+# variables:
+#   GIT_STRATEGY: fetch
+#   GIT_CHECKOUT: "false"   
 
-##########  -  develop  -  ##########
-build-image-develop:
-  stage: build
-  only:
-    - master
-  script:
-    - sudo docker build --pull --no-cache -t $CI_REGISTRY_IMAGE:develop .
+# ##########  -  develop  -  ##########
+# build-image-develop:
+#   stage: build
+#   only:
+#     - master
+#   script:
+#     - sudo docker build --pull --no-cache -t $CI_REGISTRY_IMAGE:develop .
 
-deploy-develop:
-  stage: deploy
-  only:
-    - develop
-  script:
-    - sudo docker rm -f Eventpic_frontend-dev || true
-    - sudo docker run -d -p 80:80 --name Eventpic_frontend-dev --restart=always $CI_REGISTRY_IMAGE:develop
-  when: manual
+# deploy-develop:
+#   stage: deploy
+#   only:
+#     - develop
+#   script:
+#     - sudo docker rm -f Eventpic_frontend-dev || true
+#     - sudo docker run -d -p 80:80 --name Eventpic_frontend-dev --restart=always $CI_REGISTRY_IMAGE:develop
+#   when: manual
 
-  # --env-file ./.env
-##########  -  master  -  ##########
+#   # --env-file ./.env
+# ##########  -  master  -  ##########
 
-####################################
+# ####################################
 
-##########  -  tag  -  ##########
-tags-push-image:
-  stage: tags_push
-  only:
-    - tags
-  except:
-    - branches
-  script:
-    - sudo echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" "$CI_REGISTRY" --password-stdin
-    - sudo docker build --pull --no-cache -t $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG .
-    - sudo docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+# ##########  -  tag  -  ##########
+# tags-push-image:
+#   stage: tags_push
+#   only:
+#     - tags
+#   except:
+#     - branches
+#   script:
+#     - sudo echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" "$CI_REGISTRY" --password-stdin
+#     - sudo docker build --pull --no-cache -t $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG .
+#     - sudo docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
 
+# after_script:
+#   - sudo docker ps
 
-after_script:
-  - sudo docker ps
-
-  
+  stages:
+    - build
+    - deploy
+build:
+    stage: build
+    tags: 
+        - eventpic-frontend
+        - eventpic-frontend
+    script:
+        - echo "Building deploy package"
+        - yarn install
+        - yarn build
+        - echo "Build successful"
+    artifacts:
+        expire_in: 1 hour
+        paths:
+            - build
+deploy_production:
+    stage: deploy
+    tags: 
+        - eventpic-frontend
+        - eventpic-frontend
+    script:
+        - echo "Deploying to server"
+        - cp -rv build/* /var/www/
+        - echo "Deployed"
+    environment:
+        name: production
+        url: <your deployment url>
+    only:
+        - master
