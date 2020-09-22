@@ -1,5 +1,5 @@
 import auth from './firebase/index'
-import React, { useState } from 'react'
+import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
