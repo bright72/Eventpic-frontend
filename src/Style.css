@@ -6,12 +6,17 @@
     src: url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;600&display=swap');
 }
 
-h1, .form-lable, .btn-custom, .card-title {
+.form-lable, .btn-custom, .card-title {
     font-family: Kanit;
     font-weight: 600;
 }
 
-h1, .form-lable, .card-title{
+body, .input-form {
+    font-family: Kanit;
+    font-weight: 300;
+}
+
+.form-lable, .card-title{
     color: #44506A;
 }
 
@@ -20,17 +25,29 @@ h1, .form-lable, .card-title{
     color: #44506A;
 }
 
-body, .input-form {
-    font-family: Kanit;
-    font-weight: 300;
+.register {
+    padding-left: 12%;
+    padding-right: 12%;
 }
 
-.input-form, .form-card {
+.form-card {
+    border-radius: 15px;
+}
+
+.input-form {
     border-radius: 20px;
 }
 
-h1, .card-title {
+.card-title {
     font-size: 48px;
+}
+
+.line {
+    color: #D2D2D2;
+}
+
+.register {
+    margin-top: 7%;
 }
 
 .input-form {
@@ -56,8 +73,22 @@ h1, .card-title {
     height: 40px;
 }
 
+#primary {
+    /* background-color: #44506A; */
+    background: linear-gradient(269.49deg, #4A3CDB 8.93%, rgba(255, 255, 255, 0) 95.22%), #FF0A6C;
+    border: none;
+}
+
+#primary:hover {
+    box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.5);
+}
+
 .btn-custom-sm{
     border-radius: 10px;
+}
+
+.btn-custom[variant=primary]{
+    color: #44506A;
 }
 
 .upload-table {
