@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Login from './LoginForm.js'
 import Register from './Register.js'
-import UpPicture from './components/UpPicture.js';
 import AddEvent from './AddEvent.js';
 import ListofEvent from './ListofEvent.js';
 import EditEvent from './EditEvent.js';
@@ -19,7 +18,6 @@ const App = () => (
       <Route exact path="/ListofEvent" component={ListofEvent} />
       <Route exact path="/Login" component={Login} />
       <Route exact path="/Register" component={Register} />
-      <Route exact path="/UpPicture" component={UpPicture} />
       <Route exact path="/AddEvent" component={AddEvent} />
       <Route exact path="/EditEvent/:id" component={EditEvent} />
       <Route exact path="/MoreDetail/:id" component={MoreDetail} />
