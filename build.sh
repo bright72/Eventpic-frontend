@@ -14,3 +14,4 @@ sudo cd Eventpic-frontend/
 sudo cp nginx/default.conf /etc/nginx/nginx.conf
 sudo npm install
 sudo yarn build
+sudo systemctl restart nginx
