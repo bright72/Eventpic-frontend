@@ -187,7 +187,7 @@ class AddEvent extends Component {
             }
             if (!currentUser) {
                 return (
-                    <Redirect to="/Login" />
+                    <Redirect to="/" />
                 )
             }
         } else {
