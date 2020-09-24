@@ -104,12 +104,12 @@ class Register extends React.Component {
                         </Form>
                     </Col>
                 </Row> */}
-                <Row className="test mt-4">
-                    <Col xs={{ span: 10, offset: 1 }} md={{ span: 4, offset: 4 }} >
+                <Row className="register">
+                    <Col xs={12} md={{ span: 4, offset: 4 }} >
                         <Card className="form-card">
-                            <h1 className="card-title ml-5 mt-4 mb-0">Register</h1>
+                            <h1 className="card-title ml-5 mt-5 mb-0">Register</h1>
                             {/* <Card.Title classname="card-title">Register</Card.Title> */}
-                            <hr className="ml-5 mr-5 mb-4" />
+                            <hr className="line ml-5 mr-5 mb-4" />
                             <Form className="form ml-5 mr-5 mb-5">
                                 <Form.Label className="form-lable">Email address</Form.Label>
                                 <Form.Group controlId="formBasicEmail" >
@@ -123,14 +123,14 @@ class Register extends React.Component {
                                 <Form.Group controlId="formBasicPassword" className="mt-1">
                                     <Form.Control className="input-form" name="conPassword" onChange={this.onChange} type="password" placeholder="Confirm Password" />
                                 </Form.Group>
-                                <Button variant="primary" block onClick={this.handleRegister} className="btn-custom mt-6 mb-3" >
+                                <Button id="primary" block onClick={this.handleRegister} className="btn-custom mt-6 mb-3" >
                                     Register
                                 </Button>
                             </Form>
                         </Card>
                     </Col>
                 </Row>
-            </Container >
+            </Container>
         )
     }
 }
