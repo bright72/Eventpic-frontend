@@ -18,20 +18,22 @@ class UploadFunction extends Component {
 
     state = {
         files: [], //ใช้เก็บข้อมูล File ที่ Upload
+        setFiles: [],
         uploadValue: 0, //ใช้เพื่อดู Process การ Upload
         filesMetadata: [], //ใช้เพื่อรับข้อมูล Metadata จาก Firebase
         rows: [], //ใช้วาด DataTable
         event_id: this.props.match.params.id,
         currentUser: null,
         auth: false,
-        keypath: ''
+        keypath: '',
+
 
     }
     // Initialize Firebase
 
 
     //ใช้ตอนที่ยังไม่ Mount DOM
-    async componentDidMount() {
+    async componentWillMount() {
 
         let user = await this.getUser();
         let key = await this.getKey(user)
@@ -72,9 +74,8 @@ class UploadFunction extends Component {
     //โหลดข้อมูล Metadata จาก Firebase
 
     getMetaDataFromDatabase() {
-        console.log(this.state.keypath)
         const databaseRef = firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id ? this.state.event_id : null}/images`);
-        console.log(`user/${this.state.keypath}/event/${this.state.event_id ? this.state.event_id : null}/images`)
+
         databaseRef.on('value', snapshot => {
             this.setState({
                 filesMetadata: snapshot.val()
@@ -82,12 +83,11 @@ class UploadFunction extends Component {
                 this.addMetadataToList()
             });
         });
-        console.log(this.state.filesMetadata)
     }
 
     //ลบข้อมูล Metada จาก Firebase
     deleteMetaDataFromDatabase(e, rowData) {
-        console.log(this.state.keypath)
+
         const storageRef = firebase.storage().ref(`images/${rowData.name}`)
         // Delete the file on storage
         storageRef.delete()
@@ -115,7 +115,7 @@ class UploadFunction extends Component {
     }
 
     //โหลดข้อมูลเข้า list table
-    addMetadataToList() {
+    async addMetadataToList() {
         let i = 1;
         let rows = [];
 
@@ -124,11 +124,13 @@ class UploadFunction extends Component {
 
             let fileData = this.state.filesMetadata[key];
 
+            let downloadUrl = await firebase.storage().ref(`images/${fileData.metadataFile.name}`).getDownloadURL()
+   
             let objRows = {
                 no: i++,
                 key: key, //ใช้เพื่อ Delete
                 name: fileData.metadataFile.name,
-                downloadURLs: fileData.metadataFile.downloadURLs,
+                downloadURLs: downloadUrl,
                 fullPath: fileData.metadataFile.fullPath,
                 size: (fileData.metadataFile.size),
                 contentType: fileData.metadataFile.contentType,
@@ -153,57 +155,56 @@ class UploadFunction extends Component {
     handleProcessing(fieldName, file, metadata, load, error, progress, abort) {
         // handle file upload here
         console.log(" handle file upload here");
-        console.log(file);
+        console.log(this.state.filesMetadata);
 
         const fileUpload = file;
-        const storageRef = firebase.storage().ref(`images/${file.name}`);
+        const storageRef = firebase.storage().ref(`images/${file.name}`)
+
         const task = storageRef.put(fileUpload)
 
-        task.on(`state_changed`, (snapshort) => {
-            console.log(snapshort.bytesTransferred, snapshort.totalBytes)
-            let percentage = (snapshort.bytesTransferred / snapshort.totalBytes) * 100;
+        task.on(`state_changed`, (snapshot) => {
+            console.log(`Snapshot: ${snapshot.val}`)
+            let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             //Process
             this.setState({
                 uploadValue: percentage
             })
         }, (error) => {
-            //Error
-            this.setState({
-                messag: `Upload error : ${error.message}`
-            })
-        }, () => {
-            //Success
-            this.setState({
-                messag: `Upload Success`,
-                picture: task.snapshot.downloadURLs //เผื่อนำไปใช้ต่อในการแสดงรูปที่ Upload ไป
-            })
 
-            storageRef.getMetadata().then((metadata) => {
-                // Metadata now contains the metadata for 'filepond/${file.name}'
-                let metadataFile = {
-                    name: metadata.name,
-                    size: metadata.size,
-                    contentType: metadata.contentType,
-                    fullPath: metadata.fullPath,
-                    downloadURLs: "", 
-                }
-                const databaseRef = firebase.database().ref(`user/${this.state.keypath ? this.state.keypath : null}/event/${this.state.event_id ? this.state.event_id : null}/images`);
-                databaseRef.push({
-                    metadataFile
-                });
+            console.log(`Upload error : ${error.message}`)
 
-            }).catch(function (error) {
-                this.setState({
-                    messag: `Upload error : ${error.message}`
+        }, (response) => {
+
+
+            storageRef.getMetadata()
+                .then((metadata) => {
+
+                    // Metadata now contains the metadata for 'filepond/${file.name}'
+                    let metadataFile = {
+                        name: metadata.name,
+                        size: metadata.size,
+                        contentType: metadata.contentType,
+                        fullPath: metadata.fullPath,
+                        downloadURLs: "",
+                    }
+                    const databaseRef = firebase.database().ref(`user/${this.state.keypath ? this.state.keypath : null}/event/${this.state.event_id ? this.state.event_id : null}/images`);
+                    console.log(metadataFile)
+                    databaseRef.push({
+                        metadataFile
+                    })
+
+                }).catch(function (error) {
+                    this.setState({
+                        messag: `Upload error : ${error.message}`
+                    })
                 })
-            });
         })
     }
 
 
     render() {
-        const { rows, filesMetadata, currentUser, auth } = this.state;
-        console.log(filesMetadata)
+        const { rows, currentUser, auth, setFiles } = this.state;
+
         if (auth) {
             if (currentUser) {
                 return (
@@ -211,17 +212,15 @@ class UploadFunction extends Component {
                         <Nevbar />
                         <div className="Margin-25">
                             <FilePond allowMultiple={true}
-                                maxFiles={3}
+                                maxFiles={100}
+                                onupdatefiles={setFiles}
                                 ref={ref => this.pond = ref}
                                 server={{ process: this.handleProcessing.bind(this) }}
                                 oninit={() => this.handleInit()}>
-
                                 {this.state.files.map(file => (
                                     <File key={file} source={file} />
                                 ))}
-
                             </FilePond>
-
                             <StorageDataTable
                                 rows={rows}
                                 filesMetadata={this.filesMetadata}

@@ -5,9 +5,8 @@ class StorageDataTable extends Component {
     constructor(props) {
         super(props);
     }
+
     
-
-
     render() {
         let messageNodes = this.props.rows.map((r) => {
             return (
@@ -17,7 +16,7 @@ class StorageDataTable extends Component {
                     <td>{r.contentType}</td>
                     <td>{r.size} Mb</td>
                     <td><a target="_blank" href={r.downloadURLs}>Download</a></td>
-                    <td><a target="_blank" onClick={(e) => this.props.deleteData(e, r)}>Delete</a></td>
+                    <td><a target="_blank" onClick={(e) => this.props.deleteData(e,r)}>Delete</a></td>
                 </tr>
             )
         });
@@ -39,7 +38,7 @@ class StorageDataTable extends Component {
                     </tbody>
                 </table>
             </div>
-        );
+          );
     }
 }
 export default StorageDataTable;
