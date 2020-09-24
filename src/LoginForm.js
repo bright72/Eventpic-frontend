@@ -119,7 +119,7 @@ class LoginForm extends React.Component {
             }
             if (currentUser) {
                 return (
-                    <Redirect to="/" />
+                    <Redirect to="/Login" />
                 )
             }
         } else {
