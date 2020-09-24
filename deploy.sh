@@ -18,5 +18,5 @@ sudo cd Eventpic-frontend/
 sudo npm install
 sudo yarn build
 
-sudo docker build -t docker-react .
-docker-compose up -d --build
+# sudo docker build -t docker-react .
+# docker-compose up -d --build
