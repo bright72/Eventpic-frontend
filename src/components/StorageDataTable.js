@@ -5,6 +5,8 @@ class StorageDataTable extends Component {
     constructor(props) {
         super(props);
     }
+    
+
 
     render() {
         let messageNodes = this.props.rows.map((r) => {
@@ -36,10 +38,8 @@ class StorageDataTable extends Component {
                         {messageNodes}
                     </tbody>
                 </table>
-                {/* <button id="addBtn" onClick={this.onClick}>ADD</button> */}
             </div>
         );
     }
 }
-
 export default StorageDataTable;

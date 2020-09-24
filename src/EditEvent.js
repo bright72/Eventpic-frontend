@@ -139,7 +139,6 @@ class EditEvent extends Component {
                 keypath = snapshot.key
             })
         const itemsRef = firebase.database().ref(`user/${keypath}/event`)
-
         itemsRef.child(this.state.event_id).update(obj);
 
         this.setState({
