@@ -8,6 +8,7 @@ import EditEvent from './EditEvent.js';
 import MoreDetail from './MoreDetail.js';
 import ShowPicture from './ShowPicture.js';
 import Upload from './components/UploadFunction.js'
+import UploadTest from './components/Upload';
 import './Style.css'
 import 'bulma/css/bulma.css'
 
@@ -23,6 +24,7 @@ const App = () => (
       <Route exact path="/MoreDetail/:id" component={MoreDetail} />
       <Route exact path="/ShowPicture" component={ShowPicture} />
       <Route exact path="/Upload/:id" component={Upload} />
+      <Route exact path="/UploadTest" component={UploadTest} />
     </Switch>
   </Router>
 
