@@ -83,7 +83,7 @@ class LoginForm extends React.Component {
                         </Alert>
                             :
                             ""
-                        }
+                        }   
                         <Row className="">
                             <Col xs={{ span: 12 }} sm={{ span: 8, offset: 2 }} lg={{ span: 6, offset: 3 }} className="" >
                                 <Card className="form-card">

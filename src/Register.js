@@ -84,7 +84,7 @@ class Register extends React.Component {
             <Container fluid className="page-center">
                 {showAlert ?
                     <Alert variant="danger">
-                        Email or password is incorrect!
+                        Already has this account.
                     </Alert>
                     :
                     ""
