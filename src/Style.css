@@ -6,9 +6,9 @@
     src: url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;600&display=swap');
 }
 
-.form-lable, .btn-custom, .card-title {
+.form-lable, .card-title {
     font-family: Kanit;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 body, .input-form {
@@ -26,8 +26,7 @@ body, .input-form {
 }
 
 .register {
-    padding-left: 12%;
-    padding-right: 12%;
+    margin-top: 2%;
 }
 
 .form-card {
@@ -44,10 +43,6 @@ body, .input-form {
 
 .line {
     color: #D2D2D2;
-}
-
-.register {
-    margin-top: 7%;
 }
 
 .input-form {
@@ -71,6 +66,9 @@ body, .input-form {
 .btn-custom{
     border-radius: 20px;
     height: 40px;
+    font-family: Kanit;
+    font-weight: 400;
+    
 }
 
 #primary {
@@ -85,10 +83,6 @@ body, .input-form {
 
 .btn-custom-sm{
     border-radius: 10px;
-}
-
-.btn-custom[variant=primary]{
-    color: #44506A;
 }
 
 .upload-table {

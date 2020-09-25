@@ -1,7 +1,7 @@
 import firebase from './firebase'
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap'
+import { Form, Button, Container, Row, Col, Alert, Card } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
 
@@ -80,38 +80,41 @@ class LoginForm extends React.Component {
                             :
                             ""
                         }
-                        <Row className=" mt-5">
-                            <Col xs={12} sm={{ span: 10 }} md={{ span: 4, offset: 2 }} lg={{ span: 3, offset: 4 }} className="p-5 Loginbox">
-                                <h1 className="text-center mt-3"> เข้าสู่ระบบ</h1>
-                                <Form noValidate validated={validate} onSubmit={this.onSubmit} className="mt-4">
-                                    <Form.Label>Email address</Form.Label>
-                                    <Form.Group controlId="formBasicEmail" >
-                                        <Form.Control name="email" type="email" onChange={this.onChange} placeholder="อีเมล์" required />
-                                        <Form.Control.Feedback type="invalid">
-                                            กรุณากรอกอีเมล์
+                        <Row className="register">
+                            <Col xs={12} md={{ span: 4, offset: 4 }} >
+                                <Card className="form-card mb-4">
+                                    <h2 className="card-title ml-5 mt-5 mb-0 text-center"> Log-In</h2>
+                                    <hr className="line ml-5 mr-5 mb-2" />
+                                    <Form noValidate validated={validate} onSubmit={this.onSubmit} className="form ml-5 mr-5 mb-5 pl-5">
+                                        <Form.Label className="form-lable">Email address</Form.Label>
+                                        <Form.Group controlId="formBasicEmail" >
+                                            <Form.Control className="input-form" name="email" type="email" onChange={this.onChange} placeholder="อีเมล์" required />
+                                            <Form.Control.Feedback type="invalid">
+                                                กรุณากรอกอีเมล์
                                 </Form.Control.Feedback>
-                                    </Form.Group>
-                                    <Form.Label>Password</Form.Label>
-                                    <Form.Group controlId="formBasicPassword" className="mt-1">
-                                        <Form.Control name="password" onChange={this.onChange} type="password" placeholder="รหัสผ่าน" required />
-                                        <Form.Control.Feedback type="invalid">
-                                            กรุณารหัสผ่าน
+                                        </Form.Group>
+                                        <Form.Label>Password</Form.Label>
+                                        <Form.Group controlId="formBasicPassword" className="mt-1">
+                                            <Form.Control className="input-form" name="password" onChange={this.onChange} type="password" placeholder="รหัสผ่าน" required />
+                                            <Form.Control.Feedback type="invalid">
+                                                กรุณารหัสผ่าน
                                 </Form.Control.Feedback>
-                                    </Form.Group>
-                                    <Button variant="secondary" block className="mt-4 btn-custom" type="submit" >
-                                        Login
+                                        </Form.Group>
+                                        <Button variant="secondary"  block id="primary" className="btn-custom mt-6 mb-3" type="submit" >
+                                            Login
                             </Button>
-                                    <Link to="/Register">
-                                        <Button variant="secondary" block className="mt-4 btn-custom" >
-                                            Register
+                                        <Link to="/Register">
+                                            <Button variant="secondary" block id="primary" className="btn-custom mt-6 mb-3" >
+                                                Register
                                 </Button>
-                                    </Link>
-                                    <Row className="mt-3">
-                                        <Col className="text-right">
-                                            <Link to="#">ลืมรหัสผ่าน</Link>
-                                        </Col>
-                                    </Row>
-                                </Form>
+                                        </Link>
+                                        <Row className="mt-3">
+                                            <Col className="text-right">
+                                                <Link to="#">ลืมรหัสผ่าน</Link>
+                                            </Col>
+                                        </Row>
+                                    </Form>
+                                </Card>
                             </Col>
                         </Row>
                     </Container>

@@ -15,8 +15,9 @@ class Register extends React.Component {
             email: '',
             password: '',
             conPassword: '',
-            checkPassword: false,
-            redirect: false
+            showAlert: false,
+            redirect: false,
+            validate: false
         }
     }
 
@@ -31,31 +32,38 @@ class Register extends React.Component {
     // }
 
     handleRegister = async (e) => {
-        // e.preventDefault()
-        // const form = e.currentTarget
-        const { email, password, conPassword, checkPassword, redirect } = this.state
-        if (password == conPassword) {
-            const response = await firebase.auth().createUserWithEmailAndPassword(
-                email,
-                password
-            )
-            this.setState({
-                checkPassword: true,
-                redirect: true
-            })
-            const itemsRef = firebase.database().ref('user')
-            const item = {
-                email
+        e.preventDefault()
+        const form = e.currentTarget
+        const { email, password, conPassword, showAlert, redirect } = this.state
+        if (form.checkValidity() === true) {
+            if (password == conPassword) {
+                const response = await firebase.auth().createUserWithEmailAndPassword(email, password)
+                    .then(response => {
+                        this.setState({
+                            redirect: true
+                        })
+                        const itemsRef = firebase.database().ref('user')
+                        const item = {
+                            email
+                        }
+                        itemsRef.push(item)
+                        this.setState({
+                            email: '',
+                            password: '',
+                        })
+                    }).catch(error => {
+                        this.setState({
+                            showAlert: true
+                        })
+                    })
             }
-            itemsRef.push(item)
-            this.setState({
-                email: '',
-                password: '',
-            })
-
         }
-
+        this.setState({
+            validate: true
+        })
+        e.stopPropagation();
     }
+
     onChange = e => {
         const { name, value } = e.target
         this.setState({
@@ -65,19 +73,19 @@ class Register extends React.Component {
 
 
     render() {
-        const { checkPassword, redirect } = this.state
+        const { showAlert, redirect, validate } = this.state
         if (redirect) {
             return <Redirect to="/login" />
         }
         return (
             <Container fluid >
                 <Nevbar />
-                {checkPassword ?
-                    ""
-                    :
+                {showAlert ?
                     <Alert variant="danger">
                         อีเมล์หรือรหัสผ่านไม่ถูกต้อง กรุณากรอกใหม่อีกครั้ง
                     </Alert>
+                    :
+                    ""
                 }
                 {/* <Row className=" mt-5">
 
@@ -106,22 +114,22 @@ class Register extends React.Component {
                 </Row> */}
                 <Row className="register">
                     <Col xs={12} md={{ span: 4, offset: 4 }} >
-                        <Card className="form-card">
-                            <h1 className="card-title ml-5 mt-5 mb-0">Register</h1>
+                        <Card className="form-card mb-4">
+                            <h2 className="card-title ml-5 mt-5 mb-0 text-center">Register</h2>
                             {/* <Card.Title classname="card-title">Register</Card.Title> */}
-                            <hr className="line ml-5 mr-5 mb-4" />
-                            <Form className="form ml-5 mr-5 mb-5">
+                            <hr className="line ml-5 mr-5 mb-2" />
+                            <Form noValidate validated={validate} className="form ml-5 mr-5 mb-5 pl-5 pr-5">
                                 <Form.Label className="form-lable">Email address</Form.Label>
                                 <Form.Group controlId="formBasicEmail" >
-                                    <Form.Control className="input-form" name="email" onChange={this.onChange} type="email" placeholder="Email" />
+                                    <Form.Control className="input-form" name="email" onChange={this.onChange} type="email" placeholder="Email" required />
                                 </Form.Group>
                                 <Form.Label className="form-lable">Password</Form.Label>
                                 <Form.Group controlId="formBasicPassword" className="mt-1">
-                                    <Form.Control className="input-form" name="password" onChange={this.onChange} type="password" placeholder="Password" />
+                                    <Form.Control className="input-form" name="password" onChange={this.onChange} type="password" placeholder="Password" required />
                                 </Form.Group>
                                 <Form.Label className="form-lable">Confirm Password</Form.Label>
                                 <Form.Group controlId="formBasicPassword" className="mt-1">
-                                    <Form.Control className="input-form" name="conPassword" onChange={this.onChange} type="password" placeholder="Confirm Password" />
+                                    <Form.Control className="input-form" name="conPassword" onChange={this.onChange} type="password" placeholder="Confirm Password" required />
                                 </Form.Group>
                                 <Button id="primary" block onClick={this.handleRegister} className="btn-custom mt-6 mb-3" >
                                     Register
