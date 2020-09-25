@@ -71,7 +71,7 @@ class LoginForm extends React.Component {
         if (auth) {
             if (!currentUser) {
                 return (
-                    <Container fluid >
+                    <Container fluid>
                         <Nevbar />
                         {showAlert ?
                             <Alert variant="danger">
@@ -80,40 +80,48 @@ class LoginForm extends React.Component {
                             :
                             ""
                         }
-                        <Row className="register">
-                            <Col xs={12} md={{ span: 4, offset: 4 }} >
-                                <Card className="form-card mb-4">
-                                    <h2 className="card-title ml-5 mt-5 mb-0 text-center"> Log-In</h2>
-                                    <hr className="line ml-5 mr-5 mb-2" />
-                                    <Form noValidate validated={validate} onSubmit={this.onSubmit} className="form ml-5 mr-5 mb-5 pl-5">
-                                        <Form.Label className="form-lable">Email address</Form.Label>
+                        <Row className="mt-6">
+                            <Col xs={{ span:10, offset: 1}} sm={{ span: 8, offset: 2 }} lg={{span: 6, offset: 3}} className="" >
+                                <Card className="form-card mt-6 mb-4">
+                                    <Col lg={6}>
+                                    Hello
+                                    </Col>
+                                    <Col lg={{span: 6, offset: 6}}>
+                                    <h2 className="title-lable mt-5 mb-6 text-center" id="card-title"> Log-In</h2>
+                                    {/* <hr className="line ml-5 mr-5 mb-2" /> */}
+                                    <Form noValidate validated={validate} onSubmit={this.onSubmit} className="form ml-4 mr-4 mb-5 pl-5 pr-5">
+                                        <Form.Label className="title-lable">Email address</Form.Label>
                                         <Form.Group controlId="formBasicEmail" >
-                                            <Form.Control className="input-form" name="email" type="email" onChange={this.onChange} placeholder="อีเมล์" required />
+                                            <Form.Control className="form" id="form-input" name="email" type="email" onChange={this.onChange} placeholder="อีเมล์" required />
                                             <Form.Control.Feedback type="invalid">
                                                 กรุณากรอกอีเมล์
                                 </Form.Control.Feedback>
                                         </Form.Group>
-                                        <Form.Label>Password</Form.Label>
-                                        <Form.Group controlId="formBasicPassword" className="mt-1">
-                                            <Form.Control className="input-form" name="password" onChange={this.onChange} type="password" placeholder="รหัสผ่าน" required />
+                                        <Form.Label className="title-lable">Password</Form.Label>
+                                        <Form.Group controlId="formBasicPassword" className="">
+                                            <Form.Control className="form" id="form-input" name="password" onChange={this.onChange} type="password" placeholder="รหัสผ่าน" required />
                                             <Form.Control.Feedback type="invalid">
-                                                กรุณารหัสผ่าน
+                                                Please input password 
                                 </Form.Control.Feedback>
                                         </Form.Group>
-                                        <Button variant="secondary"  block id="primary" className="btn-custom mt-6 mb-3" type="submit" >
-                                            Login
-                            </Button>
-                                        <Link to="/Register">
-                                            <Button variant="secondary" block id="primary" className="btn-custom mt-6 mb-3" >
-                                                Register
-                                </Button>
-                                        </Link>
                                         <Row className="mt-3">
                                             <Col className="text-right">
-                                                <Link to="#">ลืมรหัสผ่าน</Link>
+                                                <Link to="#" className="link-path"><u>Forgot password?</u></Link>
                                             </Col>
                                         </Row>
+                                        <Button variant="secondary"  block id="primary" className="btn-custom mt-4 mb-4" type="submit" >
+                                            Login
+                                        </Button>
+                                        <div className="divider mt-5">
+                                            <span className="divider-title">Don't have an account?</span>
+                                        </div>
+                                        <Link to="/Register">
+                                            <Button variant="secondary" block id="secondary" className="btn-custom mt-5 mb-6" >
+                                                Register
+                                            </Button>
+                                        </Link>
                                     </Form>
+                                    </Col>
                                 </Card>
                             </Col>
                         </Row>

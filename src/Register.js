@@ -82,54 +82,29 @@ class Register extends React.Component {
                 <Nevbar />
                 {showAlert ?
                     <Alert variant="danger">
-                        อีเมล์หรือรหัสผ่านไม่ถูกต้อง กรุณากรอกใหม่อีกครั้ง
+                        Email or password is incorrect!
                     </Alert>
                     :
                     ""
                 }
-                {/* <Row className=" mt-5">
 
-                    <Col xs={12} sm={{ span: 10 }} md={{ span: 4, offset: 2 }} lg={{ span: 4, offset: 4 }} className="p-5 Loginbox">
-
-                        <h1 className="text-center mt-3"> ลงทะเบียน</h1>
-
-                        <Form className="mt-4">
-                            <Form.Label>Email address</Form.Label>
-                            <Form.Group controlId="formBasicEmail" >
-                                <Form.Control name="email" onChange={this.onChange} type="email" placeholder="อีเมล์" />
-                            </Form.Group>
-                            <Form.Label>Password</Form.Label>
-                            <Form.Group controlId="formBasicPassword" className="mt-1">
-                                <Form.Control name="password" onChange={this.onChange} type="password" placeholder="รหัสผ่าน" />
-                            </Form.Group>
-                            <Form.Label>Password Confirm</Form.Label>
-                            <Form.Group controlId="formBasicPassword" className="mt-1">
-                                <Form.Control name="conPassword" onChange={this.onChange} type="password" placeholder="รหัสผ่าน" />
-                            </Form.Group>
-                            <Button variant="secondary" block onClick={this.handleRegister} className="mt-4 btn-custom" >
-                                ลงทะเบียน
-                            </Button>
-                        </Form>
-                    </Col>
-                </Row> */}
                 <Row className="register">
-                    <Col xs={12} md={{ span: 4, offset: 4 }} >
+                    <Col xs={12} md={{ span: 3, offset: 4 }} >
                         <Card className="form-card mb-4">
-                            <h2 className="card-title ml-5 mt-5 mb-0 text-center">Register</h2>
+                            <h2 className="title-lable mt-6 mb-6 text-center" id="card-title">Register</h2>
                             {/* <Card.Title classname="card-title">Register</Card.Title> */}
-                            <hr className="line ml-5 mr-5 mb-2" />
                             <Form noValidate validated={validate} className="form ml-5 mr-5 mb-5 pl-5 pr-5">
-                                <Form.Label className="form-lable">Email address</Form.Label>
+                                <Form.Label className="title-lable">Email address</Form.Label>
                                 <Form.Group controlId="formBasicEmail" >
-                                    <Form.Control className="input-form" name="email" onChange={this.onChange} type="email" placeholder="Email" required />
+                                    <Form.Control className="form" id="form-input" name="email" onChange={this.onChange} type="email" placeholder="Email" required />
                                 </Form.Group>
-                                <Form.Label className="form-lable">Password</Form.Label>
-                                <Form.Group controlId="formBasicPassword" className="mt-1">
-                                    <Form.Control className="input-form" name="password" onChange={this.onChange} type="password" placeholder="Password" required />
+                                <Form.Label className="title-lable">Password</Form.Label>
+                                <Form.Group controlId="formBasicPassword">
+                                    <Form.Control className="form" id="form-input" name="password" onChange={this.onChange} type="password" placeholder="Password" required />
                                 </Form.Group>
-                                <Form.Label className="form-lable">Confirm Password</Form.Label>
-                                <Form.Group controlId="formBasicPassword" className="mt-1">
-                                    <Form.Control className="input-form" name="conPassword" onChange={this.onChange} type="password" placeholder="Confirm Password" required />
+                                <Form.Label className="title-lable">Confirm Password</Form.Label>
+                                <Form.Group controlId="formBasicPassword">
+                                    <Form.Control className="form" id="form-input" name="conPassword" onChange={this.onChange} type="password" placeholder="Confirm Password" required />
                                 </Form.Group>
                                 <Button id="primary" block onClick={this.handleRegister} className="btn-custom mt-6 mb-3" >
                                     Register
