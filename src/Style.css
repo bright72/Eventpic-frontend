@@ -4,6 +4,7 @@
     font-family: Kanit;
     /*src: url("./font/Kanit-Regular.ttf")*/
     src: url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;500&display=swap');
+    src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&display=swap');
 }
 
 .page-center {
@@ -14,14 +15,26 @@
 }
 
 .title-lable {
-    font-family: Kanit;
-    font-weight: 500;
+    font-family: Roboto;
+    font-weight: 700;
     color: #44506A;
     letter-spacing: 1px;
 }
 
+#card-title {
+    font-size: 48px;
+}
+
+/* .title-lable {
+    font-family: Kanit;
+    font-weight: 500;
+    color: #44506A;
+    letter-spacing: 1px;
+} */
+
 html, body {
     height: 100%;
+    background-color: #616F87;
 }
 
 body, .form {
@@ -46,10 +59,6 @@ body, .form {
     border-radius: 20px;
     padding-left: 4%;
     padding-right: 4%;
-}
-
-#card-title {
-    font-size: 48px;
 }
 
 .col-img {
@@ -79,10 +88,14 @@ body, .form {
 .btn-custom{
     border-radius: 20px;
     height: 40px;
-    font-family: Kanit;
+    font-family: Roboto;
     font-weight: 500;
     font-size: 16px;
     letter-spacing: 1px;
+}
+
+.btn-link:hover {
+    text-decoration: none;
 }
 
 #primary {

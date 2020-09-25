@@ -5,6 +5,9 @@ import { Link, Redirect } from 'react-router-dom'
 import { Form, Button, Container, Row, Col, Input, label, Alert, Card } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
+import logo from "./Component-logo.svg"
+import vectorCom from "./Component-vec.svg"
+import graCom from "./Component-gra.svg"
 
 class Register extends React.Component {
 
@@ -78,8 +81,7 @@ class Register extends React.Component {
             return <Redirect to="/login" />
         }
         return (
-            <Container fluid >
-                <Nevbar />
+            <Container fluid className="page-center">
                 {showAlert ?
                     <Alert variant="danger">
                         Email or password is incorrect!
@@ -88,28 +90,42 @@ class Register extends React.Component {
                     ""
                 }
 
-                <Row className="register">
-                    <Col xs={12} md={{ span: 3, offset: 4 }} >
-                        <Card className="form-card mb-4">
-                            <h2 className="title-lable mt-6 mb-6 text-center" id="card-title">Register</h2>
-                            {/* <Card.Title classname="card-title">Register</Card.Title> */}
-                            <Form noValidate validated={validate} className="form ml-5 mr-5 mb-5 pl-5 pr-5">
-                                <Form.Label className="title-lable">Email address</Form.Label>
-                                <Form.Group controlId="formBasicEmail" >
-                                    <Form.Control className="form" id="form-input" name="email" onChange={this.onChange} type="email" placeholder="Email" required />
-                                </Form.Group>
-                                <Form.Label className="title-lable">Password</Form.Label>
-                                <Form.Group controlId="formBasicPassword">
-                                    <Form.Control className="form" id="form-input" name="password" onChange={this.onChange} type="password" placeholder="Password" required />
-                                </Form.Group>
-                                <Form.Label className="title-lable">Confirm Password</Form.Label>
-                                <Form.Group controlId="formBasicPassword">
-                                    <Form.Control className="form" id="form-input" name="conPassword" onChange={this.onChange} type="password" placeholder="Confirm Password" required />
-                                </Form.Group>
-                                <Button id="primary" block onClick={this.handleRegister} className="btn-custom mt-6 mb-3" >
-                                    Register
+                <Row className="">
+                    <Col xs={{ span: 12 }} sm={{ span: 8, offset: 2 }} lg={{ span: 6, offset: 3 }} className="" >
+                        <Card className="form-card">
+                            <Row>
+                                <Col className="col-img d-none d-lg-block">
+                                    <Row>
+                                        <Col className="logo-form text-center">
+                                            <img src={logo} />
+                                        </Col>
+                                    </Row>
+                                    <div className="gradient-form"><img src={graCom} style={{ position: "absolute", bottom: 0 }} /></div>
+                                    <img src={vectorCom} style={{ position: "absolute", bottom: 30, right: "40px" }} />
+                                </Col>
+                                <Col>
+                                <h2 className="title-lable mt-6 mb-5 text-center" id="card-title">REGISTER</h2>
+                                {/* <Card.Title classname="card-title">Register</Card.Title> */}
+                                <Form noValidate validated={validate} className="form ml-4 mr-4 mb-5 pl-5 pr-5">
+                                    <Form.Label className="title-lable">EMAIL</Form.Label>
+                                    <Form.Group controlId="formBasicEmail" >
+                                        <Form.Control className="form" id="form-input" name="email" onChange={this.onChange} type="email" placeholder="Email" required />
+                                    </Form.Group>
+                                    <Form.Label className="title-lable">PASSWORD</Form.Label>
+                                    <Form.Group controlId="formBasicPassword">
+                                        <Form.Control className="form" id="form-input" name="password" onChange={this.onChange} type="password" placeholder="Password" required />
+                                    </Form.Group>
+                                    <Form.Label className="title-lable">CONFIRM PASSWORD</Form.Label>
+                                    <Form.Group controlId="formBasicPassword">
+                                        <Form.Control className="form" id="form-input" name="conPassword" onChange={this.onChange} type="password" placeholder="Confirm Password" required />
+                                    </Form.Group>
+                                    <Button id="primary" block onClick={this.handleRegister} className="btn-custom mt-6 mb-3" >
+                                        REGISTER
                                 </Button>
-                            </Form>
+                                <p className="divider-title mt-4 mb-5 text-center">Already have an account? <Link to="/Login" className="link-path">Login</Link></p>
+                                </Form>
+                                </Col>
+                            </Row>
                         </Card>
                     </Col>
                 </Row>
