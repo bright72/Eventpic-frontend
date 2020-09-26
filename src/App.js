@@ -9,6 +9,9 @@ import MoreDetail from './MoreDetail.js';
 import ShowPicture from './ShowPicture.js';
 import Upload from './components/UploadFunction.js'
 import UploadTest from './components/Upload';
+import AddParticipant from './AddParticipant';
+import UploadParticipant from './UploadParticipant';
+import ListofParticipant from './ListofParticipant';
 import './Style.css'
 import 'bulma/css/bulma.css'
 
@@ -25,6 +28,9 @@ const App = () => (
       <Route exact path="/ShowPicture" component={ShowPicture} />
       <Route exact path="/Upload/:id" component={Upload} />
       <Route exact path="/UploadTest" component={UploadTest} />
+      <Route exact path="/AddParticipant/:id" component={AddParticipant} />
+      <Route exact path="/UploadParticipant" component={UploadParticipant} />
+      <Route exact path="/ListofParticipant/:id" component={ListofParticipant} />
     </Switch>
   </Router>
 

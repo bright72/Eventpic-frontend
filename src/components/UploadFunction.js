@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom'
-import { FilePond, File, registerPlugin } from 'react-filepond';
+// import { FilePond, registerPlugin, File } from 'react-filepond';
+import { Form, Input } from 'react-bootstrap'
+
+
 import firebase from '../firebase/index';
 import StorageDataTable from './StorageDataTable';
 import Nevbar from '../Nevbar.js'
 
 // Import FilePond styles
-import 'filepond/dist/filepond.min.css';
+// import 'filepond/dist/filepond.min.css';
 
 // Register plugin
-import FilePondImagePreview from 'filepond-plugin-image-preview';
-import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+// import FilePondImagePreview from 'filepond-plugin-image-preview';
+// import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 
-registerPlugin(FilePondImagePreview);
+// registerPlugin(FilePondImagePreview);
+
 
 class UploadFunction extends Component {
 
@@ -26,6 +30,7 @@ class UploadFunction extends Component {
         currentUser: null,
         auth: false,
         keypath: '',
+        imageAsFile: "",
 
 
     }
@@ -111,7 +116,6 @@ class UploadFunction extends Component {
                 console.log("Delete file error : ", error.message);
             });
 
-
     }
 
     //โหลดข้อมูลเข้า list table
@@ -125,7 +129,7 @@ class UploadFunction extends Component {
             let fileData = this.state.filesMetadata[key];
 
             let downloadUrl = await firebase.storage().ref(`images/${fileData.metadataFile.name}`).getDownloadURL()
-   
+
             let objRows = {
                 no: i++,
                 key: key, //ใช้เพื่อ Delete
@@ -147,34 +151,25 @@ class UploadFunction extends Component {
 
     }
 
-    handleInit() {
-        // handle init file upload here
-        console.log('now initialised', this.pond);
+    handleImageAsFile = (e) => {
+        const images = e.target.files
+        this.setState({
+            files: images
+        })
     }
 
-    handleProcessing(fieldName, file, metadata, load, error, progress, abort) {
+    // async 
+    async handleProcessing(e) {
+        e.preventDefault();
         // handle file upload here
-        console.log(" handle file upload here");
-        console.log(this.state.filesMetadata);
+        console.log(this.state.files)
 
-        const fileUpload = file;
-        const storageRef = firebase.storage().ref(`images/${file.name}`)
+        for (const [key, file] of Object.entries(this.state.files)) {
+            console.log(`[${key}] ${file.name}`)
+            let storageRef = firebase.storage().ref(`images/${file.name}`)
+            await storageRef.put(file)
 
-        const task = storageRef.put(fileUpload)
-
-        task.on(`state_changed`, (snapshot) => {
-            console.log(`Snapshot: ${snapshot.val}`)
-            let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            //Process
-            this.setState({
-                uploadValue: percentage
-            })
-        }, (error) => {
-
-            console.log(`Upload error : ${error.message}`)
-
-        }, (response) => {
-
+            let downloadUrl = await storageRef.getDownloadURL()
 
             storageRef.getMetadata()
                 .then((metadata) => {
@@ -185,20 +180,18 @@ class UploadFunction extends Component {
                         size: metadata.size,
                         contentType: metadata.contentType,
                         fullPath: metadata.fullPath,
-                        downloadURLs: "",
+                        downloadURLs: downloadUrl,
                     }
-                    const databaseRef = firebase.database().ref(`user/${this.state.keypath ? this.state.keypath : null}/event/${this.state.event_id ? this.state.event_id : null}/images`);
+                    const databaseRef = firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/images`);
                     console.log(metadataFile)
                     databaseRef.push({
                         metadataFile
                     })
-
                 }).catch(function (error) {
-                    this.setState({
-                        messag: `Upload error : ${error.message}`
-                    })
+                    console.log(`Upload error : ${error.message}`)
                 })
-        })
+        }
+
     }
 
 
@@ -211,16 +204,49 @@ class UploadFunction extends Component {
                     <div className="App">
                         <Nevbar />
                         <div className="Margin-25">
-                            <FilePond allowMultiple={true}
-                                maxFiles={100}
-                                onupdatefiles={setFiles}
-                                ref={ref => this.pond = ref}
-                                server={{ process: this.handleProcessing.bind(this) }}
-                                oninit={() => this.handleInit()}>
+                            <Form onSubmit={this.handleProcessing.bind(this)}>
+                                <label>Select Files
+                                    <Form.Control
+                                        multiple
+                                        type="file"
+                                        onChange={this.handleImageAsFile.bind(this)}
+                                    />
+                                </label>
+                                <button type="submit">upload to firebase</button>
+                            </Form>
+
+                            <div>
+
+                                {/* <label>Select Files
+                                     <input type="file" multiple value={this.state.files} />
+                                </label>
+                                <button onClick={this.handleProcessing.bind(this)}>Upload</button> */}
+                                {/* {this.state.files.map(file => (
+                                    <File key={file} source={file} />
+                                ))} */}
+
+                                {/* {URLs.map(url => <div class="crop">
+                                    <img src={url.value} />
+                                </div>)}
+                                 <li key={URLs.index}><img src = {URLs.value}/></li>  */}
+                            </div>
+
+                            {/* <FilePond
+                                files={this.state.files}
+                                allowMultiple={true}
+                                maxFiles={5}
+                                // ref={ref => this.pond = ref}
+                                server={{
+                                    process: this.handleProcessing.bind(this),
+                                    //  revert: null
+                                }}
+                                oninit={() => this.handleInit()}
+                            >
                                 {this.state.files.map(file => (
                                     <File key={file} source={file} />
                                 ))}
-                            </FilePond>
+                            </FilePond> */}
+
                             <StorageDataTable
                                 rows={rows}
                                 filesMetadata={this.filesMetadata}
@@ -238,11 +264,73 @@ class UploadFunction extends Component {
         }
         else {
             return (
-                <div>Loading</div>
+                <div> Loading</div>
             )
         }
     }
 }
+// import React, { useState, Component } from 'react';
+// import firebase, { storage } from '../firebase';
 
+// const UploadFunction = (props) => {
+
+//     const [files, setFiles] = useState([])
+//     const [URLs, setURL] = useState([])
+//     //const urls2 = [];
+
+//     const onFileChange = e => {
+//         for (let i = 0; i < e.target.files.length; i++) {
+//             const newFile = e.target.files[i];
+//             newFile["id"] = Math.random();
+//             // add an "id" property to each File object
+//             setFiles(prevState => [...prevState, newFile]);
+//         }
+//     };
+
+//     const onUploadSubmission = e => {
+//         e.preventDefault(); // prevent page refreshing
+//         const promises = [];
+//         files.forEach(file => {
+//             const uploadTask =
+//                 firebase.storage().ref().child(`image/${file.name}`).put(file);
+//             promises.push(uploadTask);
+//             uploadTask.on(
+//                 firebase.storage.TaskEvent.STATE_CHANGED,
+//                 snapshot => {
+//                     const progress =
+//                         ((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+//                     if (snapshot.state === firebase.storage.TaskState.RUNNING) {
+//                         console.log(`Progress: ${progress}%`);
+//                     }
+//                 },
+//                 error => console.log(error.code),
+//                 async () => {
+//                     const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+//                     setURL(URLs => [...URLs, { index: URLs.length, value: downloadURL }])
+//                     // do something with the url
+//                 }
+//             );
+//         });
+//         Promise.all(promises)
+//             // .then(() => alert('All files uploaded'))
+//             // .catch(err => console.log(err.code));
+//     }
+
+//     return (
+
+//         <div>
+
+//             <label>Select Files
+//             <input type="file" multiple onChange={onFileChange} />
+//             </label>
+//             <button onClick={onUploadSubmission}>Upload</button>
+
+//             {URLs.map(url => <div class="crop">
+//                 <img src={url.value} />
+//             </div>)}
+//             {/* <li key={URLs.index}><img src = {URLs.value}/></li> */}
+//         </div>
+//     )
+// }
 
 export default UploadFunction;

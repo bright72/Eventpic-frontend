@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import { Form, Button, Container, Row, Col } from 'react-bootstrap'
+import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
 import firebase from './firebase'
@@ -12,7 +12,6 @@ class AddEvent extends Component {
     constructor() {
         super();
         this.state = {
-            events: [],
             event_id: '',
             name: '',
             detail: '',
@@ -21,11 +20,10 @@ class AddEvent extends Component {
             start_time: '',
             end_time: '',
             dateline: '',
-            imagelink: '',
             currentUser: null,
             auth: false,
-            username: '',
-            key: ''
+            validate: false,
+            showAlert: false
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -44,26 +42,6 @@ class AddEvent extends Component {
                 auth: true
             })
         })
-        // const itemsRef = firebase.database().ref(`user/${this.state.key}/event`);
-        // itemsRef.on('value', (snapshot) => {
-        //     let events = snapshot.val();
-        //     let newState = [];
-        //     for (let item in events) {
-        //         newState.push({
-        //             event_id: item,
-        //             name: events[item].name,
-        //             detail: events[item].detail,
-        //             start_date: events[item].start_date,
-        //             end_date: events[item].end_date,
-        //             start_time: events[item].start_time,
-        //             end_time: events[item].end_time,
-        //             dateline: events[item].dateline
-        //         })
-        //     }
-        //     this.setState({
-        //         events: newState
-        //     })
-        // })
     }
 
     handleChange = e => {
@@ -74,55 +52,42 @@ class AddEvent extends Component {
     }
 
     handleSubmit = e => {
-        e.preventDefault();
-        const { name, start_date, end_date, start_time, end_time, detail, event_id, dateline } = this.state
-        if (name && start_date && end_date && start_time && end_time && detail === '') {
-            // return this.updateItem();
-            alert("กรุณากรอกรายละเอียดให้ครบถ้วน :)")
-        } else if (event_id !== '') {
+        e.preventDefault()
+        const { name, start_date, end_date, start_time, end_time, detail, dateline, showAlert } = this.state
+        const form = e.currentTarget
+        if (form.checkValidity() === true) {
             if (start_date > end_date || start_date > dateline || end_date > dateline) {
-                alert("กรุณากรอกวันที่ให้ถูกต้อง")
+                alert("กรอกวันที่ให้ถูกต้องด้วยอิสัส")
+            } else {
+                let keypath = ""
+                firebase.database().ref("user").orderByChild("email").equalTo(this.state.currentUser.email)
+                    .on("child_added", function (snapshot) {
+                        keypath = snapshot.key
+                    })
+                const itemsRef = firebase.database().ref(`user/${keypath}/event`)
+                const item = {
+                    name: name,
+                    detail: detail,
+                    start_date: start_date,
+                    end_date: end_date,
+                    start_time: start_time,
+                    end_time: end_time,
+                    dateline: dateline,
+                }
+                itemsRef.push(item)
+                this.props.history.push('/ListofEvent/' + this.state.event_id)
             }
-            return this.updateItem();
-        } else if (start_date > end_date || start_date > dateline || end_date > dateline) {
-            alert("กรุณากรอกวันที่ให้ถูกต้อง")
         } else {
-            let keypath = ""
-            firebase.database().ref("user").orderByChild("email").equalTo(this.state.currentUser.email)
-                .on("child_added", function (snapshot) {
-                    console.log("นี่คือคีย์")
-                    console.log(snapshot.key)
-                    keypath = snapshot.key
-                })
-            const itemsRef = firebase.database().ref(`user/${keypath}/event`)
-            const item = {
-                name,
-                detail,
-                start_date,
-                end_date,
-                start_time,
-                end_time,
-                dateline
-            }
-            itemsRef.push(item)
             this.setState({
-                event_id: '',
-                name: '',
-                detail: '',
-                start_date: '',
-                end_date: '',
-                start_time: '',
-                end_time: '',
-                dateline: ''
+                validate: true
             })
-
-            this.props.history.push('/ListofEvent/' + this.state.event_id);
+            e.stopPropagation()
         }
     }
 
 
     render() {
-        const { currentUser, auth } = this.state
+        const { currentUser, auth, validate, showAlert } = this.state
         if (auth) {
             if (currentUser) {
                 return (
@@ -136,49 +101,72 @@ class AddEvent extends Component {
                                 lg={{ span: 6, offset: 3 }}
                                 className="p-5 Loginbox"
                             >
-                                <h1 className="text-center mt-2"> Add Event</h1>
-                                <Form onSubmit={this.handleSubmit} className="mt-4">
+                                <h2 className="text-center mt-2"> Add Event</h2>
+                                <Form noValidate validated={validate} onSubmit={this.handleSubmit} className="mt-4">
                                     <Label>Name of Event</Label>
-                                    <Group >
-                                        <Control name="name" value={this.state.name} onChange={this.handleChange} type="text" placeholder="Name of Event" />
-                                    </Group>
+                                    <Form.Group >
+                                        <Form.Control name="name" value={this.state.name} onChange={this.handleChange} type="text" placeholder="Name of Event" required />
+                                        <Form.Control.Feedback type="invalid">
+                                            Please Enter Name of Event
+                                    </Form.Control.Feedback>
+                                    </Form.Group>
                                     <Form.Group controlId="exampleForm.ControlTextarea1">
                                         <Form.Label>Detail of event</Form.Label>
-                                        <Form.Control required name="detail" value={this.state.detail} onChange={this.handleChange} type="text" placeholder="Detail of event" as="textarea" rows="3" />
+                                        <Form.Control name="detail" value={this.state.detail} onChange={this.handleChange} type="text" placeholder="Detail of event" as="textarea" rows="3" required />
+                                        <Form.Control.Feedback type="invalid">
+                                            Please Enter Detail of event
+                                    </Form.Control.Feedback>
                                     </Form.Group>
-                                    <Form>
-                                        <Form.Row>
-                                            <Col>
-                                                <Label>Start date of Event</Label>
-                                                <Control required name="start_date" value={this.state.start_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
-                                            </Col>
-                                            <Col>
-                                                <Label>End date of Event</Label>
-                                                <Control required name="end_date" value={this.state.end_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
-                                            </Col>
-                                        </Form.Row>
-                                    </Form>
-                                    <Form>
-                                        <Form.Row>
-                                            <Col>
-                                                <Label>Start time of Event</Label>
-                                                <Control required name="start_time" value={this.state.start_time} onChange={this.handleChange} type="time" placeholder="Date of Event" />
-                                            </Col>
-                                            <Col>
-                                                <Label>End time of Event</Label>
-                                                <Control required name="end_time" value={this.state.end_time} onChange={this.handleChange} type="time" placeholder="Date of Event" />
-                                            </Col>
-                                        </Form.Row>
-                                    </Form>
+                                    <Form.Row>
+                                        <Col>
+                                            <Label>Start Date of Event</Label>
+                                            <Form.Group >
+                                                <Form.Control name="start_date" value={this.state.start_date} onChange={this.handleChange} type="date" placeholder="Date of Event" required />
+                                                <Form.Control.Feedback type="invalid">
+                                                    Please Select Start Date of Event
+                                    </Form.Control.Feedback>
+                                            </Form.Group>
+                                        </Col>
+                                        <Col>
+                                            <Label>End Date of Event</Label>
+                                            <Form.Group >
+                                                <Form.Control name="end_date" value={this.state.end_date} onChange={this.handleChange} type="date" placeholder="Date of Event" required />
+                                                <Form.Control.Feedback type="invalid">
+                                                    Please Select End Date of Event
+                                    </Form.Control.Feedback>
+                                            </Form.Group>
+                                        </Col>
+                                    </Form.Row>
+                                    <Form.Row>
+                                        <Col>
+                                            <Label>Start Time of Event</Label>
+                                            <Form.Group >
+                                                <Form.Control name="start_time" value={this.state.start_time} onChange={this.handleChange} type="time" placeholder="Date of Event" required />
+                                                <Form.Control.Feedback type="invalid">
+                                                    Please Select Start Time of Event
+                                    </Form.Control.Feedback>
+                                            </Form.Group>
+                                        </Col>
+                                        <Col>
+                                            <Label>End Time of Event</Label>
+                                            <Form.Group >
+                                                <Form.Control name="end_time" value={this.state.end_time} onChange={this.handleChange} type="time" placeholder="Date of Event" required />
+                                                <Form.Control.Feedback type="invalid">
+                                                    Please Select End Time of Event
+                                    </Form.Control.Feedback>
+                                            </Form.Group>
+                                        </Col>
+                                    </Form.Row>
                                     <Label>Dateline</Label>
-                                    <Group >
-                                        <Control required name="dateline" value={this.state.dateline} onChange={this.handleChange} type="date" placeholder="Dateline" />
-                                    </Group>
-                                    <Link to="/ListofEvent">
-                                        <Button variant="dark" block className=" mt-4 btn-custom" onClick={this.handleSubmit} >
-                                            Submit Event
-                                </Button>
-                                    </Link>
+                                    <Form.Group >
+                                        <Form.Control name="dateline" value={this.state.dateline} onChange={this.handleChange} type="date" placeholder="Dateline" required />
+                                        <Form.Control.Feedback type="invalid">
+                                            Please Select Dateline
+                                    </Form.Control.Feedback>
+                                    </Form.Group>
+                                    <Button variant="dark" block className=" mt-4 btn-custom" type="submit" >
+                                        Submit Event
+                                    </Button>
                                 </Form>
                             </Col>
                         </Row>
@@ -200,6 +188,7 @@ class AddEvent extends Component {
 }
 
 export default withRouter(AddEvent);
+
 
 
 
