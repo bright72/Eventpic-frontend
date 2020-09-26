@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import { Button, Container, Col, Card, } from 'react-bootstrap'
+import { Button, Container, Col, Card, Row } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
 import firebase from './firebase'
@@ -74,33 +74,67 @@ class ListofEvent extends Component {
             if (currentUser) {
                 return (
                     <div>
-                    <Nevbar />
-                    <Container fluid >
-                        {
-                            this.state.events.map((item) => {
-                                return (
-                                    <Col
-                                        xs={12}
+                        <Nevbar />
+                        <Container fluid className="" >
+                            <div className="">
+                                <Row>
+                                    <Col xs={12}
                                         sm={{ span: 10 }}
-                                        md={{ span: 8, offset: 2 }}
-                                        lg={{ span: 8, offset: 2 }}
-                                        className="p-3 Loginbox mt-3"
-                                    >
-                                        <Card>
-                                            <Card.Body>
-                                                <Card.Title>{item.name}</Card.Title>
-                                                <Card.Text>{item.detail}</Card.Text>
-                                                <Card.Text>{item.start_date}</Card.Text>
-                                                <Link to={"/MoreDetail/" + item.event_id} >
-                                                    <Button variant="dark m-1" >View Detail</Button>
-                                                </Link>
-                                            </Card.Body>
-                                        </Card>
+                                        md={{ span: 6, offset: 3 }}
+                                        lg={{ span: 6, offset: 3 }}
+                                        className="p-1 pt-5 text-right">
+                                        <Link to="/AddEvent" className="btn-link"><Button className="btn-custom mr-5" id="primary"><p className="ml-1 mr-1 text-center">ADD EVENT</p></Button></Link>
                                     </Col>
-                                )
-                            })
-                        }
-                    </Container >
+                                </Row>
+                                {
+                                    this.state.events.map((item) => {
+                                        return (
+                                            <Col
+                                                xs={12}
+                                                sm={{ span: 10 }}
+                                                md={{ span: 6, offset: 3 }}
+                                                lg={{ span: 6, offset: 3 }}
+                                                className="p-1 pt-5"
+                                            >
+                                                <Card className="form-card" id="list-card">
+                                                    <Container fluid>
+                                                        <Row>
+                                                            <Col>
+                                                                <Card.Body>
+                                                                    <Row>
+                                                                        <Col md={{ span: 10 }}>
+                                                                            <Card.Title className="title-event">{item.name}</Card.Title>
+                                                                        </Col>
+                                                                        <Col>
+                                                                            <p className="text-right">List</p>
+                                                                        </Col>
+                                                                    </Row>
+                                                                    <Row>
+                                                                        <Col>
+                                                                            <Card.Text className="form" id="show-detail"><span className="title-lable">DETAIL: </span>{item.detail}</Card.Text>
+                                                                            <Card.Text className="form mt-1"><span className="title-lable">START DATE: </span>{item.start_date}</Card.Text>
+                                                                            <Card.Text className="form mt-1"><span className="title-lable">END DATE: </span>{item.end_date}</Card.Text>
+                                                                        </Col>
+                                                                    </Row>
+                                                                </Card.Body>
+                                                                <Row>
+                                                                    <Col></Col>
+                                                                    <Col md={{ span: 2, offset: 10 }}>
+                                                                        <Link to={"/MoreDetail/" + item.event_id} >
+                                                                            <Button className="btn-custom mb-4 align-text-bottom" id="secondary" >VIEW MORE</Button>
+                                                                        </Link>
+                                                                    </Col>
+                                                                </Row>
+                                                            </Col>
+                                                        </Row>
+                                                    </Container>
+                                                </Card>
+                                            </Col>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </Container >
                     </div>
                 )
             }

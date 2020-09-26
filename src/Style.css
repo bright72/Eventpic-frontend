@@ -8,11 +8,14 @@
     src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&display=swap');
 }
 
-.navbar {
-    position: fixed;
+#scroll-nav {
     width: 100%;
     top: 0;
     box-shadow: 0px 0px 50px #ddd;
+}
+
+#normal-nav {
+    background-color: transparent;
 }
 
 .page-center {
@@ -29,6 +32,13 @@
     letter-spacing: 1px;
 }
 
+.title-event {
+    font-family: Kanit;
+    font-weight: 500;
+    font-size: 36px;
+    /* letter-spacing: 1px; */
+}
+
 #card-title {
     font-size: 48px;
 }
@@ -42,6 +52,7 @@ html, body {
 body, .form {
     font-family: Kanit;
     font-weight: 300;
+    letter-spacing: 1px;
 }
 
 .form{
@@ -61,6 +72,14 @@ body, .form {
     border-radius: 20px;
     padding-left: 4%;
     padding-right: 4%;
+}
+
+#show-detail {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* number of lines to show */
+    -webkit-box-orient: vertical;
 }
 
 .col-img {
