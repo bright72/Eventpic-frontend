@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import { Navbar, Button, } from 'react-bootstrap'
+import { Navbar, Button, Container, Row, Col } from 'react-bootstrap'
 import firebase from './firebase/index'
 
 class Nevbar extends React.Component {
@@ -14,6 +14,7 @@ class Nevbar extends React.Component {
             currentUser: null,
             message: '',
             redirect: false,
+            navStat: false
         }
     }
 
@@ -54,6 +55,24 @@ class Nevbar extends React.Component {
                 })
             }
         })
+        window.addEventListener("scroll", this.handleScroll)
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("scroll", this.handleScroll)
+    }
+
+    handleScroll = () => {
+        const show = window.scrollY > 20
+        if (show) {
+            this.setState({
+                navStat: true
+            })
+        } else {
+            this.setState({
+                navStat: false
+            })
+        }
     }
 
     logout = e => {
@@ -67,29 +86,46 @@ class Nevbar extends React.Component {
     }
 
     render() {
-        const { currentUser, redirect } = this.state
+        const { currentUser, redirect, navStat } = this.state
         if (redirect) {
             return <Redirect to="/login" />
         }
+
         if (currentUser) {
-            return (
-                <Navbar>
-                    <Navbar.Brand href="/">Event Picture Management</Navbar.Brand>
-                    <Navbar.Collapse className="justify-content-end">
-                        <Navbar.Text>
-                            {/* <Link to="/ListofEvent" className="mr-3"><Button variant="light">Event</Button></Link> */}
-                            <Link to="/AddEvent" className="mr-3"><Button variant="light">Add Event</Button></Link>
-                            <Link to="/" className="mr-3"><Button variant="light">{currentUser.email}</Button></Link>
-                            <Button onClick={this.logout} variant="light">Logout</Button>
-                        </Navbar.Text>
-                    </Navbar.Collapse>
-                </Navbar>
-            )
+            if (!navStat) {
+                return (
+                    <Navbar className="navbar">
+                        <Container fluid>
+                            <Row>
+                                <Col md={{span: 4, offset: 4}}>
+                                    <div>
+                                    <Navbar.Brand href="/">Event Picture Management</Navbar.Brand>
+                                    <Navbar.Collapse className="justify-content-end">
+                                        <Navbar.Text>
+                                            <Link to="/AddEvent" className="mr-3"><Button variant="light">Add Event</Button></Link>
+                                            <Link to="/" className="mr-3"><Button variant="light">{currentUser.email}</Button></Link>
+                                            <Button onClick={this.logout} variant="light">Logout</Button>
+                                        </Navbar.Text>
+                                    </Navbar.Collapse>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </Container>
+                    </Navbar>
+                )
+            }
+            if (navStat) {
+                return (
+                    <Navbar className="navbar" id="scroll-nav">
+                        <Navbar.Brand href="/">Already Change!!</Navbar.Brand>
+                    </Navbar>
+                )
+            }
         }
 
         if (!currentUser) {
             return (
-                <Navbar>
+                <Navbar scrolling dark expand="md">
                     <Navbar.Brand href="/ListofEvent">Event Picture Management</Navbar.Brand>
                     <Navbar.Collapse className="justify-content-end">
                         <Navbar.Text>

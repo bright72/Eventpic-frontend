@@ -73,8 +73,9 @@ class ListofEvent extends Component {
         if (auth) {
             if (currentUser) {
                 return (
+                    <div>
+                    <Nevbar />
                     <Container fluid >
-                        <Nevbar />
                         {
                             this.state.events.map((item) => {
                                 return (
@@ -100,6 +101,7 @@ class ListofEvent extends Component {
                             })
                         }
                     </Container >
+                    </div>
                 )
             }
             if (!currentUser) {
