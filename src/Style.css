@@ -8,8 +8,12 @@
     src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&display=swap');
 }
 
-#scroll-nav {
+.navbar{
     width: 100%;
+    /* justify-content: flex-end!important; */
+}
+
+#scroll-nav {
     top: 0;
     box-shadow: 0px 0px 15px rgb(163, 163, 163);
 }
@@ -30,10 +34,12 @@
 }
 
 .title-lable {
-    font-family: Roboto;
-    font-weight: 700;
+    /* font-family: Roboto;
+    font-weight: 700; */
+    font-family: Kanit;
+    font-weight: 500;
     color: #44506A;
-    letter-spacing: 1px;
+    /* letter-spacing: 1px; */
 }
 
 .title-event {
@@ -63,13 +69,13 @@ html, body {
 body, .form {
     font-family: Kanit;
     font-weight: 300;
-    letter-spacing: 1px;
+    /* letter-spacing: 1px; */
 }
 
 .form{
     font-size: 16px;
     color: #44506A;
-    letter-spacing: 1px;
+    /* letter-spacing: 1px; */
 }
 
 .form-card {
@@ -120,7 +126,8 @@ body, .form {
 .btn-custom{
     border-radius: 20px;
     height: 40px;
-    font-family: Roboto;
+    /* font-family: Roboto; */
+    font-family: Kanit;
     font-weight: 500;
     font-size: 16px;
     letter-spacing: 1px;
@@ -133,21 +140,26 @@ body, .form {
 #primary {
     /* background-color: #44506A; */
     background: linear-gradient(269.49deg, #4A3CDB 8.93%, rgba(255, 255, 255, 0) 95.22%), #FF0A6C;
+    box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.5);
     border: none;
 }
 
 #primary:hover {
-    box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.5);
+    /* box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.5); */
+    background: linear-gradient(269.49deg, #6F3CDB 8.93%, rgba(255, 255, 255, 0) 95.22%), #FF2264;
 }
 
 #secondary {
     color: #FF0A6C;
+    box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.2);
     background-color: white;
     border-color: #FF0A6C;
 }
 
 #secondary:hover {
-    box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.5);
+    /* box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.5); */
+    background-color: #FF0A6C;
+    color: white;
 }
 
 .link-path {
@@ -234,4 +246,5 @@ body, .form {
     -ms-transform: translate(-50%,-50%);
     transform: translate(-50%,-50%);
 }
+
 
