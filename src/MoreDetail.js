@@ -98,7 +98,7 @@ class MoreDetail extends React.Component {
                                         <Button variant="dark m-1">Add Participant</Button>
                                     </Link >
                                     <Link to={"/Upload/" + this.state.event_id} >
-                                        <Button variant="dark m-1">Event Picture</Button>
+                                        <Button variant="dark m-1">Process</Button>
                                     </Link >
                                     <Link to={"/EditEvent/" + this.state.event_id} >
                                         <Button variant="outline-dark m-1" >Edit</Button>

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom'
 // import { FilePond, registerPlugin, File } from 'react-filepond';
-import { Form, Input } from 'react-bootstrap'
+import { Form, Input, Button } from 'react-bootstrap'
 
 
 import firebase from '../firebase/index';
 import StorageDataTable from './StorageDataTable';
 import Nevbar from '../Nevbar.js'
-
+import axios from "axios";
+import * as emailjs from 'emailjs-com'
 // Import FilePond styles
 // import 'filepond/dist/filepond.min.css';
 
@@ -31,7 +32,8 @@ class UploadFunction extends Component {
         auth: false,
         keypath: '',
         imageAsFile: "",
-
+        emailPaticipant: "",
+        img: []
 
     }
     // Initialize Firebase
@@ -194,6 +196,47 @@ class UploadFunction extends Component {
 
     }
 
+    onclickrespond = () => {
+        console.log("teasdfsf");
+        axios.get("/emailbakcend").then(responde => {
+            console.log(responde.data);
+            this.setState({
+                emailPaticipant: responde.data.email,
+                img: responde.data.img
+            })
+        })
+    }
+
+    handleSubmit = () => {
+        const {emailPaticipant} = this.state
+        console.log("teasdfsf");
+        axios.get("/emailbakcend").then(responde => {
+            console.log(responde.data);
+            console.log(responde.data.email)
+            // this.setState({
+            //     emailPaticipant: responde.data.email,
+            //     img: responde.data.img
+            // })
+            let templateParams = {
+                to_email: responde.data.email,
+                to_name: responde.data.email,
+             
+            }
+    
+            emailjs.send(
+                'test555',
+                'template_p1ojhve',
+                templateParams,
+                'user_taSKZdwaRwk1j4rwI0eXi'
+            )
+        })
+        console.log(this.state.emailPaticipant)
+
+
+
+    }
+
+
 
     render() {
         const { rows, currentUser, auth, setFiles } = this.state;
@@ -202,7 +245,7 @@ class UploadFunction extends Component {
             if (currentUser) {
                 return (
                     <div className="App">
-                        <Nevbar />
+                        {/* <Nevbar /> */}
                         <div className="Margin-25">
                             <Form onSubmit={this.handleProcessing.bind(this)}>
                                 <label>Select Files
@@ -252,6 +295,7 @@ class UploadFunction extends Component {
                                 filesMetadata={this.filesMetadata}
                                 deleteData={this.deleteMetaDataFromDatabase.bind(this)}
                             />
+                            <Button onClick={this.handleSubmit}>Process and send email</Button>
                         </div>
                     </div>
                 );
