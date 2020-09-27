@@ -140,21 +140,26 @@ body, .form {
 #primary {
     /* background-color: #44506A; */
     background: linear-gradient(269.49deg, #4A3CDB 8.93%, rgba(255, 255, 255, 0) 95.22%), #FF0A6C;
+    box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.5);
     border: none;
 }
 
 #primary:hover {
-    box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.5);
+    /* box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.5); */
+    background: linear-gradient(269.49deg, #6F3CDB 8.93%, rgba(255, 255, 255, 0) 95.22%), #FF2264;
 }
 
 #secondary {
     color: #FF0A6C;
+    box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.2);
     background-color: white;
     border-color: #FF0A6C;
 }
 
 #secondary:hover {
-    box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.5);
+    /* box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.5); */
+    background-color: #FF0A6C;
+    color: white;
 }
 
 .link-path {

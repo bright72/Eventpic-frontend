@@ -4,7 +4,6 @@ import { Button, Container, Col, Card, Row, Image, Dropdown } from 'react-bootst
 import Nevbar from './Nevbar.js'
 import './Style.css'
 import firebase from './firebase'
-import ListPic from './List.png'
 
 class ListofEvent extends Component {
 
@@ -140,6 +139,7 @@ class ListofEvent extends Component {
                                     })
                                 }
                             </div>
+                            <div className="pb-6"/>
                         </Container >
                     </div>
                 )
