@@ -10,6 +10,7 @@
 
 .navbar{
     width: 100%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     /* justify-content: flex-end!important; */
 }
 
@@ -19,7 +20,7 @@
 }
 
 #normal-nav {
-    background-color: transparent;
+    background-color: #FEFEFE;
 }
 
 .page-center {
@@ -56,7 +57,9 @@
 html, body {
     height: 100%;
     background: scroll;
-    background-color: #FEFEFE;
+    /* background-color: #bcd1ff; */
+    background-color: #eeeeee;
+    background-size: cover;
 }
 
 .bg-pic {
@@ -80,7 +83,7 @@ body, .form {
 
 .form-card {
     border-radius: 15px;
-    background: #FFFFFF;
+    background: #FEFEFE;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.15);
     border: none;
 }
