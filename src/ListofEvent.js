@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import { Button, Container, Col, Card, Row, Image, Dropdown } from 'react-bootstrap'
+import { Button, Container, Col, Card, Row, Dropdown } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
 import firebase from './firebase'
@@ -21,7 +21,8 @@ class ListofEvent extends Component {
             dateline: '',
             check: false,
             currentUser: null,
-            auth: false
+            auth: false,
+            show: false
         }
 
     }
@@ -68,8 +69,9 @@ class ListofEvent extends Component {
         })
 
     }
+
     render() {
-        const { currentUser, auth } = this.state
+        const { currentUser, auth, show } = this.state
         if (auth) {
             if (currentUser) {
                 return (
@@ -78,15 +80,7 @@ class ListofEvent extends Component {
                         <Nevbar />
                         <Container fluid className="padding-page" >
                             <div className="">
-                                <Row>
-                                    <Col xs={12}
-                                        sm={{ span: 10 }}
-                                        md={{ span: 6, offset: 3 }}
-                                        lg={{ span: 6, offset: 3 }}
-                                        className="p-1 text-right">
-                                        <Link to="/AddEvent" className="btn-link"><Button className="btn-custom mr-5" id="primary"><p className="ml-1 mr-1 text-center">+ ADD EVENT</p></Button></Link>
-                                    </Col>
-                                </Row>
+
                                 {
                                     this.state.events.map((item) => {
                                         return (
@@ -95,7 +89,7 @@ class ListofEvent extends Component {
                                                 sm={{ span: 10 }}
                                                 md={{ span: 6, offset: 3 }}
                                                 lg={{ span: 6, offset: 3 }}
-                                                className="p-1 pt-5"
+                                                className="p-1 pt-4"
                                             >
                                                 <Card className="form-card" id="list-card">
                                                     <Container fluid>
@@ -105,11 +99,6 @@ class ListofEvent extends Component {
                                                                     <Row>
                                                                         <Col md={{ span: 10 }}>
                                                                             <Card.Title className="title-event">{item.name}</Card.Title>
-                                                                        </Col>
-                                                                        <Col>
-                                                                            <Dropdown>
-                                                                            
-                                                                            </Dropdown>
                                                                         </Col>
                                                                     </Row>
                                                                     <Row>
@@ -122,7 +111,7 @@ class ListofEvent extends Component {
                                                                     <Row>
                                                                         <Col></Col>
                                                                         <Col>
-                                                                            <div className="text-right">
+                                                                            <div className="mt-4 text-right">
                                                                                 <Link to={"/MoreDetail/" + item.event_id} className="btn-link">
                                                                                     <Button className="btn-custom mr-0" id="secondary" >VIEW MORE</Button>
                                                                                 </Link>
@@ -139,7 +128,7 @@ class ListofEvent extends Component {
                                     })
                                 }
                             </div>
-                            <div className="pb-6"/>
+                            <div className="pb-6" />
                         </Container >
                     </div>
                 )
