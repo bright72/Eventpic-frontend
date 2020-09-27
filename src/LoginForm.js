@@ -1,7 +1,7 @@
 import firebase from './firebase'
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import { Form, Button, Container, Row, Col, Alert, Card } from 'react-bootstrap'
+import { Form, Button, Container, Row, Col, Alert, Card, Modal } from 'react-bootstrap'
 import './Style.css'
 import logo from "./Component-logo.svg"
 import vectorCom from "./Component-vec.svg"
@@ -17,7 +17,8 @@ class LoginForm extends React.Component {
             currentUser: null,
             showAlert: false,
             validate: false,
-            auth: false
+            auth: false,
+            show: false
         }
     }
 
@@ -68,8 +69,20 @@ class LoginForm extends React.Component {
         })
     }
 
+    handleShow = () => {
+        this.setState({
+            show: true
+        })
+    }
+
+    handleClose = () => {
+        this.setState({
+            show: false
+        })
+    }
+
     render() {
-        const { showAlert, currentUser, validate, auth } = this.state
+        const { showAlert, currentUser, validate, auth, show } = this.state
         if (auth) {
             if (!currentUser) {
                 return (
@@ -77,12 +90,14 @@ class LoginForm extends React.Component {
                     <Container fluid className="page-center">
                         {/* <Nevbar /> */}
                         {/* {showAlert ?
-                            <Alert variant="danger">
-                                อีเมล์หรือรหัสผ่านไม่ถูกต้อง กรุณากรอกใหม่อีกครั้ง
-                        </Alert>
+                            <div>
+                                <Alert variant="danger" className="text-center" style={{ position: "fixed" }}>
+                                    Email or password is incorrect
+                                </Alert>
+                            </div>
                             :
                             ""
-                        }    */}
+                        } */}
                         <Row className="">
                             <Col xs={{ span: 12 }} sm={{ span: 8, offset: 2 }} lg={{ span: 6, offset: 3 }} className="" >
                                 <Card className="form-card">
@@ -114,6 +129,13 @@ class LoginForm extends React.Component {
                                                     </Form.Control.Feedback>
                                                 </Form.Group>
                                                 <Row className="mt-3">
+                                                    <Col className="text-left">
+                                                    {showAlert ?
+                                                        <div className="link-path" id="alert-text">Email or password is incorrect</div>
+                                                        :
+                                                        ""
+                                                    }
+                                                    </Col>
                                                     <Col className="text-right">
                                                         <Link to="#" className="link-path">Forgot password?</Link>
                                                     </Col>
