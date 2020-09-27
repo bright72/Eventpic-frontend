@@ -2,7 +2,6 @@ import firebase from './firebase'
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { Form, Button, Container, Row, Col, Alert, Card } from 'react-bootstrap'
-import Nevbar from './Nevbar.js'
 import './Style.css'
 import logo from "./Component-logo.svg"
 import vectorCom from "./Component-vec.svg"
