@@ -118,14 +118,14 @@ class LoginForm extends React.Component {
                                                         <Link to="#" className="link-path">Forgot password?</Link>
                                                     </Col>
                                                 </Row>
-                                                <Button variant="secondary" block id="primary" className="btn-custom mt-5 mb-4" type="submit" >
+                                                <Button variant="secondary" block id="primary-auth" className="btn-custom mt-5 mb-4" type="submit" >
                                                     LOGIN
                                                 </Button>
                                                 <div className="divider mt-5">
                                                     <span className="divider-title">Don't have an account?</span>
                                                 </div>
                                                 <Link to="/Register" className="btn-link">
-                                                    <Button variant="secondary" block id="secondary" className="btn-custom mt-5 mb-6" >
+                                                    <Button variant="secondary" block id="secondary-auth" className="btn-custom mt-5 mb-6" >
                                                         REGISTER
                                             </Button>
                                                 </Link>

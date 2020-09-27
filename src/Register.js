@@ -119,7 +119,7 @@ class Register extends React.Component {
                                     <Form.Group controlId="formBasicPassword">
                                         <Form.Control className="form" id="form-input" name="conPassword" onChange={this.onChange} type="password" placeholder="Confirm Password" required />
                                     </Form.Group>
-                                    <Button id="primary" block onClick={this.handleRegister} className="btn-custom mt-6 mb-3" >
+                                    <Button id="primary-auth" block onClick={this.handleRegister} className="btn-custom mt-6 mb-3" >
                                         REGISTER
                                 </Button>
                                 <p className="divider-title mt-4 mb-5 text-center">Already have an account? <Link to="/Login" className="link-path">Login</Link></p>
