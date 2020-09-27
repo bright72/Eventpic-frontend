@@ -92,7 +92,7 @@ class AddEvent extends Component {
             if (currentUser) {
                 return (
                     <Container fluid >
-                        <Nevbar />
+                        {/* <Nevbar /> */}
                         <Row className=" m-4">
                             <Col
                                 xs={12}

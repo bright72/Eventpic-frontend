@@ -76,13 +76,13 @@ class LoginForm extends React.Component {
 
                     <Container fluid className="page-center">
                         {/* <Nevbar /> */}
-                        {showAlert ?
+                        {/* {showAlert ?
                             <Alert variant="danger">
                                 อีเมล์หรือรหัสผ่านไม่ถูกต้อง กรุณากรอกใหม่อีกครั้ง
                         </Alert>
                             :
                             ""
-                        }   
+                        }    */}
                         <Row className="">
                             <Col xs={{ span: 12 }} sm={{ span: 8, offset: 2 }} lg={{ span: 6, offset: 3 }} className="" >
                                 <Card className="form-card">

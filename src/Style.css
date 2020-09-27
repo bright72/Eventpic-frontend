@@ -8,11 +8,14 @@
     src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&display=swap');
 }
 
-.navbar {
-    position: fixed;
+#scroll-nav {
     width: 100%;
     top: 0;
-    box-shadow: 0px 0px 50px #ddd;
+    box-shadow: 0px 0px 15px rgb(163, 163, 163);
+}
+
+#normal-nav {
+    background-color: transparent;
 }
 
 .page-center {
@@ -22,11 +25,22 @@
     transform: translate(-50%,-50%);
 }
 
+.padding-page {
+    padding-top: 5%;
+}
+
 .title-lable {
     font-family: Roboto;
     font-weight: 700;
     color: #44506A;
     letter-spacing: 1px;
+}
+
+.title-event {
+    font-family: Kanit;
+    font-weight: 500;
+    font-size: 36px;
+    /* letter-spacing: 1px; */
 }
 
 #card-title {
@@ -35,13 +49,21 @@
 
 html, body {
     height: 100%;
+    background: scroll;
+    background-color: #FEFEFE;
+}
+
+.bg-pic {
     background: fixed;
-    background-color: #F2F2F2;
+    background-image: url('./BG (1).svg');
+    background-repeat: no-repeat;
+    background-size: 100%;
 }
 
 body, .form {
     font-family: Kanit;
     font-weight: 300;
+    letter-spacing: 1px;
 }
 
 .form{
@@ -61,6 +83,14 @@ body, .form {
     border-radius: 20px;
     padding-left: 4%;
     padding-right: 4%;
+}
+
+.title-event, #show-detail {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* number of lines to show */
+    -webkit-box-orient: vertical;
 }
 
 .col-img {

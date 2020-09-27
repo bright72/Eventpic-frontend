@@ -1,7 +1,8 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import { Navbar, Button, Container, Row, Col } from 'react-bootstrap'
+import { Navbar, Button, Container, Row, Col, Nav } from 'react-bootstrap'
 import firebase from './firebase/index'
+import logo from "./LogoEventPic.svg"
 
 class Nevbar extends React.Component {
 
@@ -63,7 +64,7 @@ class Nevbar extends React.Component {
     }
 
     handleScroll = () => {
-        const show = window.scrollY > 20
+        const show = window.scrollY > 1
         if (show) {
             this.setState({
                 navStat: true
@@ -92,32 +93,35 @@ class Nevbar extends React.Component {
         }
 
         if (currentUser) {
-            if (!navStat) {
-                return (
-                    <Navbar className="navbar">
-                        <Container fluid>
-                            <Row>
-                                <Col md={{span: 4, offset: 4}}>
-                                    <div>
-                                    <Navbar.Brand href="/">Event Picture Management</Navbar.Brand>
-                                    <Navbar.Collapse className="justify-content-end">
-                                        <Navbar.Text>
-                                            <Link to="/AddEvent" className="mr-3"><Button variant="light">Add Event</Button></Link>
-                                            <Link to="/" className="mr-3"><Button variant="light">{currentUser.email}</Button></Link>
-                                            <Button onClick={this.logout} variant="light">Logout</Button>
-                                        </Navbar.Text>
-                                    </Navbar.Collapse>
-                                    </div>
-                                </Col>
-                            </Row>
-                        </Container>
-                    </Navbar>
-                )
-            }
+            // if (!navStat) {
             if (navStat) {
                 return (
-                    <Navbar className="navbar" id="scroll-nav">
-                        <Navbar.Brand href="/">Already Change!!</Navbar.Brand>
+                    <Navbar className="navbar" id="scroll-nav" style={{ position: "fixed" }}>
+                        <Row>
+                            <Col>
+                                <Navbar.Brand className="logo-nav" href="/"><img src={logo} /></Navbar.Brand>
+                            </Col>
+                        </Row>
+                    </Navbar>
+                )
+            } else {
+                return (
+                    <Navbar className="navbar" id="normal-nav" style={{ position: "fixed" }}>
+                        <Row>
+                            <Col>
+                                <Navbar.Brand className="logo-nav" href="/"><img src={logo} /></Navbar.Brand>
+                            </Col>
+
+                            <Col className="">
+                                <Nav>
+                                    {/* <Link to="/AddEvent" className="mr-3"><Button variant="light">Add Event</Button></Link>
+                                    <Link to="/" className="mr-3"><Button variant="light">{currentUser.email}</Button></Link>
+                                    <Button onClick={this.logout} variant="light">Logout</Button> */}
+                                    <Nav.Link>{currentUser.email}</Nav.Link>
+                                    <Nav.Link><Button onClick={this.logout} className="btn-custom" id="secondary">LOGOUT</Button></Nav.Link>
+                                </Nav>
+                            </Col>
+                        </Row>
                     </Navbar>
                 )
             }
