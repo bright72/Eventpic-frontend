@@ -9,25 +9,36 @@ class showdatabackend extends Component {
         super()
         this.state = {
             email: "",
+            img: []
         }
     }
 
     componentDidMount = () => {
-        axios.get("/testapi1").then(responde => {
+        axios.get("/emailbakcend").then(responde => {
             console.log(responde.data);
             this.setState({
-                email : responde.data.email
-            })
-        });
-    };
+                email: responde.data.email,
+                img: responde.data.img
 
-  render() {
-    return (
-      <div >
-          <h1>email form backend : {this.state.email} </h1>
-      </div>
-    );
-  }
+            })
+        })
+    }
+
+    render() {
+        const { img } = this.state
+
+        return (this.state.img.map((item) => {
+            return (
+                <div>
+                    <h1>{this.state.email}</h1>
+                    <h1>{item}</h1>
+                </div>
+
+            )
+
+        }))
+    
+    }
 }
 
 export default showdatabackend;
