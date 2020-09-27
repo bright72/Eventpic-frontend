@@ -12,6 +12,7 @@ import UploadTest from './components/Upload';
 import AddParticipant from './AddParticipant';
 import UploadParticipant from './UploadParticipant';
 import ListofParticipant from './ListofParticipant';
+import ContactForm from './ContactForm';
 import './Style.css'
 import 'bulma/css/bulma.css'
 
@@ -31,6 +32,7 @@ const App = () => (
       <Route exact path="/AddParticipant/:id" component={AddParticipant} />
       <Route exact path="/UploadParticipant" component={UploadParticipant} />
       <Route exact path="/ListofParticipant/:id" component={ListofParticipant} />
+      <Route exact path="/ContactForm" component={ContactForm} />
     </Switch>
   </Router>
 
