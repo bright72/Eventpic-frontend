@@ -1,9 +1,10 @@
 import React, { Component, useState } from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import { Button, Container, Col, Card, Row } from 'react-bootstrap'
+import { Button, Container, Col, Card, Row, Image, Dropdown } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
 import firebase from './firebase'
+import ListPic from './List.png'
 
 class ListofEvent extends Component {
 
@@ -73,7 +74,8 @@ class ListofEvent extends Component {
         if (auth) {
             if (currentUser) {
                 return (
-                    <div className="bg-pic">
+                    // <div className="bg-pic">
+                    <div>
                         <Nevbar />
                         <Container fluid className="padding-page" >
                             <div className="">
@@ -82,7 +84,7 @@ class ListofEvent extends Component {
                                         sm={{ span: 10 }}
                                         md={{ span: 6, offset: 3 }}
                                         lg={{ span: 6, offset: 3 }}
-                                        className="p-1 pt-5 text-right">
+                                        className="p-1 text-right">
                                         <Link to="/AddEvent" className="btn-link"><Button className="btn-custom mr-5" id="primary"><p className="ml-1 mr-1 text-center">+ ADD EVENT</p></Button></Link>
                                     </Col>
                                 </Row>
@@ -99,14 +101,16 @@ class ListofEvent extends Component {
                                                 <Card className="form-card" id="list-card">
                                                     <Container fluid>
                                                         <Row>
-                                                            <Col className="mr-3">
+                                                            <Col className="">
                                                                 <Card.Body>
                                                                     <Row>
                                                                         <Col md={{ span: 10 }}>
                                                                             <Card.Title className="title-event">{item.name}</Card.Title>
                                                                         </Col>
                                                                         <Col>
-                                                                            <p className="text-right mr-0">List</p>
+                                                                            <Dropdown>
+                                                                            
+                                                                            </Dropdown>
                                                                         </Col>
                                                                     </Row>
                                                                     <Row>
@@ -116,15 +120,17 @@ class ListofEvent extends Component {
                                                                             <Card.Text className="form mt-1"><span className="title-lable">END DATE: </span>{item.end_date}</Card.Text>
                                                                         </Col>
                                                                     </Row>
+                                                                    <Row>
+                                                                        <Col></Col>
+                                                                        <Col>
+                                                                            <div className="text-right">
+                                                                                <Link to={"/MoreDetail/" + item.event_id} className="btn-link">
+                                                                                    <Button className="btn-custom mr-0" id="secondary" >VIEW MORE</Button>
+                                                                                </Link>
+                                                                            </div>
+                                                                        </Col>
+                                                                    </Row>
                                                                 </Card.Body>
-                                                                <Row>
-                                                                    <Col></Col>
-                                                                    <Col md={{ span: 2, offset: 10 }}>
-                                                                        <Link to={"/MoreDetail/" + item.event_id} className="btn-link">
-                                                                            <Button className="btn-custom mb-5 align-text-bottom" block id="secondary" >VIEW MORE</Button>
-                                                                        </Link>
-                                                                    </Col>
-                                                                </Row>
                                                             </Col>
                                                         </Row>
                                                     </Container>

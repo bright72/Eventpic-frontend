@@ -97,31 +97,27 @@ class Nevbar extends React.Component {
             if (navStat) {
                 return (
                     <Navbar className="navbar" id="scroll-nav" style={{ position: "fixed" }}>
-                        <Row>
-                            <Col>
-                                <Navbar.Brand className="logo-nav" href="/"><img src={logo} /></Navbar.Brand>
-                            </Col>
-                        </Row>
+                        <Navbar.Brand className="logo-nav" href="/"><img src={logo} /></Navbar.Brand>
+
                     </Navbar>
                 )
             } else {
                 return (
-                    <Navbar className="navbar" id="normal-nav" style={{ position: "fixed" }}>
-                        <Row>
-                            <Col>
-                                <Navbar.Brand className="logo-nav" href="/"><img src={logo} /></Navbar.Brand>
-                            </Col>
-
-                            <Col className="">
-                                <Nav>
-                                    {/* <Link to="/AddEvent" className="mr-3"><Button variant="light">Add Event</Button></Link>
+                    <Navbar className="navbar " id="normal-nav" style={{ position: "fixed" }}>
+                        <Navbar.Brand className="logo-nav" href="/"><img src={logo} /></Navbar.Brand>
+                        <Navbar.Collapse className="justify-content-end">
+                            <Nav>
+                                {/* <Link to="/AddEvent" className="mr-3"><Button variant="light">Add Event</Button></Link>
                                     <Link to="/" className="mr-3"><Button variant="light">{currentUser.email}</Button></Link>
                                     <Button onClick={this.logout} variant="light">Logout</Button> */}
+                                <Nav.Item>
                                     <Nav.Link>{currentUser.email}</Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item>
                                     <Nav.Link><Button onClick={this.logout} className="btn-custom" id="secondary">LOGOUT</Button></Nav.Link>
-                                </Nav>
-                            </Col>
-                        </Row>
+                                </Nav.Item>
+                            </Nav>
+                        </Navbar.Collapse>
                     </Navbar>
                 )
             }
