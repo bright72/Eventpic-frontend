@@ -112,7 +112,7 @@ class Nevbar extends React.Component {
                                     <Button onClick={this.logout} variant="light">Logout</Button> */}
                                 <Nav.Item>
                                     {/* <Nav.Link>{currentUser.email}</Nav.Link> */}
-                                    <Nav.Link href="/AddEvent"><Button className="btn-custom" id="primary">ADD EVENT</Button></Nav.Link>
+                                    <Nav.Link><Link to="/AddEvent"><Button className="btn-custom" id="primary">ADD EVENT</Button></Link></Nav.Link>
                                 </Nav.Item>
                                 <Nav.Item>
                                     <Nav.Link><Button onClick={this.logout} className="btn-custom" id="secondary">LOGOUT</Button></Nav.Link>

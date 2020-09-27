@@ -80,7 +80,7 @@ class ListofEvent extends Component {
                         <Nevbar />
                         <Container fluid className="padding-page" >
                             <div className="">
-
+                            {/* <Link to="/AddEvent"><Button className="btn-custom" id="primary">ADD EVENT</Button></Link> */}
                                 {
                                     this.state.events.map((item) => {
                                         return (
