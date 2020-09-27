@@ -73,9 +73,9 @@ class ListofEvent extends Component {
         if (auth) {
             if (currentUser) {
                 return (
-                    <div>
+                    <div className="bg-pic">
                         <Nevbar />
-                        <Container fluid className="" >
+                        <Container fluid className="padding-page" >
                             <div className="">
                                 <Row>
                                     <Col xs={12}
@@ -83,7 +83,7 @@ class ListofEvent extends Component {
                                         md={{ span: 6, offset: 3 }}
                                         lg={{ span: 6, offset: 3 }}
                                         className="p-1 pt-5 text-right">
-                                        <Link to="/AddEvent" className="btn-link"><Button className="btn-custom mr-5" id="primary"><p className="ml-1 mr-1 text-center">ADD EVENT</p></Button></Link>
+                                        <Link to="/AddEvent" className="btn-link"><Button className="btn-custom mr-5" id="primary"><p className="ml-1 mr-1 text-center">+ ADD EVENT</p></Button></Link>
                                     </Col>
                                 </Row>
                                 {
@@ -99,14 +99,14 @@ class ListofEvent extends Component {
                                                 <Card className="form-card" id="list-card">
                                                     <Container fluid>
                                                         <Row>
-                                                            <Col>
+                                                            <Col className="mr-3">
                                                                 <Card.Body>
                                                                     <Row>
                                                                         <Col md={{ span: 10 }}>
                                                                             <Card.Title className="title-event">{item.name}</Card.Title>
                                                                         </Col>
                                                                         <Col>
-                                                                            <p className="text-right">List</p>
+                                                                            <p className="text-right mr-0">List</p>
                                                                         </Col>
                                                                     </Row>
                                                                     <Row>
@@ -120,8 +120,8 @@ class ListofEvent extends Component {
                                                                 <Row>
                                                                     <Col></Col>
                                                                     <Col md={{ span: 2, offset: 10 }}>
-                                                                        <Link to={"/MoreDetail/" + item.event_id} >
-                                                                            <Button className="btn-custom mb-4 align-text-bottom" id="secondary" >VIEW MORE</Button>
+                                                                        <Link to={"/MoreDetail/" + item.event_id} className="btn-link">
+                                                                            <Button className="btn-custom mb-5 align-text-bottom" block id="secondary" >VIEW MORE</Button>
                                                                         </Link>
                                                                     </Col>
                                                                 </Row>

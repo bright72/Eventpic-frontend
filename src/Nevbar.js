@@ -64,7 +64,7 @@ class Nevbar extends React.Component {
     }
 
     handleScroll = () => {
-        const show = window.scrollY > 20
+        const show = window.scrollY > 1
         if (show) {
             this.setState({
                 navStat: true
@@ -106,7 +106,7 @@ class Nevbar extends React.Component {
                 )
             } else {
                 return (
-                    <Navbar className="navbar" id="normal-nav">
+                    <Navbar className="navbar" id="normal-nav" style={{ position: "fixed" }}>
                         <Row>
                             <Col>
                                 <Navbar.Brand className="logo-nav" href="/"><img src={logo} /></Navbar.Brand>
