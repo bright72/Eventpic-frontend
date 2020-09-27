@@ -34,6 +34,10 @@
     padding-top: 5%;
 }
 
+.padding-from-nav {
+    margin-top: 90px;
+}
+
 .title-lable {
     /* font-family: Roboto;
     font-weight: 700; */
@@ -90,8 +94,8 @@ body, .form {
 
 #form-input {
     border-radius: 20px;
-    padding-left: 4%;
-    padding-right: 4%;
+    /* padding-left: 4%;
+    padding-right: 4%; */
 }
 
 .title-event, #show-detail {
@@ -140,26 +144,30 @@ body, .form {
     text-decoration: none;
 }
 
-#primary {
+#primary, #secondary {
+    width: 130px;
+}
+
+#primary, #primary-auth {
     /* background-color: #44506A; */
     background: linear-gradient(269.49deg, #4A3CDB 8.93%, rgba(255, 255, 255, 0) 95.22%), #FF0A6C;
     box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.5);
     border: none;
 }
 
-#primary:hover {
+#primary:hover, #primary-auth:hover {
     /* box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.5); */
     background: linear-gradient(269.49deg, #6F3CDB 8.93%, rgba(255, 255, 255, 0) 95.22%), #FF2264;
 }
 
-#secondary {
+#secondary, #secondary-auth {
     color: #FF0A6C;
     box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.2);
     background-color: white;
     border-color: #FF0A6C;
 }
 
-#secondary:hover {
+#secondary:hover, #secondary-auth:hover {
     /* box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.5); */
     background-color: #FF0A6C;
     color: white;
