@@ -176,35 +176,43 @@ class EditEvent extends Component {
                                             <Col>
                                                 <h2 className="title-lable mt-6 mb-5 text-center text-uppercase" id="card-title"> Edit Event</h2>
                                                 <Form onSubmit={this.handleSubmit} className="form ml-4 mr-4 mb-5 pl-5 pr-5">
-                                                    <Label className="title-lable mt-5 text-center text-uppercase">Name of Event</Label>
+                                                    <Label className="title-lable mt-5 text-center text-uppercase">Event Name</Label>
                                                     <Group>
                                                         <Control className="form" id="form-input" name="name" value={this.state.name} onChange={this.handleChange} type="text" placeholder="Name of Event" />
                                                     </Group>
                                                     <Form.Group controlId="exampleForm.ControlTextarea1">
-                                                        <Form.Label className="title-lable text-center text-uppercase">Detail of event</Form.Label>
+                                                        <Form.Label className="title-lable text-center text-uppercase">Event Detail</Form.Label>
                                                         <Form.Control className="form" id="form-input" name="detail" value={this.state.detail} onChange={this.handleChange} type="text" placeholder="Detail of event" as="textarea" rows="5" />
                                                     </Form.Group>
                                                     <Form>
                                                         <Form.Row>
                                                             <Col>
-                                                                <Label className="title-lable text-center text-uppercase">Start date of Event</Label>
-                                                                <Control className="form" id="form-input" name="start_date" value={this.state.start_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
+                                                                <Label className="title-lable text-center text-uppercase">Start date</Label>
+                                                                <Group>
+                                                                    <Control className="form" id="form-input" name="start_date" value={this.state.start_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
+                                                                </Group>
                                                             </Col>
                                                             <Col>
-                                                                <Label className="title-lable text-center text-uppercase">End date of Event</Label>
-                                                                <Control className="form" id="form-input" name="end_date" value={this.state.end_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
+                                                                <Label className="title-lable text-center text-uppercase">End date</Label>
+                                                                <Group>
+                                                                    <Control className="form" id="form-input" name="end_date" value={this.state.end_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
+                                                                </Group>
                                                             </Col>
                                                         </Form.Row>
                                                     </Form>
                                                     <Form>
                                                         <Form.Row>
                                                             <Col>
-                                                                <Label className="title-lable text-center text-uppercase">Start time of Event</Label>
-                                                                <Control className="form" id="form-input" name="start_time" value={this.state.start_time} onChange={this.handleChange} type="time" placeholder="Date of Event" />
+                                                                <Label className="title-lable text-center text-uppercase">Start time</Label>
+                                                                <Group>
+                                                                    <Control className="form" id="form-input" name="start_time" value={this.state.start_time} onChange={this.handleChange} type="time" placeholder="Date of Event" />
+                                                                </Group>
                                                             </Col>
                                                             <Col>
-                                                                <Label className="title-lable text-center text-uppercase">End time of Event</Label>
-                                                                <Control className="form" id="form-input" name="end_time" value={this.state.end_time} onChange={this.handleChange} type="time" placeholder="Date of Event" />
+                                                                <Label className="title-lable text-center text-uppercase">End time</Label>
+                                                                <Group>
+                                                                    <Control className="form" id="form-input" name="end_time" value={this.state.end_time} onChange={this.handleChange} type="time" placeholder="Date of Event" />
+                                                                </Group>
                                                             </Col>
                                                         </Form.Row>
                                                     </Form>
