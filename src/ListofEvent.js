@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { Button, Container, Col, Card, Row, Dropdown } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
@@ -75,30 +75,26 @@ class ListofEvent extends Component {
         if (auth) {
             if (currentUser) {
                 return (
-                    // <div className="bg-pic">
-                    <div>
+                    <Fragment>
                         <Nevbar />
-                        <Container fluid className="padding-page" >
-                            <div className="">
-                            {/* <Link to="/AddEvent"><Button className="btn-custom" id="primary">ADD EVENT</Button></Link> */}
+                        <Container fluid>
                                 {
                                     this.state.events.map((item) => {
                                         return (
                                             <Col
                                                 xs={12}
-                                                sm={{ span: 10 }}
-                                                md={{ span: 6, offset: 3 }}
-                                                lg={{ span: 6, offset: 3 }}
-                                                className="p-1 pt-4"
+                                                sm={{ span: 10, offset: 1 }}
+                                                md={{ span: 10, offset: 1 }}
+                                                lg={{ span: 8, offset: 2 }}
+                                                className="mt-4"
                                             >
-                                                <Card className="form-card" id="list-card">
-                                                    <Container fluid>
+                                                <Card className="form-card p-2" id="list-card">
                                                         <Row>
-                                                            <Col className="">
+                                                            <Col>
                                                                 <Card.Body>
                                                                     <Row>
                                                                         <Col md={{ span: 10 }}>
-                                                                            <Card.Title className="title-event">{item.name}</Card.Title>
+                                                                            <Card.Title className="title-event pt-1">{item.name}</Card.Title>
                                                                         </Col>
                                                                     </Row>
                                                                     <Row>
@@ -121,16 +117,13 @@ class ListofEvent extends Component {
                                                                 </Card.Body>
                                                             </Col>
                                                         </Row>
-                                                    </Container>
                                                 </Card>
                                             </Col>
                                         )
                                     })
                                 }
-                            </div>
-                            <div className="pb-6" />
-                        </Container >
-                    </div>
+                        </Container>
+                    </Fragment>
                 )
             }
             if (!currentUser) {

@@ -1,4 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import { Table } from 'react-bootstrap'
+
 
 class StorageDataTable extends Component {
 
@@ -11,24 +13,18 @@ class StorageDataTable extends Component {
         let messageNodes = this.props.rows.map((r) => {
             return (
                 <tr key={r.no + r.name}>
-                    <td>{r.no}</td>
                     <td>{r.name}</td>
-                    <td>{r.contentType}</td>
-                    <td>{r.size} Mb</td>
                     <td><a target="_blank" href={r.downloadURLs}>Download</a></td>
-                    <td><a target="_blank" onClick={(e) => this.props.deleteData(e,r)}>Delete</a></td>
+                    <td><a href="" onClick={(e) => this.props.deleteData(e,r)}>Delete</a></td>
                 </tr>
             )
         });
         return (
             <div>
-                <table border="1" className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+                <Table striped bordered hover style={{ fontSize: 22}}>
                     <thead>
                         <tr>
-                            <th>No.</th>
                             <th>File Name</th>
-                            <th>File Type</th>
-                            <th>File Size</th>
                             <th>Download</th>
                             <th>Delete</th>
                         </tr>
@@ -36,7 +32,7 @@ class StorageDataTable extends Component {
                     <tbody>
                         {messageNodes}
                     </tbody>
-                </table>
+                </Table>
             </div>
           );
     }

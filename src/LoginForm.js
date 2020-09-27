@@ -87,20 +87,10 @@ class LoginForm extends React.Component {
             if (!currentUser) {
                 return (
 
-                    <Container fluid className="page-center">
-                        {/* <Nevbar /> */}
-                        {/* {showAlert ?
-                            <div>
-                                <Alert variant="danger" className="text-center" style={{ position: "fixed" }}>
-                                    Email or password is incorrect
-                                </Alert>
-                            </div>
-                            :
-                            ""
-                        } */}
-                        <Row className="">
-                            <Col xs={{ span: 12 }} sm={{ span: 8, offset: 2 }} lg={{ span: 6, offset: 3 }} className="" >
-                                <Card className="form-card">
+                    <Container fluid>
+                        <Row>
+                            <Col xs={{ span: 12 }} sm={{ span: 10, offset: 1 }} md={{ span: 10, offset: 1 }} lg={{ span: 6, offset: 3 }} >
+                                <Card className="form-card" style={{ marginTop: 80 }}>
                                     <Row>
                                         <Col className="col-img d-none d-lg-block">
                                             <Row>
@@ -112,8 +102,8 @@ class LoginForm extends React.Component {
                                             <img src={vectorCom} style={{ position: "absolute", bottom: 30, right: "40px" }} />
                                         </Col>
                                         <Col>
-                                            <h2 className="title-lable mt-6 mb-5 text-center" id="card-title"> LOGIN</h2>
-                                            <Form noValidate validated={validate} onSubmit={this.onSubmit} className="form ml-4 mr-4 mb-5 pl-5 pr-5">
+                                            <h2 className="title-lable my-4 pt-3 text-center" id="card-title"> LOGIN</h2>
+                                            <Form noValidate validated={validate} onSubmit={this.onSubmit} className="form m-4 px-4">
                                                 <Form.Label className="title-lable">EMAIL</Form.Label>
                                                 <Form.Group controlId="formBasicEmail" >
                                                     <Form.Control className="form" id="form-input" name="email" type="email" onChange={this.onChange} placeholder="Email" required />
@@ -128,19 +118,21 @@ class LoginForm extends React.Component {
                                                         Please enter password.
                                                     </Form.Control.Feedback>
                                                 </Form.Group>
-                                                <Row className="mt-3">
-                                                    <Col className="text-left">
-                                                    {showAlert ?
-                                                        <div className="link-path" id="alert-text">Email or password is incorrect</div>
-                                                        :
-                                                        ""
-                                                    }
-                                                    </Col>
+                                                <Row>
                                                     <Col className="text-right">
                                                         <Link to="#" className="link-path">Forgot password?</Link>
                                                     </Col>
                                                 </Row>
-                                                <Button variant="secondary" block id="primary-auth" className="btn-custom mt-5 mb-4" type="submit" >
+                                                <Row>
+                                                    <Col className="text-left">
+                                                        {showAlert ?
+                                                            <div className="alert-text">Email or password is incorrect</div>
+                                                            :
+                                                            ""
+                                                        }
+                                                    </Col>
+                                                </Row>
+                                                <Button variant="secondary" block id="primary-auth" className="btn-custom mt-3 mb-4" type="submit" >
                                                     LOGIN
                                                 </Button>
                                                 <div className="divider mt-5">

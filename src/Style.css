@@ -1,25 +1,30 @@
 
 @font-face{
-    /*font-family: Kanit-Regular;*/
-    font-family: Kanit;
-    /*src: url("./font/Kanit-Regular.ttf")*/
+    font-family: "Kanit";
+    font-style: normal;
     src: url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;500&display=swap');
-   /* src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&display=swap'); */
+}
+
+body {
+    font-family: "Kanit";
+    font-weight: 300;
+    background-color: #fefefe;
 }
 
 .navbar{
     width: 100%;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    /* justify-content: flex-end!important; */
 }
 
 #scroll-nav {
     top: 0;
-    box-shadow: 0px 0px 15px rgb(163, 163, 163);
 }
 
 #normal-nav {
     background-color: #FEFEFE;
+    box-shadow: 0px 0px 15px rgb(163, 163, 163);
+    z-index: 1;
+
 }
 
 .page-center {
@@ -38,31 +43,17 @@
 }
 
 .title-lable {
-    /* font-family: Roboto;
-    font-weight: 700; */
-    font-family: Kanit;
     font-weight: 500;
     color: #44506A;
-    /* letter-spacing: 1px; */
 }
 
 .title-event {
-    font-family: Kanit;
     font-weight: 500;
     font-size: 36px;
-    /* letter-spacing: 1px; */
 }
 
 #card-title {
     font-size: 48px;
-}
-
-html, body {
-    height: 100%;
-    background: scroll;
-    /* background-color: #bcd1ff; */
-    background-color: #eeeeee;
-    background-size: cover;
 }
 
 .bg-pic {
@@ -72,8 +63,7 @@ html, body {
     background-size: 100%;
 }
 
-body, .form {
-    font-family: Kanit;
+.form {
     font-weight: 300;
     letter-spacing: 1px;
 }
@@ -81,32 +71,28 @@ body, .form {
 .form{
     font-size: 16px;
     color: #44506A;
-    /* letter-spacing: 1px; */
 }
 
 .form-card {
     border-radius: 15px;
     background: #FEFEFE;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
     border: none;
 }
 
-#form-input {
+.form-input {
     border-radius: 20px;
-    /* padding-left: 4%;
-    padding-right: 4%; */
 }
 
 .title-event, #show-detail {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 1; /* number of lines to show */
+    -webkit-line-clamp: 1; 
     -webkit-box-orient: vertical;
 }
 
 .col-img {
-    /* background-color: #EAF0FF; */
     background-color: #FEFEFE;
     border-radius: 15px 0 0 15px;
     padding: 0;
@@ -132,11 +118,7 @@ body, .form {
 
 .btn-custom{
     border-radius: 20px;
-    height: 40px;
-    /* font-family: Roboto; */
-    font-family: Kanit;
     font-weight: 500;
-    font-size: 16px;
     letter-spacing: 1px;
 }
 
@@ -144,46 +126,11 @@ body, .form {
     text-decoration: none;
 }
 
-#primary, #secondary {
-    width: 130px;
-}
-
-#primary, #primary-auth {
-    /* background-color: #44506A; */
-    background: linear-gradient(269.49deg, #4A3CDB 8.93%, rgba(255, 255, 255, 0) 95.22%), #FF0A6C;
-    box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.5);
-    border: none;
-}
-
-#primary:hover, #primary-auth:hover {
-    /* box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.5); */
-    background: linear-gradient(269.49deg, #6F3CDB 8.93%, rgba(255, 255, 255, 0) 95.22%), #FF2264;
-}
-
-#secondary, #secondary-auth {
-    color: #FF0A6C;
-    box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.2);
-    background-color: white;
-    border-color: #FF0A6C;
-}
-
-#secondary:hover, #secondary-auth:hover {
-    /* box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.5); */
-    background-color: #FF0A6C;
-    color: white;
-}
-
-.link-path {
-    font-size: 14px;
-    letter-spacing: 1px;
-}
-
-#alert-text {
+.alert-text {
     color: red;
-}
-
-.btn-custom-sm{
-    border-radius: 10px;
+    font-size: 18px;
+    letter-spacing: 1px;
+    padding: 5px 0 0 15px;
 }
 
 .divider {
@@ -232,13 +179,6 @@ body, .form {
 }
 
 .crop {
-   /* width: 200px;
-   height: 150px;
-   overflow: hidden;
-   border-style: solid;
-   border-radius: 5px;
-   border-width: 1px;
-   margin: 5px; */
     position: relative;
     width: 150px;
     height: 150px;
@@ -249,9 +189,6 @@ body, .form {
 }
     
 .crop img {
-    /* width: 400px;
-    height: 300px;
-    margin: -75px 0 0 -100px; */
     position: absolute;
     left: 50%;
     top: 50%;
@@ -263,3 +200,46 @@ body, .form {
 }
 
 
+/* ============== Override Bootstrap ===============*/
+
+.container-fluid{
+    min-height: 100vh;
+    padding: 120px 20px;
+}
+
+.form-control-file, .form-control-range {
+    display: block;
+    width: 100%;
+    font-size: 25px;
+    background-color: #eeeeee;
+    padding: 15px 50px;
+    border: solid #afacac 0.5px;
+    border-radius: 40px;
+    font-weight: 300;
+}
+
+#primary, #secondary {
+    width: 130px;
+}
+
+#primary, #primary-auth {
+    background: linear-gradient(269.49deg, #4A3CDB 8.93%, rgba(255, 255, 255, 0) 95.22%), #FF0A6C;
+    box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.5);
+    border: none;
+}
+
+#primary:hover, #primary-auth:hover {
+    background: linear-gradient(269.49deg, #6F3CDB 8.93%, rgba(255, 255, 255, 0) 95.22%), #FF2264;
+}
+
+#secondary, #secondary-auth {
+    color: #FF0A6C;
+    box-shadow: 0px 0px 5px rgba(91, 118, 175, 0.2);
+    background-color: white;
+    border-color: #FF0A6C;
+}
+
+#secondary:hover, #secondary-auth:hover {
+    background-color: #FF0A6C;
+    color: white;
+}

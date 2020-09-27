@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { Button, Container, Col, Card } from 'react-bootstrap'
 import firebase from './firebase'
@@ -75,39 +75,41 @@ class MoreDetail extends React.Component {
         if (auth) {
             if (currentUser) {
                 return (
-                    <Container fluid >
+                    <Fragment>
                         <Nevbar />
-                        <Col
-                            xs={12}
-                            sm={{ span: 1 }}
-                            md={{ span: 8, offset: 1 }}
-                            lg={{ span: 10, offset: 1 }}
-                            className="p-3 Loginbox mt-3"
-                        >
-                            <Card>
-                                <Card.Body>
-                                    <Card.Title>{this.state.name} </Card.Title>
-                                    <Card.Text>{this.state.detail}</Card.Text>
-                                    <Card.Text> วันที่จัดงาน : {this.state.start_date} - {this.state.end_date} </Card.Text>
-                                    <Card.Text> เวลา : {this.state.start_time} - {this.state.end_time} </Card.Text>
-                                    <Card.Text> วันสิ้นสุดการประมวลผล : {this.state.dateline}</Card.Text>
-                                    <Link to={"/ListofParticipant/"+this.state.event_id} >
-                                        <Button variant="dark m-1">Participant</Button>
-                                    </Link >
-                                    <Link to={"/AddParticipant/"+ this.state.event_id} >
-                                        <Button variant="dark m-1">Add Participant</Button>
-                                    </Link >
-                                    <Link to={"/Upload/" + this.state.event_id} >
-                                        <Button variant="dark m-1">Process</Button>
-                                    </Link >
-                                    <Link to={"/EditEvent/" + this.state.event_id} >
-                                        <Button variant="outline-dark m-1" >Edit</Button>
-                                    </Link>
-                                    <Button variant="outline-dark m-1" onClick={() => this.removeItem(this.state.event_id)}>Delete</Button>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    </Container>
+                        <Container fluid>
+                            <Col
+                                xs={12}
+                                sm={{ span: 10, offset: 1 }}
+                                md={{ span: 10, offset: 1 }}
+                                lg={{ span: 8, offset: 2 }}
+                            >
+                                <Card className=" form-card p-3 mt-3">
+                                    <Card.Body>
+                                        <h2>{this.state.name}</h2>
+                                        <Card.Text>{this.state.detail}</Card.Text>
+                                        <Card.Text> วันที่จัดงาน : {this.state.start_date} - {this.state.end_date} </Card.Text>
+                                        <Card.Text> วันสิ้นสุดการประมวลผล : {this.state.dateline}</Card.Text>
+                                        {/* <Link to={"/ListofParticipant/" + this.state.event_id} >
+                                            <Button variant="dark my-1 mr-1">Participant</Button>
+                                        </Link >
+                                        <Link to={"/AddParticipant/" + this.state.event_id} >
+                                            <Button variant="dark m-1">Add Participant</Button>
+                                        </Link > */}
+                                        <div className="text-right">
+                                            <Link to={"/Upload/" + this.state.event_id} >
+                                                <Button className="btn-custom px-4 ml-2" variant="outline-dark">Process</Button>
+                                            </Link >
+                                            <Link to={"/EditEvent/" + this.state.event_id} >
+                                                <Button className="btn-custom px-4 ml-2" variant="outline-dark" >Edit</Button>
+                                            </Link>
+                                            <Button className="btn-custom px-4 ml-2" variant="outline-dark" onClick={() => this.removeItem(this.state.event_id)}>Delete</Button>
+                                        </div>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        </Container>
+                    </Fragment>
                 )
             }
             if (!currentUser) {

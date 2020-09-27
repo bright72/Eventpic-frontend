@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link, Redirect } from 'react-router-dom'
 // import { FilePond, registerPlugin, File } from 'react-filepond';
-import { Form, Input, Button } from 'react-bootstrap'
+import { Form, Row, Col, Button, Spinner, Card, Container } from 'react-bootstrap'
 
 
 import firebase from '../firebase/index';
@@ -208,9 +208,9 @@ class UploadFunction extends Component {
     }
 
     handleSubmit = () => {
-        const {emailPaticipant} = this.state
+        const { emailPaticipant } = this.state
         console.log("teasdfsf");
-        axios.get("/emailbakcend").then(responde => {
+        axios.get("/emailbackend").then(responde => {
             console.log(responde.data);
             console.log(responde.data.email)
             // this.setState({
@@ -220,9 +220,10 @@ class UploadFunction extends Component {
             let templateParams = {
                 to_email: responde.data.email,
                 to_name: responde.data.email,
-             
+
             }
-    
+            console.log(templateParams)
+
             emailjs.send(
                 'test555',
                 'template_p1ojhve',
@@ -231,6 +232,7 @@ class UploadFunction extends Component {
             )
         })
         console.log(this.state.emailPaticipant)
+        this.props.history.push('/ListOfEvent')
 
 
 
@@ -244,60 +246,53 @@ class UploadFunction extends Component {
         if (auth) {
             if (currentUser) {
                 return (
-                    <div className="App">
-                        {/* <Nevbar /> */}
-                        <div className="Margin-25">
-                            <Form onSubmit={this.handleProcessing.bind(this)}>
-                                <label>Select Files
-                                    <Form.Control
-                                        multiple
-                                        type="file"
-                                        onChange={this.handleImageAsFile.bind(this)}
+                    <Fragment>
+                        <Nevbar />
+                        <Container fluid>
+                            <Row className="mb-4">
+                                <Col
+                                    xs={{ span: 12 }}
+                                    sm={{ span: 8, offset: 2 }}
+                                    md={{ span: 8, offset: 2 }}
+                                    lg={{ span: 8, offset: 2 }}
+                                >
+                                    <Form onSubmit={this.handleProcessing.bind(this)} className="text-center">
+                                        <h2 className="mb-3">Select Picture of Event</h2>
+                                        <Form.Control
+                                            multiple
+                                            type="file"
+                                            onChange={this.handleImageAsFile.bind(this)}
+                                        />
+                                        <Button type="submit" className="btn-custom mt-3" id="primary" style={{ width: 280, height: 60, fontSize: "21px", borderRadius: 30 }}>Upload Event Picture</Button>
+                                    </Form>
+                                </Col>
+                                <Col
+                                    xs={{ span: 12 }}
+                                    sm={{ span: 8, offset: 2 }}
+                                    md={{ span: 8, offset: 2 }}
+                                    lg={{ span: 10, offset: 1 }}
+                                    className="mt-4"
+                                >
+                                    <StorageDataTable
+                                        rows={rows}
+                                        filesMetadata={this.filesMetadata}
+                                        deleteData={this.deleteMetaDataFromDatabase.bind(this)}
                                     />
-                                </label>
-                                <button type="submit">upload to firebase</button>
-                            </Form>
-
-                            <div>
-
-                                {/* <label>Select Files
-                                     <input type="file" multiple value={this.state.files} />
-                                </label>
-                                <button onClick={this.handleProcessing.bind(this)}>Upload</button> */}
-                                {/* {this.state.files.map(file => (
-                                    <File key={file} source={file} />
-                                ))} */}
-
-                                {/* {URLs.map(url => <div class="crop">
-                                    <img src={url.value} />
-                                </div>)}
-                                 <li key={URLs.index}><img src = {URLs.value}/></li>  */}
-                            </div>
-
-                            {/* <FilePond
-                                files={this.state.files}
-                                allowMultiple={true}
-                                maxFiles={5}
-                                // ref={ref => this.pond = ref}
-                                server={{
-                                    process: this.handleProcessing.bind(this),
-                                    //  revert: null
-                                }}
-                                oninit={() => this.handleInit()}
-                            >
-                                {this.state.files.map(file => (
-                                    <File key={file} source={file} />
-                                ))}
-                            </FilePond> */}
-
-                            <StorageDataTable
-                                rows={rows}
-                                filesMetadata={this.filesMetadata}
-                                deleteData={this.deleteMetaDataFromDatabase.bind(this)}
-                            />
-                            <Button onClick={this.handleSubmit}>Process and send email</Button>
-                        </div>
-                    </div>
+                                </Col>
+                                <Col
+                                    xs={{ span: 12 }}
+                                    sm={{ span: 8, offset: 2 }}
+                                    md={{ span: 8, offset: 2 }}
+                                    lg={{ span: 10, offset: 1 }}
+                                    className="text-lg-right"
+                                >
+                                    <Button onClick={this.handleSubmit} className="btn-custom mt-3" id="primary" style={{ width: 300, height: 55, fontSize: "20px", borderRadius: 30 }}>
+                                        Process and send email
+                                    </Button>
+                                </Col>
+                            </Row>
+                        </Container>
+                    </Fragment>
                 );
             }
             if (!currentUser) {
@@ -308,73 +303,10 @@ class UploadFunction extends Component {
         }
         else {
             return (
-                <div> Loading</div>
+                <div>Loading</div>
             )
         }
     }
 }
-// import React, { useState, Component } from 'react';
-// import firebase, { storage } from '../firebase';
-
-// const UploadFunction = (props) => {
-
-//     const [files, setFiles] = useState([])
-//     const [URLs, setURL] = useState([])
-//     //const urls2 = [];
-
-//     const onFileChange = e => {
-//         for (let i = 0; i < e.target.files.length; i++) {
-//             const newFile = e.target.files[i];
-//             newFile["id"] = Math.random();
-//             // add an "id" property to each File object
-//             setFiles(prevState => [...prevState, newFile]);
-//         }
-//     };
-
-//     const onUploadSubmission = e => {
-//         e.preventDefault(); // prevent page refreshing
-//         const promises = [];
-//         files.forEach(file => {
-//             const uploadTask =
-//                 firebase.storage().ref().child(`image/${file.name}`).put(file);
-//             promises.push(uploadTask);
-//             uploadTask.on(
-//                 firebase.storage.TaskEvent.STATE_CHANGED,
-//                 snapshot => {
-//                     const progress =
-//                         ((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-//                     if (snapshot.state === firebase.storage.TaskState.RUNNING) {
-//                         console.log(`Progress: ${progress}%`);
-//                     }
-//                 },
-//                 error => console.log(error.code),
-//                 async () => {
-//                     const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
-//                     setURL(URLs => [...URLs, { index: URLs.length, value: downloadURL }])
-//                     // do something with the url
-//                 }
-//             );
-//         });
-//         Promise.all(promises)
-//             // .then(() => alert('All files uploaded'))
-//             // .catch(err => console.log(err.code));
-//     }
-
-//     return (
-
-//         <div>
-
-//             <label>Select Files
-//             <input type="file" multiple onChange={onFileChange} />
-//             </label>
-//             <button onClick={onUploadSubmission}>Upload</button>
-
-//             {URLs.map(url => <div class="crop">
-//                 <img src={url.value} />
-//             </div>)}
-//             {/* <li key={URLs.index}><img src = {URLs.value}/></li> */}
-//         </div>
-//     )
-// }
 
 export default UploadFunction;

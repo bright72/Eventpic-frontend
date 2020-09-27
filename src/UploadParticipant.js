@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link, Redirect } from 'react-router-dom'
 import { FilePond, File, registerPlugin } from 'react-filepond';
 import firebase from './firebase/index';
@@ -207,7 +207,7 @@ class UploadParticipant extends Component {
         if (auth) {
             if (currentUser) {
                 return (
-                    <div className="App">
+                    <Fragment>
                         <Nevbar />
                         <div className="Margin-25">
                             <FilePond allowMultiple={true}
@@ -226,7 +226,7 @@ class UploadParticipant extends Component {
                                 deleteData={this.deleteMetaDataFromDatabase.bind(this)}
                             />
                         </div>
-                    </div>
+                    </Fragment>
                 );
             }
             if (!currentUser) {

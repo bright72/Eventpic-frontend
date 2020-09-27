@@ -15,7 +15,6 @@ import ListofParticipant from './ListofParticipant';
 import ContactForm from './ContactForm';
 import showdatabackend from './showdatabackend';
 import './Style.css'
-import 'bulma/css/bulma.css'
 
 const App = () => (
   <Router>

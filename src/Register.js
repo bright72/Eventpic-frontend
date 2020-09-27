@@ -20,7 +20,8 @@ class Register extends React.Component {
             conPassword: '',
             showAlert: false,
             redirect: false,
-            validate: false
+            validate: false,
+            message: ""
         }
     }
 
@@ -37,7 +38,7 @@ class Register extends React.Component {
     handleRegister = async (e) => {
         e.preventDefault()
         const form = e.currentTarget
-        const { email, password, conPassword, showAlert, redirect } = this.state
+        const { email, password, conPassword } = this.state
         if (form.checkValidity() === true) {
             if (password == conPassword) {
                 const response = await firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -54,17 +55,29 @@ class Register extends React.Component {
                             email: '',
                             password: '',
                         })
+                        this.props.history.push('/')
                     }).catch(error => {
+                        console.log(error)
                         this.setState({
-                            showAlert: true
+                            showAlert: true,
+                            message: error.message
                         })
                     })
+            }else{
+                this.setState({
+                    showAlert: true,
+                    message: "Password and confirm password incorrect"
+                })
             }
+        }else{
+            this.setState({
+                showAlert: true,
+                message: "Please fill your information completely."
+            })
         }
         this.setState({
             validate: true
         })
-        e.stopPropagation();
     }
 
     onChange = e => {
@@ -76,23 +89,15 @@ class Register extends React.Component {
 
 
     render() {
-        const { showAlert, redirect, validate } = this.state
+        const { showAlert, redirect, validate, message } = this.state
         if (redirect) {
             return <Redirect to="/login" />
         }
         return (
             <Container fluid className="page-center">
-                {showAlert ?
-                    <Alert variant="danger">
-                        Already has this account.
-                    </Alert>
-                    :
-                    ""
-                }
-
                 <Row className="">
-                    <Col xs={{ span: 12 }} sm={{ span: 8, offset: 2 }} lg={{ span: 6, offset: 3 }} className="" >
-                        <Card className="form-card">
+                    <Col xs={{ span: 12 }} sm={{ span: 10, offset: 1 }} md={{ span: 10, offset: 1 }} lg={{ span: 6, offset: 3 }} >
+                        <Card className="form-card" style={{ marginTop: 80 }}>
                             <Row>
                                 <Col className="col-img d-none d-lg-block">
                                     <Row>
@@ -104,26 +109,34 @@ class Register extends React.Component {
                                     <img src={vectorCom} style={{ position: "absolute", bottom: 30, right: "40px" }} />
                                 </Col>
                                 <Col>
-                                <h2 className="title-lable mt-6 mb-5 text-center" id="card-title">REGISTER</h2>
-                                {/* <Card.Title classname="card-title">Register</Card.Title> */}
-                                <Form noValidate validated={validate} className="form ml-4 mr-4 mb-5 pl-5 pr-5">
-                                    <Form.Label className="title-lable">EMAIL</Form.Label>
-                                    <Form.Group controlId="formBasicEmail" >
-                                        <Form.Control className="form" id="form-input" name="email" onChange={this.onChange} type="email" placeholder="Email" required />
-                                    </Form.Group>
-                                    <Form.Label className="title-lable">PASSWORD</Form.Label>
-                                    <Form.Group controlId="formBasicPassword">
-                                        <Form.Control className="form" id="form-input" name="password" onChange={this.onChange} type="password" placeholder="Password" required />
-                                    </Form.Group>
-                                    <Form.Label className="title-lable">CONFIRM PASSWORD</Form.Label>
-                                    <Form.Group controlId="formBasicPassword">
-                                        <Form.Control className="form" id="form-input" name="conPassword" onChange={this.onChange} type="password" placeholder="Confirm Password" required />
-                                    </Form.Group>
-                                    <Button id="primary-auth" block onClick={this.handleRegister} className="btn-custom mt-6 mb-3" >
-                                        REGISTER
+                                    <h2 className="title-lable my-4 pt-3 text-center" id="card-title">REGISTER</h2>
+                                    <Form noValidate validated={validate} onSubmit={this.handleRegister} className="form m-4 px-4">
+                                        <Form.Label className="title-lable">EMAIL</Form.Label>
+                                        <Form.Group controlId="formBasicEmail" >
+                                            <Form.Control className="form form-input"  name="email" onChange={this.onChange} type="email" placeholder="Email" required />
+                                        </Form.Group>
+                                        <Form.Label className="title-lable">PASSWORD</Form.Label>
+                                        <Form.Group controlId="formBasicPassword">
+                                            <Form.Control className="form form-input"  name="password" onChange={this.onChange} type="password" placeholder="Password" required />
+                                        </Form.Group>
+                                        <Form.Label className="title-lable">CONFIRM PASSWORD</Form.Label>
+                                        <Form.Group controlId="formBasicPassword">
+                                            <Form.Control className="form form-input"  name="conPassword" onChange={this.onChange} type="password" placeholder="Confirm Password" required />
+                                        </Form.Group>
+                                        <Row className="mt-3">
+                                            <Col className="text-left">
+                                                {showAlert ?
+                                                    <div className="alert-text">{message}</div>
+                                                    :
+                                                    ""
+                                                }
+                                            </Col>
+                                        </Row>
+                                        <Button id="primary-auth" block type="submit" className="btn-custom my-4" >
+                                            REGISTER
                                 </Button>
-                                <p className="divider-title mt-4 mb-5 text-center">Already have an account? <Link to="/Login" className="link-path">Login</Link></p>
-                                </Form>
+                                        <p className="divider-title mt-4 mb-5 text-center">Already have an account? <Link to="/Login" className="link-path">Login</Link></p>
+                                    </Form>
                                 </Col>
                             </Row>
                         </Card>
