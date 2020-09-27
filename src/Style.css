@@ -4,8 +4,9 @@
     font-family: Kanit;
     font-family: Roboto;
     /*src: url("./font/Kanit-Regular.ttf")*/
-    src: url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;500&display=swap');
-    src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&display=swap');
+    /* src: url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;500&display=swap');
+    src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&display=swap'); */
+    src: url('./font/Kanit-Light.ttf')
 }
 
 .navbar{
@@ -76,7 +77,7 @@ html, body {
 body, .form {
     font-family: Kanit;
     font-weight: 300;
-    /* letter-spacing: 1px; */
+    letter-spacing: 1px;
 }
 
 .form{
