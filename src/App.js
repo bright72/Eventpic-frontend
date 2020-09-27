@@ -13,6 +13,7 @@ import AddParticipant from './AddParticipant';
 import UploadParticipant from './UploadParticipant';
 import ListofParticipant from './ListofParticipant';
 import ContactForm from './ContactForm';
+import showdatabackend from './showdatabackend';
 import './Style.css'
 import 'bulma/css/bulma.css'
 
@@ -33,6 +34,7 @@ const App = () => (
       <Route exact path="/UploadParticipant" component={UploadParticipant} />
       <Route exact path="/ListofParticipant/:id" component={ListofParticipant} />
       <Route exact path="/ContactForm" component={ContactForm} />
+      <Route exact path="/showdatabackend" component={showdatabackend} />
     </Switch>
   </Router>
 
