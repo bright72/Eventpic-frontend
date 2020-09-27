@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap'
+import { Form, Button, Container, Row, Col, Alert, Card } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
 import firebase from './firebase'
@@ -91,86 +91,106 @@ class AddEvent extends Component {
         if (auth) {
             if (currentUser) {
                 return (
-                    <Container fluid >
-                        {/* <Nevbar /> */}
-                        <Row className=" m-4">
-                            <Col
-                                xs={12}
-                                sm={{ span: 10 }}
-                                md={{ span: 4, offset: 2 }}
-                                lg={{ span: 6, offset: 3 }}
-                                className="p-5 Loginbox"
-                            >
-                                <h2 className="text-center mt-2"> Add Event</h2>
-                                <Form noValidate validated={validate} onSubmit={this.handleSubmit} className="mt-4">
-                                    <Label>Name of Event</Label>
-                                    <Form.Group >
-                                        <Form.Control name="name" value={this.state.name} onChange={this.handleChange} type="text" placeholder="Name of Event" required />
-                                        <Form.Control.Feedback type="invalid">
-                                            Please Enter Name of Event
-                                    </Form.Control.Feedback>
-                                    </Form.Group>
-                                    <Form.Group controlId="exampleForm.ControlTextarea1">
-                                        <Form.Label>Detail of event</Form.Label>
-                                        <Form.Control name="detail" value={this.state.detail} onChange={this.handleChange} type="text" placeholder="Detail of event" as="textarea" rows="3" required />
-                                        <Form.Control.Feedback type="invalid">
-                                            Please Enter Detail of event
-                                    </Form.Control.Feedback>
-                                    </Form.Group>
-                                    <Form.Row>
-                                        <Col>
-                                            <Label>Start Date of Event</Label>
-                                            <Form.Group >
-                                                <Form.Control name="start_date" value={this.state.start_date} onChange={this.handleChange} type="date" placeholder="Date of Event" required />
-                                                <Form.Control.Feedback type="invalid">
-                                                    Please Select Start Date of Event
-                                    </Form.Control.Feedback>
-                                            </Form.Group>
-                                        </Col>
-                                        <Col>
-                                            <Label>End Date of Event</Label>
-                                            <Form.Group >
-                                                <Form.Control name="end_date" value={this.state.end_date} onChange={this.handleChange} type="date" placeholder="Date of Event" required />
-                                                <Form.Control.Feedback type="invalid">
-                                                    Please Select End Date of Event
-                                    </Form.Control.Feedback>
-                                            </Form.Group>
-                                        </Col>
-                                    </Form.Row>
-                                    <Form.Row>
-                                        <Col>
-                                            <Label>Start Time of Event</Label>
-                                            <Form.Group >
-                                                <Form.Control name="start_time" value={this.state.start_time} onChange={this.handleChange} type="time" placeholder="Date of Event" required />
-                                                <Form.Control.Feedback type="invalid">
-                                                    Please Select Start Time of Event
-                                    </Form.Control.Feedback>
-                                            </Form.Group>
-                                        </Col>
-                                        <Col>
-                                            <Label>End Time of Event</Label>
-                                            <Form.Group >
-                                                <Form.Control name="end_time" value={this.state.end_time} onChange={this.handleChange} type="time" placeholder="Date of Event" required />
-                                                <Form.Control.Feedback type="invalid">
-                                                    Please Select End Time of Event
-                                    </Form.Control.Feedback>
-                                            </Form.Group>
-                                        </Col>
-                                    </Form.Row>
-                                    <Label>Dateline</Label>
-                                    <Form.Group >
-                                        <Form.Control name="dateline" value={this.state.dateline} onChange={this.handleChange} type="date" placeholder="Dateline" required />
-                                        <Form.Control.Feedback type="invalid">
-                                            Please Select Dateline
-                                    </Form.Control.Feedback>
-                                    </Form.Group>
-                                    <Button variant="dark" block className=" mt-4 btn-custom" type="submit" >
-                                        Submit Event
-                                    </Button>
-                                </Form>
-                            </Col>
-                        </Row>
-                    </Container>
+                    <div>
+                        <Nevbar />
+                        <Container fluid className="">
+                            {/* <Nevbar /> */}
+                            <Row className="">
+                                <Col
+                                    xs={12}
+                                    sm={{ span: 10 }}
+                                    md={{ span: 4, offset: 4 }}
+                                    lg={{ span: 4, offset: 4 }}
+                                    className="padding-from-nav pt-sm-5 mb-5"
+                                >
+                                    <Card className="form-card">
+                                        <Row>
+                                            <Col>
+                                                <h2 className="title-lable mt-6 mb-5 text-center text-uppercase" id="card-title"> Add Event</h2>
+                                                <Form noValidate validated={validate} onSubmit={this.handleSubmit} className="form ml-4 mr-4 mb-5 pl-5 pr-5">
+                                                    <Form.Label className="title-lable mt-5 text-center text-uppercase">Name of Event</Form.Label>
+                                                    <Form.Group >
+                                                        <Form.Control className="form" id="form-input" name="name" value={this.state.name} onChange={this.handleChange} type="text" placeholder="Name of Event" required />
+                                                        <Form.Control.Feedback type="invalid">
+                                                            Please Enter Name of Event
+                                                        </Form.Control.Feedback>
+                                                    </Form.Group>
+                                                    <Form.Label className="title-lable text-center text-uppercase">Detail of event</Form.Label>
+                                                    <Form.Group controlId="exampleForm.ControlTextarea1">
+                                                        <Form.Control className="form" id="form-input" name="detail" value={this.state.detail} onChange={this.handleChange} type="text" placeholder="Detail of event" as="textarea" rows="5" required />
+                                                        <Form.Control.Feedback type="invalid">
+                                                            Please Enter Detail of event
+                                                        </Form.Control.Feedback>
+                                                    </Form.Group>
+                                                    <Form.Row>
+                                                        <Col>
+                                                            <Form.Label className="title-lable text-center text-uppercase">Start Date of Event</Form.Label>
+                                                            <Form.Group >
+                                                                <Form.Control className="form" id="form-input" name="start_date" value={this.state.start_date} onChange={this.handleChange} type="date" placeholder="Date of Event" required />
+                                                                <Form.Control.Feedback type="invalid">
+                                                                    Please Select Start Date of Event
+                                                                </Form.Control.Feedback>
+                                                            </Form.Group>
+                                                        </Col>
+                                                        <Col>
+                                                            <Form.Label className="title-lable text-center text-uppercase">End Date of Event</Form.Label>
+                                                            <Form.Group >
+                                                                <Form.Control className="form" id="form-input" name="end_date" value={this.state.end_date} onChange={this.handleChange} type="date" placeholder="Date of Event" required />
+                                                                <Form.Control.Feedback type="invalid">
+                                                                    Please Select End Date of Event
+                                                                </Form.Control.Feedback>
+                                                            </Form.Group>
+                                                        </Col>
+                                                    </Form.Row>
+                                                    <Form.Row>
+                                                        <Col>
+                                                            <Form.Label className="title-lable text-center text-uppercase">Start Time</Form.Label>
+                                                            <Form.Group >
+                                                                <Form.Control className="form" id="form-input" name="start_time" value={this.state.start_time} onChange={this.handleChange} type="time" placeholder="Date of Event" required />
+                                                                <Form.Control.Feedback type="invalid">
+                                                                    Please Select Start Time of Event
+                                                                </Form.Control.Feedback>
+                                                            </Form.Group>
+                                                        </Col>
+                                                        <Col>
+                                                            <Form.Label className="title-lable text-center text-uppercase">End Time</Form.Label>
+                                                            <Form.Group >
+                                                                <Form.Control className="form" id="form-input" name="end_time" value={this.state.end_time} onChange={this.handleChange} type="time" placeholder="Date of Event" required />
+                                                                <Form.Control.Feedback type="invalid">
+                                                                    Please Select End Time of Event
+                                                                </Form.Control.Feedback>
+                                                            </Form.Group>
+                                                        </Col>
+                                                    </Form.Row>
+                                                    <Form.Label className="title-lable text-center text-uppercase">Dateline</Form.Label>
+                                                    <Form.Group >
+                                                        <Form.Control className="form" id="form-input" name="dateline" value={this.state.dateline} onChange={this.handleChange} type="date" placeholder="Dateline" required />
+                                                        <Form.Control.Feedback type="invalid">
+                                                            Please Select Dateline
+                                                        </Form.Control.Feedback>
+                                                    </Form.Group>
+                                                    <div className="text-center">
+                                                        <Row>
+                                                            <Col className="text-right">
+                                                                <Link to="/ListofEvent"><Button variant="dark" id="secondary" className="btn-custom mt-5 mb-4 text-uppercase">
+                                                                    Cancle
+                                                                </Button></Link>
+                                                            </Col>
+                                                            <Col className="text-left">
+                                                                <Button variant="dark" id="primary" className="btn-custom mt-5 mb-4 text-uppercase" type="submit" >
+                                                                    Submit
+                                                                </Button>
+                                                            </Col>
+                                                        </Row>
+                                                    </div>
+                                                </Form>
+                                            </Col>
+                                        </Row>
+                                    </Card>
+                                </Col>
+                            </Row>
+                        </Container>
+                    </div>
                 )
             }
             if (!currentUser) {
