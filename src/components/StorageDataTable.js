@@ -15,7 +15,7 @@ class StorageDataTable extends Component {
                 <tr key={r.no + r.name}>
                     <td>{r.name}</td>
                     <td><a target="_blank" href={r.downloadURLs}>Download</a></td>
-                    <td><a href="" onClick={(e) => this.props.deleteData(e,r)}>Delete</a></td>
+                    <td><a target="_blank" href="" onClick={(e) => this.props.deleteData(e,r)}>Delete</a></td>
                 </tr>
             )
         });
