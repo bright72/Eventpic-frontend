@@ -210,8 +210,8 @@ class UploadFunction extends Component {
 
     handleSubmit = () => {
         const { emailPaticipant } = this.state
-        console.log("teasdfsf");
-        axios.get("/emailbackend").then(responde => {
+        console.log("before axios");
+        api.get("/emailbackend").then(responde => {
             console.log(responde.data);
             console.log(responde.data.email)
             // this.setState({
