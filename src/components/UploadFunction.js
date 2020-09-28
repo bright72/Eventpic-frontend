@@ -9,6 +9,7 @@ import StorageDataTable from './StorageDataTable';
 import Nevbar from '../Nevbar.js'
 import axios from "axios";
 import * as emailjs from 'emailjs-com'
+import api from '../utils/api'
 // Import FilePond styles
 // import 'filepond/dist/filepond.min.css';
 
@@ -198,7 +199,7 @@ class UploadFunction extends Component {
 
     onclickrespond = () => {
         console.log("teasdfsf");
-        axios.get("/emailbakcend").then(responde => {
+        api.get("/emailbakcend").then(responde => {
             console.log(responde.data);
             this.setState({
                 emailPaticipant: responde.data.email,
