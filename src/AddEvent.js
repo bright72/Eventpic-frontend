@@ -103,14 +103,14 @@ class AddEvent extends Component {
                                         <Form noValidate validated={validate} onSubmit={this.handleSubmit} className="form px-4">
                                             <Form.Label className="title-lable text-center text-uppercase">Name of Event</Form.Label>
                                             <Form.Group >
-                                                <Form.Control className="form" id="form-input" name="name" value={this.state.name} onChange={this.handleChange} type="text" placeholder="Name of Event" required />
+                                                <Form.Control className="form form-input" id="form-input" name="name" value={this.state.name} onChange={this.handleChange} type="text" placeholder="Name of Event" required />
                                                 <Form.Control.Feedback type="invalid">
                                                     Please Enter Name of Event
                                                         </Form.Control.Feedback>
                                             </Form.Group>
                                             <Form.Label className="title-lable text-center text-uppercase">Detail of event</Form.Label>
                                             <Form.Group controlId="exampleForm.ControlTextarea1">
-                                                <Form.Control className="form" id="form-input" name="detail" value={this.state.detail} onChange={this.handleChange} type="text" placeholder="Detail of event" as="textarea" rows="5" required />
+                                                <Form.Control className="form form-input" id="form-input" name="detail" value={this.state.detail} onChange={this.handleChange} type="text" placeholder="Detail of event" as="textarea" rows="5" required />
                                                 <Form.Control.Feedback type="invalid">
                                                     Please Enter Detail of event
                                                         </Form.Control.Feedback>
@@ -119,7 +119,7 @@ class AddEvent extends Component {
                                                 <Col>
                                                     <Form.Label className="title-lable text-center text-uppercase">Start Date of Event</Form.Label>
                                                     <Form.Group >
-                                                        <Form.Control className="form" id="form-input" name="start_date" value={this.state.start_date} onChange={this.handleChange} type="date" placeholder="Date of Event" required />
+                                                        <Form.Control className="form form-input" id="form-input" name="start_date" value={this.state.start_date} onChange={this.handleChange} type="date" placeholder="Date of Event" required />
                                                         <Form.Control.Feedback type="invalid">
                                                             Please Select Start Date of Event
                                                                 </Form.Control.Feedback>
@@ -128,7 +128,7 @@ class AddEvent extends Component {
                                                 <Col>
                                                     <Form.Label className="title-lable text-center text-uppercase">End Date of Event</Form.Label>
                                                     <Form.Group >
-                                                        <Form.Control className="form" id="form-input" name="end_date" value={this.state.end_date} onChange={this.handleChange} type="date" placeholder="Date of Event" required />
+                                                        <Form.Control className="form form-input" id="form-input" name="end_date" value={this.state.end_date} onChange={this.handleChange} type="date" placeholder="Date of Event" required />
                                                         <Form.Control.Feedback type="invalid">
                                                             Please Select End Date of Event
                                                                 </Form.Control.Feedback>
@@ -137,7 +137,7 @@ class AddEvent extends Component {
                                             </Form.Row>
                                             <Form.Label className="title-lable text-center text-uppercase">Dateline</Form.Label>
                                             <Form.Group >
-                                                <Form.Control className="form" id="form-input" name="dateline" value={this.state.dateline} onChange={this.handleChange} type="date" placeholder="Dateline" required />
+                                                <Form.Control className="form form-input" id="form-input" name="dateline" value={this.state.dateline} onChange={this.handleChange} type="date" placeholder="Dateline" required />
                                                 <Form.Control.Feedback type="invalid">
                                                     Please Select Dateline
                                                         </Form.Control.Feedback>

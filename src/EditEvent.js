@@ -159,29 +159,29 @@ class EditEvent extends Component {
                                         <Form onSubmit={this.handleSubmit} className="form px-4">
                                             <Label className="title-lable text-center text-uppercase">Event Name</Label>
                                             <Group>
-                                                <Control id="form-input" name="name" value={this.state.name} onChange={this.handleChange} type="text" placeholder="Name of Event" />
+                                                <Control className="form form-input" id="form-input" name="name" value={this.state.name} onChange={this.handleChange} type="text" placeholder="Name of Event" />
                                             </Group>
                                             <Form.Group controlId="exampleForm.ControlTextarea1">
                                                 <Form.Label className="title-lable text-center text-uppercase">Event Detail</Form.Label>
-                                                <Form.Control className="form" id="form-input" name="detail" value={this.state.detail} onChange={this.handleChange} type="text" placeholder="Detail of event" as="textarea" rows="5" />
+                                                <Form.Control className="form form-input" id="form-input" name="detail" value={this.state.detail} onChange={this.handleChange} type="text" placeholder="Detail of event" as="textarea" rows="5" />
                                             </Form.Group>
                                             <Form.Row>
                                                 <Col>
                                                     <Label className="title-lable text-center text-uppercase">Start date</Label>
                                                     <Group>
-                                                        <Control className="form" id="form-input" name="start_date" value={this.state.start_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
+                                                        <Control className="form form-input" id="form-input" name="start_date" value={this.state.start_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
                                                     </Group>
                                                 </Col>
                                                 <Col>
                                                     <Label className="title-lable text-center text-uppercase">End date</Label>
                                                     <Group>
-                                                        <Control className="form" id="form-input" name="end_date" value={this.state.end_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
+                                                        <Control className="form form-input" id="form-input" name="end_date" value={this.state.end_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
                                                     </Group>
                                                 </Col>
                                             </Form.Row>
                                             <Label className="title-lable text-center text-uppercase">Dateline</Label>
                                             <Group>
-                                                <Control className="form" id="form-input" name="dateline" value={this.state.dateline} onChange={this.handleChange} type="date" placeholder="Dateline" />
+                                                <Control className="form form-input" id="form-input" name="dateline" value={this.state.dateline} onChange={this.handleChange} type="date" placeholder="Dateline" />
                                             </Group>
                                             <Row className="mb-4 text-center" style={{ marginTop: "35px" }}>
                                                 <Col>

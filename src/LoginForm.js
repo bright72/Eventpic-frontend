@@ -106,14 +106,14 @@ class LoginForm extends React.Component {
                                             <Form noValidate validated={validate} onSubmit={this.onSubmit} className="form m-4 px-4">
                                                 <Form.Label className="title-lable">EMAIL</Form.Label>
                                                 <Form.Group controlId="formBasicEmail" >
-                                                    <Form.Control className="form" id="form-input" name="email" type="email" onChange={this.onChange} placeholder="Email" required />
+                                                    <Form.Control className="form form-input" id="form-input" name="email" type="email" onChange={this.onChange} placeholder="Email" required />
                                                     <Form.Control.Feedback type="invalid">
                                                         Please enter email.
                                                     </Form.Control.Feedback>
                                                 </Form.Group>
                                                 <Form.Label className="title-lable">PASSWORD</Form.Label>
                                                 <Form.Group controlId="formBasicPassword" className="">
-                                                    <Form.Control className="form" id="form-input" name="password" onChange={this.onChange} type="password" placeholder="Password" required />
+                                                    <Form.Control className="form form-input" id="form-input" name="password" onChange={this.onChange} type="password" placeholder="Password" required />
                                                     <Form.Control.Feedback type="invalid">
                                                         Please enter password.
                                                     </Form.Control.Feedback>
