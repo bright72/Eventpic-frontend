@@ -243,3 +243,16 @@ body {
     background-color: #FF0A6C;
     color: white;
 }
+
+#picture-panticipant .form-check{
+    position: absolute;
+    top: 0;
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+.form-check input[type=checkbox]{
+    height: 20px;
+    width: 20px;
+}
+

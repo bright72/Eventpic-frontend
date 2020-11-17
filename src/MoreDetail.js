@@ -104,6 +104,9 @@ class MoreDetail extends React.Component {
                                                 <Button className="btn-custom px-4 ml-2" variant="outline-dark" >Edit</Button>
                                             </Link>
                                             <Button className="btn-custom px-4 ml-2" variant="outline-dark" onClick={() => this.removeItem(this.state.event_id)}>Delete</Button>
+                                            <Link to={"/UploadParticipant/" + this.state.event_id} >
+                                                <Button className="btn-custom px-4 ml-2" variant="outline-dark">Add Participant</Button>
+                                            </Link >
                                         </div>
                                     </Card.Body>
                                 </Card>

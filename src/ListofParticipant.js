@@ -1,24 +1,23 @@
-import React from 'react'
+import React, { Component, Fragment } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { Button, Container, Col, Card } from 'react-bootstrap'
 import firebase from './firebase'
 import Nevbar from './Nevbar.js'
 
-class ListofParticipant extends React.Component {
+class ListofParticipant extends Component {
 
     constructor(props) {
         super()
         this.state = {
             events: [],
             event_id: props.match.params.id,
-            email:'',
             currentUser: null,
-            auth: false
+            auth: false,
+            participant: []
         }
     }
 
     componentDidMount() {
-        console.log(this.state.event_id)
         let self = this
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
@@ -29,67 +28,71 @@ class ListofParticipant extends React.Component {
             this.setState({
                 auth: true
             })
-            const { email} = self.state
+            const { email } = self.state
             firebase.database().ref("user").orderByChild("email").equalTo(user.email)
-                .on("child_added",  function (snapshot) {
-                    console.log(snapshot.key)
-                    // console.log(this.state.event_id)
+                .on("child_added", function (snapshot) {
                     const itemsRef = firebase.database().ref(`user/${snapshot.key}/event/${self.state.event_id}/participant`)
-                    itemsRef.child(self.state.event_id).on("value", (snapshot) => {
-                        console.log(snapshot.val())
-                        let item = snapshot.val()
-                        // console.log(this.state.event_id + " : " + item.name)
-                        if (item) {
-                            self.setState({
-                                email: item.email
+                    itemsRef.on("value", (snapshot) => {
+                        let items = snapshot.val()
+                        let temp = []
+                        for (const property in items) {
+                            temp.push({
+                                id: property,
+                                email: items[property].email,
+                                imageChecked: items[property].is_select_image,
                             })
                         }
+                        console.log(temp)
+                        self.setState({
+                            participant: temp
+                        })
+
                     })
                 })
         })
-        this.props.history.push('/MoreDetail/' + this.state.event_id);
     }
 
-    // removeItem = event_id => {
-    //     let keypath = ""
-    //     firebase.database().ref("user").orderByChild("email").equalTo(this.state.currentUser.email)
-    //         .on("child_added", function (snapshot) {
-    //             console.log("นี่คือคีย์")
-    //             console.log(snapshot.key)
-    //             keypath = snapshot.key
-    //         })
-    //     const itemsRef = firebase.database().ref(`user/${keypath}/event`)
-    //     itemsRef.child(event_id).remove()
-    //     this.props.history.push('/ListofEvent')
-    // }
 
     render() {
-        const { currentUser, auth, email,events} = this.state
+        const { currentUser, auth, participant, event_id } = this.state
         if (auth) {
             if (currentUser) {
                 return (
-                    <Container fluid >
+                    <Fragment>
                         <Nevbar />
-                        {
-                            this.state.events.map((item) => {
-                                return (
-                                    <Col
-                                        xs={12}
-                                        sm={{ span: 10 }}
-                                        md={{ span: 8, offset: 2 }}
-                                        lg={{ span: 8, offset: 2 }}
-                                        className="p-3 Loginbox mt-3"
-                                    >
-                                        <Card>
-                                            <Card.Body>
-                                                <Card.Title>{item.email}</Card.Title>
-                                            </Card.Body>
-                                        </Card>
-                                    </Col>
-                                )
-                            })
-                        }
-                    </Container >
+                        <Container fluid >
+                            {
+                                participant.map((i) => {
+                                    return (
+                                        <Col
+                                            xs={12}
+                                            sm={{ span: 10 }}
+                                            md={{ span: 8, offset: 2 }}
+                                            lg={{ span: 8, offset: 2 }}
+                                            className="p-3 Loginbox mt-3"
+                                        >
+                                            <Card>
+                                                <Card.Body>
+                                                    <Card.Title>{i.email}</Card.Title>
+                                                    <div className="text-right">
+                                                    {i.imageChecked ?
+                                                        <Link to={`/ViewPicture/${event_id}/${i.id}`} className="btn-link" >
+                                                            <Button className="btn-custom mr-0" id="primary">View</Button>
+                                                        </Link>
+                                                        :
+                                                        <Link to={`./${event_id}/ChoosePicture/${i.id}`} className="btn-link" >
+                                                            <Button className="btn-custom mr-0" id="primary" style={{ width: 200 }}>CHOOSE PICTURE</Button>
+                                                        </Link>
+                                                    }
+                                                    </div>
+                                                </Card.Body>
+                                            </Card>
+                                        </Col>
+                                    )
+                                })
+                            }
+                        </Container >
+                    </Fragment>
                 )
             }
             if (!currentUser) {

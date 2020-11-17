@@ -9,11 +9,13 @@ import MoreDetail from './MoreDetail.js';
 import ShowPicture from './ShowPicture.js';
 import Upload from './components/UploadFunction.js'
 import UploadTest from './components/Upload';
-import AddParticipant from './AddParticipant';
 import UploadParticipant from './UploadParticipant';
 import ListofParticipant from './ListofParticipant';
+import ViewPicture from './ViewPicture';
+import ChoosePicture from './ChoosePicture';
 import ContactForm from './ContactForm';
 import showdatabackend from './showdatabackend';
+import AllowsPictures from './AllowsPictures';
 import './Style.css'
 
 const App = () => (
@@ -29,11 +31,14 @@ const App = () => (
       <Route exact path="/ShowPicture" component={ShowPicture} />
       <Route exact path="/Upload/:id" component={Upload} />
       <Route exact path="/UploadTest" component={UploadTest} />
-      <Route exact path="/AddParticipant/:id" component={AddParticipant} />
-      <Route exact path="/UploadParticipant" component={UploadParticipant} />
+      <Route exact path="/UploadParticipant/:id" component={UploadParticipant} />
       <Route exact path="/ListofParticipant/:id" component={ListofParticipant} />
+      <Route exact path="/ListofParticipant/:event_id/ChoosePicture/:participant_id" component={ChoosePicture} />
+      <Route exact path="/ViewPicture/:event_id/:participant_id" component={ViewPicture} />
       <Route exact path="/ContactForm" component={ContactForm} />
       <Route exact path="/showdatabackend" component={showdatabackend} />
+      <Route exact path="/allow/:organize_id/:event_id/:participant_id" component={AllowsPictures} />
+      
     </Switch>
   </Router>
 

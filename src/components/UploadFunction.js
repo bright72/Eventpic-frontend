@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { Link, Redirect } from 'react-router-dom'
-// import { FilePond, registerPlugin, File } from 'react-filepond';
 import { Form, Row, Col, Button, Spinner, Card, Container } from 'react-bootstrap'
 
 
@@ -9,6 +8,7 @@ import StorageDataTable from './StorageDataTable';
 import Nevbar from '../Nevbar.js'
 import axios from "axios";
 import * as emailjs from 'emailjs-com'
+<<<<<<< Updated upstream
 import api from '../utils/api'
 // Import FilePond styles
 // import 'filepond/dist/filepond.min.css';
@@ -18,6 +18,8 @@ import api from '../utils/api'
 // import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 
 // registerPlugin(FilePondImagePreview);
+=======
+>>>>>>> Stashed changes
 
 
 class UploadFunction extends Component {
@@ -37,8 +39,6 @@ class UploadFunction extends Component {
         img: []
 
     }
-    // Initialize Firebase
-
 
     //ใช้ตอนที่ยังไม่ Mount DOM
     async componentWillMount() {
@@ -121,7 +121,7 @@ class UploadFunction extends Component {
 
     }
 
-    //โหลดข้อมูลเข้า list table
+    //แอดข้อมูลเข้า list table
     async addMetadataToList() {
         let i = 1;
         let rows = [];
@@ -185,10 +185,11 @@ class UploadFunction extends Component {
                         fullPath: metadata.fullPath,
                         downloadURLs: downloadUrl,
                     }
+                    let is_allow_all_panticipant = true
                     const databaseRef = firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/images`);
                     console.log(metadataFile)
                     databaseRef.push({
-                        metadataFile
+                        metadataFile,is_allow_all_panticipant
                     })
                 }).catch(function (error) {
                     console.log(`Upload error : ${error.message}`)
@@ -287,14 +288,16 @@ class UploadFunction extends Component {
                                     lg={{ span: 10, offset: 1 }}
                                     className="text-lg-right"
                                 >
-                                    <Button onClick={this.handleSubmit} className="btn-custom mt-3" id="primary" style={{ width: 300, height: 55, fontSize: "20px", borderRadius: 30 }}>
-                                        Process and send email
+                                    <Link to={"/ListofParticipant/"+this.state.event_id} >
+                                        <Button className="btn-custom mt-3" id="primary" style={{ width: 300, height: 55, fontSize: "20px", borderRadius: 30 }}>
+                                            Next
                                     </Button>
+                                    </Link>
                                 </Col>
                             </Row>
                         </Container>
-                    </Fragment>
-                );
+                    </Fragment >
+                )
             }
             if (!currentUser) {
                 return (
