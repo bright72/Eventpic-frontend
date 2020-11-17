@@ -8,7 +8,6 @@ import StorageDataTable from './StorageDataTable';
 import Nevbar from '../Nevbar.js'
 import axios from "axios";
 import * as emailjs from 'emailjs-com'
-<<<<<<< Updated upstream
 import api from '../utils/api'
 // Import FilePond styles
 // import 'filepond/dist/filepond.min.css';
@@ -18,8 +17,6 @@ import api from '../utils/api'
 // import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 
 // registerPlugin(FilePondImagePreview);
-=======
->>>>>>> Stashed changes
 
 
 class UploadFunction extends Component {
