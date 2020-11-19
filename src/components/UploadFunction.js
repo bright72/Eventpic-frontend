@@ -78,7 +78,6 @@ class UploadFunction extends Component {
 
     getMetaDataFromDatabase() {
         const databaseRef = firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id ? this.state.event_id : null}/images`);
-
         databaseRef.on('value', snapshot => {
             this.setState({
                 filesMetadata: snapshot.val()
@@ -221,7 +220,7 @@ class UploadFunction extends Component {
             event_id: this.state.event_id,
             user_id: this.state.keypath
         }
-        axios.post(`http://localhost:9000/test_api`,JSON.stringify(data))
+        axios.post(`http://localhost:9000/test_api`,data)
         console.log("after axios");
         // api.get("/emailbackend").then(responde => {
         //     console.log(responde.data);
