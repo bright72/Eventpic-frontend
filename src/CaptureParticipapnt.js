@@ -1,6 +1,7 @@
 import React from 'react'
 import Webcam from 'react-webcam'
 import { Button, Row, Col } from 'react-bootstrap'
+import firebase from './firebase'
 
 const CaptureParticipapnt = (props) => {
     const webcamRef = React.useRef(null)
@@ -17,6 +18,11 @@ const CaptureParticipapnt = (props) => {
 
     )
     console.log(imgSrc)
+    // let message = imgSrc;
+    // let storageRef = firebase.storage().ref('image');
+    // storageRef.putString(message, 'data_url').then(function (snapshot) {
+    //     console.log('Uploaded a data_url string!');
+    // });
 
     const renew = () => {
         setImgSrc(null)

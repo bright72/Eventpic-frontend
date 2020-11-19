@@ -39,6 +39,11 @@ class UploadParticipant extends Component {
         this.setState({
             file: file
         })
+        console.log(file)
+        let storageRef = firebase.storage().ref('image');
+        storageRef.put(file).then(function(snapshot) {
+            console.log('Uploaded a blob or file!');
+          });
     }
 
     getUser = () => {

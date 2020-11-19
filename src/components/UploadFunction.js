@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import { Link, Redirect } from 'react-router-dom'
 import { Form, Row, Col, Button, Spinner, Card, Container } from 'react-bootstrap'
 
-
 import firebase from '../firebase/index';
 import StorageDataTable from './StorageDataTable';
 import Nevbar from '../Nevbar.js'
@@ -39,7 +38,6 @@ class UploadFunction extends Component {
 
     //ใช้ตอนที่ยังไม่ Mount DOM
     async componentWillMount() {
-
         let user = await this.getUser();
         let key = await this.getKey(user)
         this.setState({
@@ -139,7 +137,6 @@ class UploadFunction extends Component {
                 size: (fileData.metadataFile.size),
                 contentType: fileData.metadataFile.contentType,
             }
-
             rows.push(objRows)
         }
 
@@ -206,34 +203,49 @@ class UploadFunction extends Component {
         })
     }
 
+    handleChange = () => {
+        //this.setState({ event_id: event.target.value });
+      }
+
     handleSubmit = () => {
-        const { emailPaticipant } = this.state
+        //const { emailPaticipant } = this.state
+        console.log('work')
+        //event.preventDefault();
         console.log("before axios");
-        api.get("/emailbackend").then(responde => {
-            console.log(responde.data);
-            console.log(responde.data.email)
-            // this.setState({
-            //     emailPaticipant: responde.data.email,
-            //     img: responde.data.img
-            // })
-            let templateParams = {
-                to_email: responde.data.email,
-                to_name: responde.data.email,
+        // axios.post(`https://localhost:9000/test_api2`)
+        // .then(res => {
+        //     console.log(res);
+        //     console.log(res.data);
+        //   })
+        const data = {
+            event_id: this.state.event_id,
+            user_id: this.state.keypath
+        }
+        axios.post(`http://localhost:9000/test_api`,JSON.stringify(data))
+        console.log("after axios");
+        // api.get("/emailbackend").then(responde => {
+        //     console.log(responde.data);
+        //     console.log(responde.data.email)
+        //     // this.setState({
+        //     //     emailPaticipant: responde.data.email,
+        //     //     img: responde.data.img
+        //     // })
+        //     let templateParams = {
+        //         to_email: responde.data.email,
+        //         to_name: responde.data.email,
 
-            }
-            console.log(templateParams)
+        //     }
+        //     console.log(templateParams)
 
-            emailjs.send(
-                'test555',
-                'template_p1ojhve',
-                templateParams,
-                'user_taSKZdwaRwk1j4rwI0eXi'
-            )
-        })
-        console.log(this.state.emailPaticipant)
-        this.props.history.push('/ListOfEvent')
-
-
+        //     emailjs.send(
+        //         'test555',
+        //         'template_p1ojhve',
+        //         templateParams,
+        //         'user_taSKZdwaRwk1j4rwI0eXi'
+        //     )
+        // })
+        //console.log(this.state.emailPaticipant)
+        //this.props.history.push('/ListOfEvent')
 
     }
 
@@ -285,11 +297,11 @@ class UploadFunction extends Component {
                                     lg={{ span: 10, offset: 1 }}
                                     className="text-lg-right"
                                 >
-                                    <Link to={"/ListofParticipant/"+this.state.event_id} >
-                                        <Button className="btn-custom mt-3" id="primary" style={{ width: 300, height: 55, fontSize: "20px", borderRadius: 30 }}>
+                                    {/* <Link to={"/ListofParticipant/"+this.state.event_id} > */}
+                                        <Button onClick={() => this.handleSubmit()} className="btn-custom mt-3" id="primary" style={{ width: 300, height: 55, fontSize: "20px", borderRadius: 30 }}>
                                             Next
                                     </Button>
-                                    </Link>
+                                    {/* </Link> */}
                                 </Col>
                             </Row>
                         </Container>
