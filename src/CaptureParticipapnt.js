@@ -11,6 +11,7 @@ const CaptureParticipapnt = (props) => {
   const capture = React.useCallback(async () => {
     const imgSrc = webcamRef.current.getScreenshot();
     let file = dataURLtoFile(imgSrc, "temp.jpg");
+    // let file = dataURLtoFile(imgSrc, `${i}.jpg`);
     setImgSrc(imgSrc);
     // props.setFile(file);
   }, [webcamRef, setImgSrc]);
@@ -65,24 +66,23 @@ const CaptureParticipapnt = (props) => {
   };
 
   const displayExtractedFaces = (faceImages) => {
-    const canvas = document.createElement('canvas')
-    
+    const canvas = document.createElement('img')
     console.log("Canvas: ", canvas)
     faceapi.matchDimensions(canvas, $('#hola').get(0))
-    $('#facesContainer').empty()
     faceImages.forEach(canvas => $('#facesContainer').append(canvas))
+    Array.from($('#facesContainer').children()).map(elem => console.log(elem.toDataURL()))
   }
 
   const isFaceDetectionModelLoaded = () => {
     return !!getCurrentFaceDetectionNet().params;
   };
 
-  useEffect(() => {
-    if ($("#hola")) {
-      isFaceDetectionModelLoaded();
-      extractFace();
-    }
-  }, null);
+//   useEffect(() => {
+//     if ($("#hola")) {
+//       isFaceDetectionModelLoaded();
+//       extractFace();
+//     }
+//   }, null);
 
   return (
     <Row>
@@ -117,7 +117,7 @@ const CaptureParticipapnt = (props) => {
           Capture
         </Button>
         <Button id="primary" className="btn-custom mr-2" onClick={extractFace}>
-          Test
+          Confirm
         </Button>
         <Button
           id="primary"
