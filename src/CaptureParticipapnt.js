@@ -4,10 +4,10 @@ import { Button, Row, Col } from "react-bootstrap";
 import firebase from "./firebase";
 import * as faceapi from "face-api.js";
 import $ from "jquery";
+
 const CaptureParticipapnt = (props) => {
   const webcamRef = React.useRef(null);
   const [imgSrc, setImgSrc] = React.useState(null);
-
   const capture = React.useCallback(async () => {
     const imgSrc = webcamRef.current.getScreenshot();
     let file = dataURLtoFile(imgSrc, "temp.jpg");
@@ -49,6 +49,7 @@ const CaptureParticipapnt = (props) => {
     if (!isFaceDetectionModelLoaded()) {
       console.log("Loading...");
       await faceapi.nets.ssdMobilenetv1.load("/weights");
+      console.log(faceapi);
     }
     console.log("tesrt");
     const detections = await faceapi.detectAllFaces($("#hola").get(0), new faceapi.SsdMobilenetv1Options(0.5));
@@ -70,7 +71,7 @@ const CaptureParticipapnt = (props) => {
     console.log("Canvas: ", canvas)
     faceapi.matchDimensions(canvas, $('#hola').get(0))
     faceImages.forEach(canvas => $('#facesContainer').append(canvas))
-    Array.from($('#facesContainer').children()).map(elem => console.log(elem.toDataURL()))
+    Array.from($('#facesContainer').children()).map(elem => setImgSrc(elem.toDataURL()))
   }
 
   const isFaceDetectionModelLoaded = () => {
