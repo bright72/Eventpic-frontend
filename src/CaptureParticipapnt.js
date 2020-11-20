@@ -1,88 +1,137 @@
-import React from 'react'
-import Webcam from 'react-webcam'
-import { Button, Row, Col } from 'react-bootstrap'
-import firebase from './firebase'
-
+import React, { useEffect } from "react";
+import Webcam from "react-webcam";
+import { Button, Row, Col } from "react-bootstrap";
+import firebase from "./firebase";
+import * as faceapi from "face-api.js";
+import $ from "jquery";
 const CaptureParticipapnt = (props) => {
-    const webcamRef = React.useRef(null)
-    const [imgSrc, setImgSrc] = React.useState(null)
+  const webcamRef = React.useRef(null);
+  const [imgSrc, setImgSrc] = React.useState(null);
 
-    const capture = React.useCallback(
-        async () => {
-            const imgSrc = webcamRef.current.getScreenshot()
-            let file = dataURLtoFile(imgSrc, "temp.jpg")
-            setImgSrc(imgSrc)
-            props.setFile(file)
-        },
-        [webcamRef, setImgSrc]
+  const capture = React.useCallback(async () => {
+    const imgSrc = webcamRef.current.getScreenshot();
+    let file = dataURLtoFile(imgSrc, "temp.jpg");
+    setImgSrc(imgSrc);
+    // props.setFile(file);
+  }, [webcamRef, setImgSrc]);
+  console.log(imgSrc);
+  // let message = imgSrc;
+  // let storageRef = firebase.storage().ref('image');
+  // storageRef.putString(message, 'data_url').then(function (snapshot) {
+  //     console.log('Uploaded a data_url string!');
+  // });
 
-    )
-    console.log(imgSrc)
-    // let message = imgSrc;
-    // let storageRef = firebase.storage().ref('image');
-    // storageRef.putString(message, 'data_url').then(function (snapshot) {
-    //     console.log('Uploaded a data_url string!');
-    // });
+  const renew = () => {
+    setImgSrc(null);
+    props.setFile(null);
+  };
 
-    const renew = () => {
-        setImgSrc(null)
-        props.setFile(null)
+  const dataURLtoFile = (dataurl, filename) => {
+    var arr = dataurl.split(","),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
     }
 
-    const dataURLtoFile = (dataurl, filename) => {
+    return new File([u8arr], filename, { type: "image/jpeg" });
+  };
 
-        var arr = dataurl.split(','),
-            mime = arr[0].match(/:(.*?);/)[1],
-            bstr = atob(arr[1]),
-            n = bstr.length,
-            u8arr = new Uint8Array(n);
-
-        while (n--) {
-            u8arr[n] = bstr.charCodeAt(n);
-        }
-
-        return new File([u8arr], filename, { type: "image/jpeg" });
+  const extractFace = async (file) => {
+    console.log("Hola", $("#hola").get(0));
+    if (!$("#hola").get(0)) {
+      return;
     }
+    if (!isFaceDetectionModelLoaded()) {
+      console.log("Loading...");
+      await faceapi.nets.ssdMobilenetv1.load("/weights");
+    }
+    console.log("tesrt");
+    const detections = await faceapi.detectAllFaces($("#hola").get(0), new faceapi.SsdMobilenetv1Options(0.5));
+    const faceImages = await faceapi.extractFaces(
+      $("#hola").get(0),
+      detections
+    );
+    
+    console.log("test", faceImages);
+    displayExtractedFaces(faceImages)
+  };
 
-    return (
-        <Row>
-            <Col className="text-center mt-3" >
-                {imgSrc ?
-                    (<img src={imgSrc} />)
-                    :
-                    (<Webcam
-                        audio={false}
-                        ref={webcamRef}
-                        screenshotFormat="image/jpeg"
-                        width={600}
-                        videoConstraints={{
-                            width: 1280,
-                            height: 720,
-                            facingMode: "user"
-                        }}
-                    />)
-                }
-            </Col>
-            <Col
-                s={12}
-                sm={{ span: 10, offset: 1 }}
-                md={{ span: 8, offset: 2 }}
-                lg={{ span: 8, offset: 2 }}
-                className="text-center my-4"
-            >
-                <Button id="primary" className="btn-custom mr-2" onClick={renew}>
-                    Renew
-                </Button>
-                <Button id="primary" className="btn-custom mr-2" onClick={capture} >
-                    Capture
-                </Button>
-                <Button id="primary" type="submit" className="btn-custom" disabled={imgSrc === null}>
-                    Comfirm
-                </Button>
-            </Col>
-        </Row>
-    )
-}
+  const getCurrentFaceDetectionNet = async () => {
+    return await faceapi.nets.ssdMobilenetv1;
+  };
 
-export default CaptureParticipapnt
+  const displayExtractedFaces = (faceImages) => {
+    const canvas = document.createElement('canvas')
+    
+    console.log("Canvas: ", canvas)
+    faceapi.matchDimensions(canvas, $('#hola').get(0))
+    $('#facesContainer').empty()
+    faceImages.forEach(canvas => $('#facesContainer').append(canvas))
+  }
 
+  const isFaceDetectionModelLoaded = () => {
+    return !!getCurrentFaceDetectionNet().params;
+  };
+
+  useEffect(() => {
+    if ($("#hola")) {
+      isFaceDetectionModelLoaded();
+      extractFace();
+    }
+  }, null);
+
+  return (
+    <Row>
+      <Col className="text-center mt-3">
+        {imgSrc ? (
+          <img id="hola" src={imgSrc} />
+        ) : (
+          <Webcam
+            audio={false}
+            ref={webcamRef}
+            screenshotFormat="image/jpeg"
+            width={600}
+            videoConstraints={{
+              width: 1280,
+              height: 720,
+              facingMode: "user",
+            }}
+          />
+        )}
+      </Col>
+      <Col
+        s={12}
+        sm={{ span: 10, offset: 1 }}
+        md={{ span: 8, offset: 2 }}
+        lg={{ span: 8, offset: 2 }}
+        className="text-center my-4"
+      >
+        <Button id="primary" className="btn-custom mr-2" onClick={renew}>
+          Renew
+        </Button>
+        <Button id="primary" className="btn-custom mr-2" onClick={capture}>
+          Capture
+        </Button>
+        <Button id="primary" className="btn-custom mr-2" onClick={extractFace}>
+          Test
+        </Button>
+        <Button
+          id="primary"
+          type="submit"
+          className="btn-custom"
+          disabled={imgSrc === null}
+        >
+          Comfirm
+        </Button>
+      </Col>
+      <canvas id="overlay"></canvas>
+      <div id="facesContainer"></div>
+    </Row>
+  );
+};
+
+export default CaptureParticipapnt;
