@@ -19,8 +19,8 @@ class UploadParticipant extends Component {
         validate: false,
         showAlert: false,
         participant: {},
-        file: {}
-
+        file: {},
+        headshot_url:''
     }
 
     async componentWillMount() {
@@ -35,15 +35,35 @@ class UploadParticipant extends Component {
 
     }
 
-    setFile = (file) => {
+    setFile = async (file)  => {
         this.setState({
             file: file
         })
         console.log(file)
-        let storageRef = firebase.storage().ref('image');
+        const num = 0
+        let storageRef = firebase.storage().ref('headshot').child(`${num}.jpg`);
         storageRef.put(file).then(function(snapshot) {
-            console.log('Uploaded a blob or file!');
+            console.log('Uploaded file done!');
           });
+        const headshot_url = await storageRef.getDownloadURL()
+
+        this.setState({
+            headshot_url:headshot_url
+        })
+        console.log(this.state.headshot_url)
+
+        const itemRef = await firebase.database().ref(`user/${this.state.organize_id}/event/${this.state.event_id}/participant`)
+
+        let item = {
+            email: this.state.email,
+            is_select_image:false,
+            participant_picture_confirm : false,
+            image: [this.state.headshot_url]
+        }
+        await itemRef.push(item)        
+        //await itemRef.child(`${participant_id}/image`).push(image)
+        console.log('อัพดาต้าเบสแล้วเว้ยยย')
+
     }
 
     getUser = () => {

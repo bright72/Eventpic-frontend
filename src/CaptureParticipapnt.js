@@ -10,12 +10,14 @@ const CaptureParticipapnt = (props) => {
   const [imgSrc, setImgSrc] = React.useState(null);
   const capture = React.useCallback(async () => {
     const imgSrc = webcamRef.current.getScreenshot();
-    let file = dataURLtoFile(imgSrc, "temp.jpg");
+    console.log(imgSrc) //base64
+    let file = dataURLtoFile(imgSrc, "temp.jpg"); //แปลง
     // let file = dataURLtoFile(imgSrc, `${i}.jpg`);
     setImgSrc(imgSrc);
-    // props.setFile(file);
+    //console.log(file)
+    //props.setFile(file);
   }, [webcamRef, setImgSrc]);
-  console.log(imgSrc);
+  //console.log(imgSrc);
   // let message = imgSrc;
   // let storageRef = firebase.storage().ref('image');
   // storageRef.putString(message, 'data_url').then(function (snapshot) {
@@ -51,7 +53,7 @@ const CaptureParticipapnt = (props) => {
       await faceapi.nets.ssdMobilenetv1.load("/weights");
       console.log(faceapi);
     }
-    console.log("tesrt");
+    console.log("เอารูปไปหาใบหน้า");
     const detections = await faceapi.detectAllFaces($("#hola").get(0), new faceapi.SsdMobilenetv1Options(0.5));
     const faceImages = await faceapi.extractFaces(
       $("#hola").get(0),
@@ -71,7 +73,12 @@ const CaptureParticipapnt = (props) => {
     console.log("Canvas: ", canvas)
     faceapi.matchDimensions(canvas, $('#hola').get(0))
     faceImages.forEach(canvas => $('#facesContainer').append(canvas))
-    Array.from($('#facesContainer').children()).map(elem => setImgSrc(elem.toDataURL()))
+    Array.from($('#facesContainer').children()).map(elem => {
+      //console.log(elem.toDataURL())
+      let file = dataURLtoFile(elem.toDataURL(), "temp.jpg");
+      console.log(file)
+      props.setFile(file);
+    })
   }
 
   const isFaceDetectionModelLoaded = () => {
