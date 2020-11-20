@@ -21,7 +21,7 @@ const Upload = (props) => {
         const promises = [];
         files.forEach(file => {
             const uploadTask =
-                firebase.storage().ref().child(`image/${file.name}`).put(file);
+                firebase.storage().ref().child(`eventpic/${file.name}`).put(file);
             promises.push(uploadTask);
             uploadTask.on(
                 firebase.storage.TaskEvent.STATE_CHANGED,

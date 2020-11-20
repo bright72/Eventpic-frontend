@@ -9,7 +9,7 @@ const CaptureParticipapnt = (props) => {
   const webcamRef = React.useRef(null);
   const [imgSrc, setImgSrc] = React.useState(null);
   const capture = React.useCallback(async () => {
-    const imgSrc = webcamRef.current.getScreenshot();
+    const imgSrc = await webcamRef.current.getScreenshot();
     console.log(imgSrc) //base64
     let file = dataURLtoFile(imgSrc, "temp.jpg"); //แปลง
     // let file = dataURLtoFile(imgSrc, `${i}.jpg`);

@@ -77,7 +77,7 @@ class UploadFunction extends Component {
     //โหลดข้อมูล Metadata จาก Firebase
 
     getMetaDataFromDatabase() {
-        const databaseRef = firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id ? this.state.event_id : null}/images`);
+        const databaseRef = firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id ? this.state.event_id : null}/eventpic`);
         databaseRef.on('value', snapshot => {
             this.setState({
                 filesMetadata: snapshot.val()
@@ -90,13 +90,13 @@ class UploadFunction extends Component {
     //ลบข้อมูล Metada จาก Firebase
     deleteMetaDataFromDatabase(e, rowData) {
 
-        const storageRef = firebase.storage().ref(`images/${rowData.name}`)
+        const storageRef = firebase.storage().ref(`eventpic/${rowData.name}`)
         // Delete the file on storage
         storageRef.delete()
             .then(() => {
                 console.log("Delete file success");
                 console.log("+555" + this.state.keypath)
-                const databaseRef = firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id ? this.state.event_id : null}/images`)
+                const databaseRef = firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id ? this.state.event_id : null}/eventpic`)
                 // Delete the file on realtime database
                 databaseRef.child(rowData.key).remove()
                     .then(() => {
@@ -125,7 +125,7 @@ class UploadFunction extends Component {
 
             let fileData = this.state.filesMetadata[key];
 
-            let downloadUrl = await firebase.storage().ref(`images/${fileData.metadataFile.name}`).getDownloadURL()
+            let downloadUrl = await firebase.storage().ref(`eventpic/${fileData.metadataFile.name}`).getDownloadURL()
 
             let objRows = {
                 no: i++,
@@ -162,7 +162,7 @@ class UploadFunction extends Component {
 
         for (const [key, file] of Object.entries(this.state.files)) {
             console.log(`[${key}] ${file.name}`)
-            let storageRef = firebase.storage().ref(`images/${file.name}`)
+            let storageRef = firebase.storage().ref(`eventpic/${file.name}`)
             await storageRef.put(file)
 
             let downloadUrl = await storageRef.getDownloadURL()
@@ -179,7 +179,7 @@ class UploadFunction extends Component {
                         downloadURLs: downloadUrl,
                     }
                     let is_allow_all_panticipant = true
-                    const databaseRef = firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/images`);
+                    const databaseRef = firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/eventpic`);
                     console.log(metadataFile)
                     databaseRef.push({
                         metadataFile,is_allow_all_panticipant
