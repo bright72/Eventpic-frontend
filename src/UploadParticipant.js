@@ -96,6 +96,7 @@ class UploadParticipant extends Component {
             await itemRef.push(item)
             //await itemRef.child(`${participant_id}/image`).push(image)
             console.log('อัพดาต้าเบสแล้วเว้ยยย')
+            this.props.history.push(`/MoreDetail/${this.state.event_id}`)
 
         } else {
             this.setState({
@@ -130,7 +131,8 @@ class UploadParticipant extends Component {
         // storageRef.put(file)
         // let downloadUrl = storageRef.getDownloadURL()
         // console.log(downloadUrl)
-        // this.props.history.push('/MoreDetail/' + event_id)
+   
+        
     }
 
 

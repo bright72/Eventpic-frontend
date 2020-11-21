@@ -4,6 +4,7 @@ import { Button, Row, Col } from "react-bootstrap";
 import firebase from "./firebase";
 import * as faceapi from "face-api.js";
 import $ from "jquery";
+import { Link } from "react-router-dom";
 
 const CaptureParticipapnt = (props) => {
   const webcamRef = React.useRef(null);

@@ -46,8 +46,6 @@ class UploadFunction extends Component {
             auth: true
         })
         this.getMetaDataFromDatabase()
-
-
     }
 
     getUser = () => {
@@ -216,12 +214,12 @@ class UploadFunction extends Component {
         //     console.log(res);
         //     console.log(res.data);
         //   })
-        const data = {
-            event_id: this.state.event_id,
-            user_id: this.state.keypath
-        }
-        axios.post(`http://localhost:9000/test_api`,data)
-        console.log("after axios");
+        // const data = {
+        //     event_id: this.state.event_id,
+        //     user_id: this.state.keypath
+        // }
+        // axios.post(`http://localhost:9000/test_api`,data)
+        // console.log("after axios");
         // api.get("/emailbackend").then(responde => {
         //     console.log(responde.data);
         //     console.log(responde.data.email)
@@ -296,11 +294,11 @@ class UploadFunction extends Component {
                                     lg={{ span: 10, offset: 1 }}
                                     className="text-lg-right"
                                 >
-                                    {/* <Link to={"/ListofParticipant/"+this.state.event_id} > */}
-                                        <Button onClick={() => this.handleSubmit()} className="btn-custom mt-3" id="primary" style={{ width: 300, height: 55, fontSize: "20px", borderRadius: 30 }}>
+                                    <Link to={`/Process/${this.state.event_id}`} >
+                                        <Button  className="btn-custom mt-3" id="primary" style={{ width: 300, height: 55, fontSize: "20px", borderRadius: 30 }}>
                                             Next
                                     </Button>
-                                    {/* </Link> */}
+                                    </Link>
                                 </Col>
                             </Row>
                         </Container>

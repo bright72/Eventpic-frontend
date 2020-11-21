@@ -17,6 +17,7 @@ import ContactForm from './ContactForm';
 import showdatabackend from './showdatabackend';
 import AllowsPictures from './AllowsPictures';
 import CaptureParticipapnt from './CaptureParticipapnt';
+import Process from './Process';
 import './Style.css'
 
 const App = () => (
@@ -40,6 +41,7 @@ const App = () => (
       <Route exact path="/showdatabackend" component={showdatabackend} />
       <Route exact path="/allow/:organize_id/:event_id/:participant_id" component={AllowsPictures} />
       <Route exact path="/CaptureParticipapnt" component={CaptureParticipapnt} />
+      <Route exact path="/Process/:id" component={Process} />
       
     </Switch>
   </Router>
