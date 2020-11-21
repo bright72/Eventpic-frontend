@@ -16,6 +16,7 @@ const CaptureParticipapnt = (props) => {
     setImgSrc(imgSrc);
     //console.log(file)
     //props.setFile(file);
+    extractFace()
   }, [webcamRef, setImgSrc]);
   //console.log(imgSrc);
   // let message = imgSrc;
@@ -124,9 +125,9 @@ const CaptureParticipapnt = (props) => {
         <Button id="primary" className="btn-custom mr-2" onClick={capture}>
           Capture
         </Button>
-        <Button id="primary" className="btn-custom mr-2" onClick={extractFace}>
+        {/* <Button id="primary" className="btn-custom mr-2" onClick={extractFace}>
           Confirm
-        </Button>
+        </Button> */}
         <Button
           id="primary"
           type="submit"

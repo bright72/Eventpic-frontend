@@ -46,7 +46,6 @@ class ListofParticipant extends Component {
                         self.setState({
                             participant: temp
                         })
-
                     })
                 })
         })
@@ -105,7 +104,6 @@ class ListofParticipant extends Component {
                 <div> Loading</div>
             )
         }
-
     }
 }
 
