@@ -41,7 +41,7 @@ const App = () => (
       <Route exact path="/showdatabackend" component={showdatabackend} />
       <Route exact path="/allow/:organize_id/:event_id/:participant_id" component={AllowsPictures} />
       <Route exact path="/CaptureParticipapnt" component={CaptureParticipapnt} />
-      <Route exact path="/Process/:id" component={Process} />
+      <Route exact path="/Process/:event_id/:participant_id" component={Process} />
       
     </Switch>
   </Router>

@@ -8,27 +8,25 @@ import { Link } from "react-router-dom";
 
 const CaptureParticipapnt = (props) => {
   const webcamRef = React.useRef(null);
-  const [imgSrc, setImgSrc] = React.useState(null);
+  const [imgSrc, setImgSrc] = React.useState([]);
+
+  useEffect(() => {
+    loadModel()
+  })
+
   const capture = React.useCallback(async () => {
-    const imgSrc = await webcamRef.current.getScreenshot();
-    console.log(imgSrc) //base64
-    let file = dataURLtoFile(imgSrc, "temp.jpg"); //แปลง
-    // let file = dataURLtoFile(imgSrc, `${i}.jpg`);
-    setImgSrc(imgSrc);
-    //console.log(file)
-    //props.setFile(file);
-    extractFace()
-  }, [webcamRef, setImgSrc]);
-  //console.log(imgSrc);
-  // let message = imgSrc;
-  // let storageRef = firebase.storage().ref('image');
-  // storageRef.putString(message, 'data_url').then(function (snapshot) {
-  //     console.log('Uploaded a data_url string!');
-  // });
+    const shot = await webcamRef.current.getScreenshot()
+    if (imgSrc.length === 3) {
+      renew()
+    }
+    let file = dataURLtoFile(shot, "temp.jpg"); //แปลง
+    imgSrc.push(file)
+    extractFace(shot)
+  }, [webcamRef, setImgSrc])
 
   const renew = () => {
-    setImgSrc(null);
-    props.setFile(null);
+    setImgSrc([])
+    props.setFile([])
   };
 
   const dataURLtoFile = (dataurl, filename) => {
@@ -43,75 +41,61 @@ const CaptureParticipapnt = (props) => {
     }
 
     return new File([u8arr], filename, { type: "image/jpeg" });
-  };
+  }
 
-  const extractFace = async (file) => {
-    console.log("Hola", $("#hola").get(0));
-    if (!$("#hola").get(0)) {
-      return;
-    }
+
+  const loadModel = async () => {
     if (!isFaceDetectionModelLoaded()) {
       console.log("Loading...");
       await faceapi.nets.ssdMobilenetv1.load("/weights");
       console.log(faceapi);
     }
-    console.log("เอารูปไปหาใบหน้า");
-    const detections = await faceapi.detectAllFaces($("#hola").get(0), new faceapi.SsdMobilenetv1Options(0.5));
-    const faceImages = await faceapi.extractFaces(
-      $("#hola").get(0),
-      detections
-    );
-    
+  }
+
+  const extractFace = async (imgBase64) => {
+    console.log("เอารูปไปหาใบหน้า")
+    const detections = await faceapi.detectAllFaces(imgBase64, new faceapi.SsdMobilenetv1Options(0.5));
+    const faceImages = await faceapi.extractFaces(imgBase64,detections)
     console.log("test", faceImages);
-    displayExtractedFaces(faceImages)
-  };
+    displayExtractedFaces(faceImages,imgBase64)
+  }
 
   const getCurrentFaceDetectionNet = async () => {
     return await faceapi.nets.ssdMobilenetv1;
   };
 
-  const displayExtractedFaces = (faceImages) => {
+  const displayExtractedFaces = (faceImages,image) => {
     const canvas = document.createElement('img')
     console.log("Canvas: ", canvas)
-    faceapi.matchDimensions(canvas, $('#hola').get(0))
+    faceapi.matchDimensions(canvas, image)
     faceImages.forEach(canvas => $('#facesContainer').append(canvas))
-    Array.from($('#facesContainer').children()).map(elem => {
-      //console.log(elem.toDataURL())
-      let file = dataURLtoFile(elem.toDataURL(), "temp.jpg");
-      console.log(file)
-      props.setFile(file);
-    })
+    //Array.from($('#facesContainer').children()).map(elem => {
+    //  let file = dataURLtoFile(elem.toDataURL(), "temp.jpg");
+    //  console.log(file)
+    //  props.setFile(file);
+    //})
   }
 
   const isFaceDetectionModelLoaded = () => {
     return !!getCurrentFaceDetectionNet().params;
-  };
-
-//   useEffect(() => {
-//     if ($("#hola")) {
-//       isFaceDetectionModelLoaded();
-//       extractFace();
-//     }
-//   }, null);
+  }
 
   return (
     <Row>
       <Col className="text-center mt-3">
-        {imgSrc ? (
-          <img id="hola" src={imgSrc} />
-        ) : (
-          <Webcam
-            audio={false}
-            ref={webcamRef}
-            screenshotFormat="image/jpeg"
-            width={600}
-            videoConstraints={{
-              width: 1280,
-              height: 720,
-              facingMode: "user",
-            }}
-          />
-        )}
+      
+        
+            <Webcam
+              audio={false}
+              ref={webcamRef}
+              screenshotFormat="image/jpeg"
+              width={600}
+              videoConstraints={{
+                width: 1280,
+                height: 720,
+                facingMode: "user",
+              }}
+            />
       </Col>
       <Col
         s={12}
@@ -123,17 +107,18 @@ const CaptureParticipapnt = (props) => {
         <Button id="primary" className="btn-custom mr-2" onClick={renew}>
           Renew
         </Button>
-        <Button id="primary" className="btn-custom mr-2" onClick={capture}>
+        <Button
+          id="primary"
+          className="btn-custom mr-2"
+          onClick={capture}
+        >
           Capture
         </Button>
-        {/* <Button id="primary" className="btn-custom mr-2" onClick={extractFace}>
-          Confirm
-        </Button> */}
         <Button
           id="primary"
           type="submit"
           className="btn-custom"
-          disabled={imgSrc === null}
+          disabled={imgSrc.length === 3 ? false : true}
         >
           Comfirm
         </Button>

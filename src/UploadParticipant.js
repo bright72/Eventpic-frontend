@@ -19,7 +19,7 @@ class UploadParticipant extends Component {
         validate: false,
         showAlert: false,
         participant: {},
-        file: {},
+        files: [],
         headshot_url: '',
         image: {}
     }
@@ -60,43 +60,45 @@ class UploadParticipant extends Component {
     }
 
     handleSubmit = async e => {
-        const { event_id, file, email, organize_id } = this.state
+        const { event_id, files, email, organize_id } = this.state
         e.preventDefault()
         const form = e.currentTarget
         if (form.checkValidity() === true) {
-            const num = 0
-            let storageRef = await firebase.storage().ref('headshot').child(`${num}.jpg`);
-            storageRef.put(file).then(function (snapshot) {
-                console.log('Uploaded file done!');
-            });
-            const headshot_url = await storageRef.getDownloadURL()
-
-            this.setState({
-                headshot_url: headshot_url
+            files.forEach( i => {
+                console.log(i)
             })
-            console.log(this.state.headshot_url)
+            // let storageRef = await firebase.storage().ref('headshot').child(`${num}.jpg`);
+            // storageRef.put(file).then(function (snapshot) {
+            //     console.log('Uploaded file done!');
+            // })
+            // const headshot_url = await storageRef.getDownloadURL()
 
-            const itemRef = await firebase.database().ref(`user/${this.state.organize_id}/event/${this.state.event_id}/participant`)
-            let objRows = {
-                img1: this.state.headshot_url,
-                img2: this.state.headshot_url,
-                img3: this.state.headshot_url
-            }
-            this.setState({
-                image: objRows
-            })
+            // this.setState({
+            //     headshot_url: headshot_url
+            // })
+            // console.log(this.state.headshot_url)
 
-            let item = {
-                email: this.state.email,
-                is_select_image: false,
-                participant_picture_confirm: false,
-                image: this.state.image
-            }
+            // const itemRef = await firebase.database().ref(`user/${this.state.organize_id}/event/${this.state.event_id}/participant`)
+            // let objRows = {
+            //     img1: this.state.headshot_url,
+            //     img2: this.state.headshot_url,
+            //     img3: this.state.headshot_url
+            // }
+            // this.setState({
+            //     image: objRows
+            // })
 
-            await itemRef.push(item)
+            // let item = {
+            //     email: this.state.email,
+            //     is_select_image: false,
+            //     participant_picture_confirm: false,
+            //     image: this.state.image
+            // }
+
+            // await itemRef.push(item)
             //await itemRef.child(`${participant_id}/image`).push(image)
-            console.log('อัพดาต้าเบสแล้วเว้ยยย')
-            this.props.history.push(`/MoreDetail/${this.state.event_id}`)
+            // console.log('อัพดาต้าเบสแล้วเว้ยยย')
+            // this.props.history.push(`/MoreDetail/${this.state.event_id}`)
 
         } else {
             this.setState({

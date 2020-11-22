@@ -8,7 +8,8 @@ import * as faceapi from 'face-api.js'
 class Process extends Component {
 
     state = {
-        event_id: this.props.match.params.id,
+        event_id: this.props.match.params.event_id,
+        participant_id:this.props.match.params.participant_id,
         currentUser: null,
         auth: false,
         email: [],
@@ -16,7 +17,8 @@ class Process extends Component {
         imageAsFile: "",
         emailPaticipant: "",
         processimg: {},
-        original_url:""
+        original_url: "",
+        par_url: ""
     }
 
     async componentWillMount() {
@@ -41,42 +43,44 @@ class Process extends Component {
 
 
     fetcheventimg = async () => {
+        this.loadModel()// โหลด Model
         const itemRefPic = await firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/eventpic`)
         //console.log(itemRefPic)
+
+        let val = null
         await itemRefPic.on("value", (snapshot) => {
+            val = snapshot.val()
+        })
 
-            snapshot.forEach(async par => { //ดึงรูปมาเทียบรายรูป
-                const picid = await par.key
-                this.loadModel()// โหลด Model
-                
-                const eventRefPic = await firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/eventpic/${picid}/metadataFile`)
-
-                
-                await eventRefPic.once('value').then((snapshot) => {
-                    const url = snapshot.val() && snapshot.val().downloadURLs 
-                    this.setState({
-                        original_url : url
-                    })
+        for (var key in val) {
+            const picid = key
+            const eventRefPic = await firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/eventpic/${picid}/metadataFile`)
+            await eventRefPic.once('value').then((snapshot) => {
+                const url = snapshot.val() && snapshot.val().downloadURLs
+                this.setState({
+                    original_url: url
                 })
-                console.log(this.state.original_url)
+            })
 
-                const printname = []
-                const container = document.createElement('div')
-                container.style.position = 'relative'
-                document.body.append(container)
-                document.getElementById("text").innerText = 'กำลัง Process'
-        
-                const labeledFaceDescriptors = await this.loadLabeledImages()
-        
-                console.log("label: ", labeledFaceDescriptors)
-        
+            console.log(this.state.original_url)
+
+            const printname = []
+            const container = document.createElement('div')
+            container.style.position = 'relative'
+            document.body.append(container)
+            document.getElementById("text").innerText = 'กำลัง Process'
+
+            const labeledFaceDescriptors = await this.loadLabeledImages()
+
+            console.log("label: ", labeledFaceDescriptors)
+
                 document.getElementById("text").innerText = 'Process เสร็จแล้ว'
                 const faceMatcher = await new faceapi.FaceMatcher(labeledFaceDescriptors, 0.5)
-        
-                let image, canvas
+
+                let image , canvas
                 if (image) image.remove()
                 if (canvas) canvas.remove()
-    
+
                 image = await faceapi.fetchImage(`${this.state.original_url}`) //ไฟล์ที่เอาไปเช็ค
                 console.log(image)
                 document.getElementById("output").append(image)
@@ -87,7 +91,7 @@ class Process extends Component {
                 const detections = await faceapi.detectAllFaces(image).withFaceLandmarks().withFaceDescriptors()
                 const resizedDetections = await faceapi.resizeResults(detections, displaySize)
                 const results = resizedDetections.map(d => faceMatcher.findBestMatch(d.descriptor))
-        
+                console.log(results)
                 results.forEach((result, i) => {
                     const box = resizedDetections[i].detection.box
                     const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() })
@@ -95,9 +99,9 @@ class Process extends Component {
                     if (result._label != "unknown") {
                         document.body.append(" \n " + result._label + " \n ") //ปริ้นชื่อคนในภาพ
                         document.getElementById("printname").innerText = " \n " + result._label + " \n "
-                        printname.push({ 
-                            name: result._label, 
-                            status : true
+                        printname.push({
+                            name: result._label,
+                            status: true
                         })
                         console.log('work')
                     } else {
@@ -107,18 +111,22 @@ class Process extends Component {
                 })
                 console.log(printname)
 
-                
-                //console.log(pardata)
+        }
 
-                //const itemRefPic = await firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/eventpic`)
+        //console.log(pardata)
 
-            })
+        //const itemRefPic = await firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/eventpic`)
+        //   console.log("จบ Process แล้ว")
+        //})
 
-        })
-        
+        //})
+
     }
 
     loadLabeledImages = async () => {
+
+        this.loadModel()// โหลด Model
+
         await faceapi.nets.ssdMobilenetv1.load("/weights")
         await faceapi.nets.faceRecognitionNet.load("/weights")
         await faceapi.nets.faceLandmark68Net.load("/weights")
@@ -126,43 +134,32 @@ class Process extends Component {
         // console.log(this.state.keypath)
         // console.log(this.state.event_id)
         const itemRefPar = await firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/participant`)
-        console.log(itemRefPar)
 
-        // await itemRefPar.on("value", (snapshot) => {
-        //     snapshot.forEach(async par => {
+        let labels = ""
+        let val = null
+        let descriptions = []
+        itemRefPar.on("value", (snapshot) => {
+            val = snapshot.val()
+        })
+        for (var key in val) {
+            let temp = val[key].image
+            labels = val[key].email
+            for (var i in temp) {
+                console.log(`>>>>> ${i} : ${temp[i]}`)
 
+                //const img = await faceapi.fetchImage(`${temp[i]}`)
+                const img = await faceapi.fetchImage(`https://pbs.twimg.com/profile_images/931593868620963840/gkH-nPnB.jpg`)
+                console.log("Img: ", img)
+                const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
+                console.log('descriptor: ', detections)
+                descriptions.push(detections.descriptor)
+            }
+        }
 
-        //     })
+        console.log('List of Descriptor: ', descriptions)
+        console.log("List of Label: ", labels)
+        return new faceapi.LabeledFaceDescriptors(labels, descriptions)
 
-        
-        const labels = []
-        await itemRefPar.on("value", (snapshot) => {
-
-            snapshot.forEach(async par => {
-                const pardata = par.val()
-                console.log(pardata)
-                labels.push(pardata.email)
-                console.log(pardata.email)
-            })
-
-        });
-        console.log("=====label=====")
-        console.log(labels)
-        return Promise.all(
-            labels.map(async labels => {
-                const descriptions = []
-                for (let i = 1; i <= 3; i++) {
-                    const img = await faceapi.fetchImage("https://firebasestorage.googleapis.com/v0/b/test-file-store-d0505.appspot.com/o/headshot%2F0.jpg?alt=media&token=008e6ab5-108a-4e46-84fd-4bb807400d9e")
-                    console.log("Img: ", img)
-                    const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
-                    console.log('descriptor: ', detections)
-                    descriptions.push(detections.descriptor)
-                }
-                console.log('List of Descriptor: ', descriptions)
-                console.log("List of Label: ", labels)
-                return await new faceapi.LabeledFaceDescriptors(labels, descriptions)
-            })
-        )
     }
 
     getUser = () => {
