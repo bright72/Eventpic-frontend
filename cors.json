@@ -1,0 +1,11 @@
+[
+    {
+      "origin": ["*"],
+      "method": ["GET"],
+      "maxAgeSeconds": 3600
+    }
+  ]
+
+// gcloud auth login
+// gcloud config set project test-file-store-d0505
+// gsutil cors set cors.json gs://test-file-store-d0505.appspot.com

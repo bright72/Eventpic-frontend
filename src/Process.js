@@ -4,7 +4,6 @@ import { Form, Row, Col, Button, Spinner, Card, Container } from 'react-bootstra
 import firebase from './firebase';
 import Nevbar from './Nevbar.js'
 import * as faceapi from 'face-api.js'
-//import axios from "axios";
 
 class Process extends Component {
 
@@ -16,7 +15,8 @@ class Process extends Component {
         keypath: '',
         imageAsFile: "",
         emailPaticipant: "",
-        processimg: {}
+        processimg: {},
+        original_url:""
     }
 
     async componentWillMount() {
@@ -27,121 +27,143 @@ class Process extends Component {
             keypath: key,
             auth: true
         })
-        this.start()
+        this.fetcheventimg()
     }
 
-    start = async () => {
+    loadModel = async () => {
         Promise.all([
-            faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
-            faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
-            faceapi.nets.ssdMobilenetv1.loadFromUri('/models')
+            faceapi.nets.ssdMobilenetv1.load('/weights'),
+            faceapi.nets.faceRecognitionNet.load('/weights'),
+            faceapi.nets.faceLandmark68Net.load('/weights'),
         ])
+        console.log(faceapi) //เทส model
+    }
 
-        console.log(this.state.keypath)
-        console.log(this.state.event_id)
+
+    fetcheventimg = async () => {
+        const itemRefPic = await firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/eventpic`)
+        //console.log(itemRefPic)
+        await itemRefPic.on("value", (snapshot) => {
+
+            snapshot.forEach(async par => { //ดึงรูปมาเทียบรายรูป
+                const picid = await par.key
+                this.loadModel()// โหลด Model
+                
+                const eventRefPic = await firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/eventpic/${picid}/metadataFile`)
+
+                
+                await eventRefPic.once('value').then((snapshot) => {
+                    const url = snapshot.val() && snapshot.val().downloadURLs 
+                    this.setState({
+                        original_url : url
+                    })
+                })
+                console.log(this.state.original_url)
+
+                const printname = []
+                const container = document.createElement('div')
+                container.style.position = 'relative'
+                document.body.append(container)
+                document.getElementById("text").innerText = 'กำลัง Process'
+        
+                const labeledFaceDescriptors = await this.loadLabeledImages()
+        
+                console.log("label: ", labeledFaceDescriptors)
+        
+                document.getElementById("text").innerText = 'Process เสร็จแล้ว'
+                const faceMatcher = await new faceapi.FaceMatcher(labeledFaceDescriptors, 0.5)
+        
+                let image, canvas
+                if (image) image.remove()
+                if (canvas) canvas.remove()
+    
+                image = await faceapi.fetchImage(`${this.state.original_url}`) //ไฟล์ที่เอาไปเช็ค
+                console.log(image)
+                document.getElementById("output").append(image)
+                canvas = faceapi.createCanvasFromMedia(image)
+                container.append(canvas)
+                const displaySize = { width: image.width, height: image.height }
+                faceapi.matchDimensions(canvas, displaySize)
+                const detections = await faceapi.detectAllFaces(image).withFaceLandmarks().withFaceDescriptors()
+                const resizedDetections = await faceapi.resizeResults(detections, displaySize)
+                const results = resizedDetections.map(d => faceMatcher.findBestMatch(d.descriptor))
+        
+                results.forEach((result, i) => {
+                    const box = resizedDetections[i].detection.box
+                    const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() })
+                    console.log(result._label)
+                    if (result._label != "unknown") {
+                        document.body.append(" \n " + result._label + " \n ") //ปริ้นชื่อคนในภาพ
+                        document.getElementById("printname").innerText = " \n " + result._label + " \n "
+                        printname.push({ 
+                            name: result._label, 
+                            status : true
+                        })
+                        console.log('work')
+                    } else {
+                        console.log('not do anything')
+                    }
+                    drawBox.draw(canvas)
+                })
+                console.log(printname)
+
+                
+                //console.log(pardata)
+
+                //const itemRefPic = await firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/eventpic`)
+
+            })
+
+        })
+        
+    }
+
+    loadLabeledImages = async () => {
+        await faceapi.nets.ssdMobilenetv1.load("/weights")
+        await faceapi.nets.faceRecognitionNet.load("/weights")
+        await faceapi.nets.faceLandmark68Net.load("/weights")
+
+        // console.log(this.state.keypath)
+        // console.log(this.state.event_id)
         const itemRefPar = await firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/participant`)
         console.log(itemRefPar)
 
+        // await itemRefPar.on("value", (snapshot) => {
+        //     snapshot.forEach(async par => {
+
+
+        //     })
+
+        
+        const labels = []
         await itemRefPar.on("value", (snapshot) => {
+
             snapshot.forEach(async par => {
-                const descriptions = []
                 const pardata = par.val()
                 console.log(pardata)
-                this.state.email.push(pardata.email)
+                labels.push(pardata.email)
+                console.log(pardata.email)
+            })
 
-                const img = await faceapi.fetchImage("https://i0.wp.com/mtmstudioclub.com/wp-content/uploads/2019/05/maxresdefault.jpg?fit=1280%2C720&ssl=1")
-                console.log(img)
-
-                // pardata.map((img)=>{
-                //     console.log(img.image.img1)
-                // })
-
-                //const size = Object.size(pardata.image);
-                //console.log(size)
-
-                // const img = faceapi.fetchImage(`${pardata.image.img1}`) //ไฟล์ที่เอาไป Process 
-
-                //const imga = await faceapi.fetchImage(`${pardata.image.img1}`)
-                //const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
-                //descriptions.push(detections.descriptor)
-            });
         });
-
-        //ใส่ตรงนี้เ้วย
-    
+        console.log("=====label=====")
+        console.log(labels)
+        return Promise.all(
+            labels.map(async labels => {
+                const descriptions = []
+                for (let i = 1; i <= 3; i++) {
+                    const img = await faceapi.fetchImage("https://firebasestorage.googleapis.com/v0/b/test-file-store-d0505.appspot.com/o/headshot%2F0.jpg?alt=media&token=008e6ab5-108a-4e46-84fd-4bb807400d9e")
+                    console.log("Img: ", img)
+                    const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
+                    console.log('descriptor: ', detections)
+                    descriptions.push(detections.descriptor)
+                }
+                console.log('List of Descriptor: ', descriptions)
+                console.log("List of Label: ", labels)
+                return await new faceapi.LabeledFaceDescriptors(labels, descriptions)
+            })
+        )
     }
-
-    
-    
-    //console.log(faceapi)
-
-    // const container = document.createElement('div')
-    // container.style.position = 'relative'
-    // document.body.append(container)
-    // document.getElementById("text").innerText = 'กำลัง Process'
-    // console.log("กำลัง Process")
-    // const labeledFaceDescriptors = await loadLabeledImages()
-
-    // function loadLabeledImages() {
-
-    //     const labels = ['bright@gmail.com', 'earn@gmail.com', 'earth@gmail.com']
-    //     return Promise.all(
-    //         labels.map(async label => {
-    //             const descriptions = []
-    //             for (let i = 1; i <= 3; i++) {
-    //                 console.log('เทส ๆ')
-    //                 const img = await faceapi.fetchImage(`/.trainfacemodel/${label}/${i}.jpg`) //ไฟล์ที่เอาไป Process 
-    //                 console.log(img)
-    //                 const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
-    //                 descriptions.push(detections.descriptor)
-
-    //             }
-
-    //             return new faceapi.LabeledFaceDescriptors(label, descriptions)
-    //         })
-    //     )
-    // }
-
-
-    // console.log('เทส 1232425')
-    // console.log(labeledFaceDescriptors)
-    // //document.getElementById("text").innerText = 'Process เสร็จแล้ว'
-    // console.log("Process เสร็จแล้ว")
-    // const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.5)
-    // console.log(faceMatcher)
-    // let image, canvas
-
-    // if (image) image.remove()
-    // if (canvas) canvas.remove()
-    // //image = await faceapi.bufferToImage(imageUpload.files[0])
-    // image = faceapi.fetchImage('./eventpicture/test3.jpg') //ไฟล์ที่เอาไปเช็ค
-    // console.log(image)
-    // console.log(image)
-    // container.append(image) //ปริ้นรูป
-    // canvas = faceapi.createCanvasFromMedia(image)
-    // container.append(canvas)
-    // const displaySize = { width: image.width, height: image.height }
-    // faceapi.matchDimensions(canvas, displaySize)
-    // const detections = faceapi.detectAllFaces(image).withFaceLandmarks().withFaceDescriptors()
-    // const resizedDetections = faceapi.resizeResults(detections, displaySize)
-    // const results = resizedDetections.map(d => faceMatcher.findBestMatch(d.descriptor))
-    // const printname = []
-    // results.forEach((result, i) => {
-    //     const box = resizedDetections[i].detection.box
-    //     const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() })
-    //     console.log(result._label)
-    //     if (result._label != "unknown") {
-    //         document.body.append(result._label) //ปริ้นชื่อคนในภาพ
-    //         printname.push({ name: result._label })
-    //         console.log('work')
-    //     } else {
-    //         console.log('not do anything')
-    //     }
-    //     drawBox.draw(canvas)
-    // })
-    // console.log(printname)
-    // 
-
 
     getUser = () => {
         return new Promise((resolve, reject) => {
@@ -172,10 +194,9 @@ class Process extends Component {
                     <Fragment>
                         <Nevbar />
                         <Container fluid>
-                            <div>
-                                <h1 id="text">กำลังประมวลผลภาพถ่าย</h1>
-                                <h2>ใครอยู่ในรูปภาพ</h2>
-                            </div>
+                            <h1 id="text">กำลังประมวลผลภาพถ่าย</h1>
+                            <div id="output"></div>
+                            <h2 id="printname" >ใครอยู่ในรูปภาพ</h2>
                             <Button onClick={this.onclickrespond} className="btn-custom mt-3" id="primary" style={{ width: 300, height: 55, fontSize: "20px", borderRadius: 30 }}>
                                 ดูผลลัพธ์
                                     </Button>
