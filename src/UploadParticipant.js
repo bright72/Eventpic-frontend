@@ -38,7 +38,7 @@ class UploadParticipant extends Component {
 
     setFile = (file) => {
         this.setState({
-            file: file
+            files: file
         })
         console.log(file)
     }
@@ -64,9 +64,7 @@ class UploadParticipant extends Component {
         e.preventDefault()
         const form = e.currentTarget
         if (form.checkValidity() === true) {
-            files.forEach( i => {
-                console.log(i)
-            })
+            console.log(files)
             // let storageRef = await firebase.storage().ref('headshot').child(`${num}.jpg`);
             // storageRef.put(file).then(function (snapshot) {
             //     console.log('Uploaded file done!');
