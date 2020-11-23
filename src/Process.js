@@ -9,7 +9,7 @@ class Process extends Component {
 
     state = {
         event_id: this.props.match.params.event_id,
-        participant_id:this.props.match.params.participant_id,
+        participant_id: this.props.match.params.participant_id,
         currentUser: null,
         auth: false,
         email: [],
@@ -18,7 +18,8 @@ class Process extends Component {
         emailPaticipant: "",
         processimg: {},
         original_url: "",
-        par_url: ""
+        par_url: "",
+        buttonstatus: true
     }
 
     async componentWillMount() {
@@ -69,57 +70,47 @@ class Process extends Component {
             container.style.position = 'relative'
             document.body.append(container)
             document.getElementById("text").innerText = 'กำลัง Process'
-
             const labeledFaceDescriptors = await this.loadLabeledImages()
-
             console.log("label: ", labeledFaceDescriptors)
+            const faceMatcher = await new faceapi.FaceMatcher(labeledFaceDescriptors, 0.5)
 
-                document.getElementById("text").innerText = 'Process เสร็จแล้ว'
-                const faceMatcher = await new faceapi.FaceMatcher(labeledFaceDescriptors, 0.5)
+            let image, canvas
+            if (image) image.remove()
+            if (canvas) canvas.remove()
 
-                let image , canvas
-                if (image) image.remove()
-                if (canvas) canvas.remove()
-
-                image = await faceapi.fetchImage(`${this.state.original_url}`) //ไฟล์ที่เอาไปเช็ค
-                console.log(image)
-                document.getElementById("output").append(image)
-                canvas = faceapi.createCanvasFromMedia(image)
-                container.append(canvas)
-                const displaySize = { width: image.width, height: image.height }
-                faceapi.matchDimensions(canvas, displaySize)
-                const detections = await faceapi.detectAllFaces(image).withFaceLandmarks().withFaceDescriptors()
-                const resizedDetections = await faceapi.resizeResults(detections, displaySize)
-                const results = resizedDetections.map(d => faceMatcher.findBestMatch(d.descriptor))
-                console.log(results)
-                results.forEach((result, i) => {
-                    const box = resizedDetections[i].detection.box
-                    const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() })
-                    console.log(result._label)
-                    if (result._label != "unknown") {
-                        document.body.append(" \n " + result._label + " \n ") //ปริ้นชื่อคนในภาพ
-                        document.getElementById("printname").innerText = " \n " + result._label + " \n "
-                        printname.push({
-                            name: result._label,
-                            status: true
-                        })
-                        console.log('work')
-                    } else {
-                        console.log('not do anything')
-                    }
-                    drawBox.draw(canvas)
-                })
-                console.log(printname)
-
+            image = await faceapi.fetchImage(`${this.state.original_url}`) //ไฟล์ที่เอาไปเช็ค
+            console.log(image)
+            document.getElementById("output").append(image)
+            canvas = faceapi.createCanvasFromMedia(image)
+            container.append(canvas)
+            const displaySize = { width: image.width, height: image.height }
+            faceapi.matchDimensions(canvas, displaySize)
+            const detections = await faceapi.detectAllFaces(image).withFaceLandmarks().withFaceDescriptors()
+            const resizedDetections = await faceapi.resizeResults(detections, displaySize)
+            const results = resizedDetections.map(d => faceMatcher.findBestMatch(d.descriptor))
+            console.log(results)
+            results.forEach((result, i) => {
+                const box = resizedDetections[i].detection.box
+                const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() })
+                console.log(result._label)
+                if (result._label != "unknown") {
+                    document.getElementById("printname").innerText = " \n " + result._label + " \n "
+                    printname.push({
+                        name: result._label,
+                        status: true
+                    })
+                    console.log('work')
+                } else {
+                    console.log('not do anything')
+                }
+                drawBox.draw(canvas)
+            })
+            console.log(printname)
         }
-
-        //console.log(pardata)
-
-        //const itemRefPic = await firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/eventpic`)
-        //   console.log("จบ Process แล้ว")
-        //})
-
-        //})
+        document.getElementById("text").innerText = 'Process เสร็จแล้ว'
+        this.setState({
+            buttonstatus: false
+        })
 
     }
 
@@ -194,8 +185,8 @@ class Process extends Component {
                             <h1 id="text">กำลังประมวลผลภาพถ่าย</h1>
                             <div id="output"></div>
                             <h2 id="printname" >ใครอยู่ในรูปภาพ</h2>
-                            <Button onClick={this.onclickrespond} className="btn-custom mt-3" id="primary" style={{ width: 300, height: 55, fontSize: "20px", borderRadius: 30 }}>
-                                ดูผลลัพธ์
+                            <Button onClick={this.onclickrespond} disabled={this.state.buttonstatus} className="btn-custom mt-3" id="primary" style={{ width: 300, height: 55, fontSize: "20px", borderRadius: 30 }}>
+                                ส่ง Email
                                     </Button>
                         </Container>
                     </Fragment>

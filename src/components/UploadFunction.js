@@ -29,6 +29,7 @@ class UploadFunction extends Component {
         event_id: this.props.match.params.id,
         currentUser: null,
         auth: false,
+        participant_id: "",
         keypath: '',
         imageAsFile: "",
         emailPaticipant: "",

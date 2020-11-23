@@ -20,7 +20,7 @@ class UploadParticipant extends Component {
         showAlert: false,
         participant: {},
         files: [],
-        headshot_url: '',
+        headshot_url: [],
         image: {}
     }
 
@@ -65,45 +65,35 @@ class UploadParticipant extends Component {
         const form = e.currentTarget
         if (form.checkValidity() === true) {
             console.log(files)
-            // let storageRef = await firebase.storage().ref('headshot').child(`${num}.jpg`);
-            // storageRef.put(file).then(function (snapshot) {
-            //     console.log('Uploaded file done!');
-            // })
-            // const headshot_url = await storageRef.getDownloadURL()
+            let downloadUrlArray = [];
+            for (let i = 0; i < files.length; i++) {
+                let img = files[i] ;
+                let storageRef = await firebase.storage().ref(`headshot/${img.lastModified}.jpg`)
+                await storageRef.put(img)
+                let downloadUrl = await storageRef.getDownloadURL()
+                console.log(downloadUrl)
+                downloadUrlArray[i]= downloadUrl        
+              }
+              await this.setState({
+                headshot_url: downloadUrlArray
+            })   
+            console.log(this.state.headshot_url) 
 
-            // this.setState({
-            //     headshot_url: headshot_url
-            // })
-            // console.log(this.state.headshot_url)
+            const participantRef = firebase.database().ref(`user/${organize_id}/event/${event_id}/participant`)
+            let item = {
+                email : this.state.email,
+                participant_picture_confirm: false,
+                image : this.state.headshot_url
 
-            // const itemRef = await firebase.database().ref(`user/${this.state.organize_id}/event/${this.state.event_id}/participant`)
-            // let objRows = {
-            //     img1: this.state.headshot_url,
-            //     img2: this.state.headshot_url,
-            //     img3: this.state.headshot_url
-            // }
-            // this.setState({
-            //     image: objRows
-            // })
-
-            // let item = {
-            //     email: this.state.email,
-            //     is_select_image: false,
-            //     participant_picture_confirm: false,
-            //     image: this.state.image
-            // }
-
-            // await itemRef.push(item)
-            //await itemRef.child(`${participant_id}/image`).push(image)
-            // console.log('อัพดาต้าเบสแล้วเว้ยยย')
-            // this.props.history.push(`/MoreDetail/${this.state.event_id}`)
-
+            }
+            participantRef.push(item)
         } else {
             this.setState({
                 validate: true
             })
             e.stopPropagation()
         }
+        this.props.history.push(`/MoreDetail/${event_id}`)
     }
 
 
@@ -131,8 +121,7 @@ class UploadParticipant extends Component {
         // storageRef.put(file)
         // let downloadUrl = storageRef.getDownloadURL()
         // console.log(downloadUrl)
-   
-        
+    
     }
 
 
