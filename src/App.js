@@ -6,7 +6,7 @@ import AddEvent from './AddEvent.js';
 import ListofEvent from './ListofEvent.js';
 import EditEvent from './EditEvent.js';
 import MoreDetail from './MoreDetail.js';
-import Upload from './components/UploadFunction.js'
+import Upload from './UploadFunction.js'
 import UploadParticipant from './UploadParticipant';
 import ListofParticipant from './ListofParticipant';
 import ViewPicture from './ViewPicture';

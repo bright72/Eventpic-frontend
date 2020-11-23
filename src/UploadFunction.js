@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { Link, Redirect } from 'react-router-dom'
 import { Form, Row, Col, Button, Container } from 'react-bootstrap'
-import firebase from '../firebase/index';
+import firebase from './firebase/index';
 import StorageDataTable from './StorageDataTable';
-import Nevbar from '../Nevbar.js'
+import Nevbar from './Nevbar.js'
 
 class UploadFunction extends Component {
 
