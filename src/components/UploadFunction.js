@@ -1,22 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import { Link, Redirect } from 'react-router-dom'
 import { Form, Row, Col, Button, Spinner, Card, Container } from 'react-bootstrap'
-
 import firebase from '../firebase/index';
 import StorageDataTable from './StorageDataTable';
 import Nevbar from '../Nevbar.js'
 import axios from "axios";
 import * as emailjs from 'emailjs-com'
 import api from '../utils/api'
-// Import FilePond styles
-// import 'filepond/dist/filepond.min.css';
-
-// Register plugin
-// import FilePondImagePreview from 'filepond-plugin-image-preview';
-// import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
-
-// registerPlugin(FilePondImagePreview);
-
 
 class UploadFunction extends Component {
 
@@ -34,10 +24,8 @@ class UploadFunction extends Component {
         imageAsFile: "",
         emailPaticipant: "",
         img: []
-
     }
 
-    //ใช้ตอนที่ยังไม่ Mount DOM
     async componentWillMount() {
         let user = await this.getUser();
         let key = await this.getKey(user)
@@ -55,7 +43,6 @@ class UploadFunction extends Component {
                 if (user) {
                     resolve(user)
                 } else {
-                    // No user is signed in.
                 }
             });
         })
@@ -70,11 +57,7 @@ class UploadFunction extends Component {
         })
     }
 
-
-
-
     //โหลดข้อมูล Metadata จาก Firebase
-
     getMetaDataFromDatabase() {
         const databaseRef = firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id ? this.state.event_id : null}/eventpic`);
         databaseRef.on('value', snapshot => {
@@ -93,25 +76,18 @@ class UploadFunction extends Component {
         // Delete the file on storage
         storageRef.delete()
             .then(() => {
-                console.log("Delete file success");
-                console.log("+555" + this.state.keypath)
                 const databaseRef = firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id ? this.state.event_id : null}/eventpic`)
                 // Delete the file on realtime database
                 databaseRef.child(rowData.key).remove()
                     .then(() => {
-                        console.log("Delete metada success");
                         this.getMetaDataFromDatabase()
                     })
                     .catch((error) => {
-                        console.log("Delete metada error : ", error.message);
                     });
-
             })
-
             .catch((error) => {
                 console.log("Delete file error : ", error.message);
             });
-
     }
 
     //แอดข้อมูลเข้า list table
@@ -141,9 +117,8 @@ class UploadFunction extends Component {
         this.setState({
             rows: rows
         }, () => {
-            console.log('Set Rows')
-        })
 
+        })
     }
 
     handleImageAsFile = (e) => {
@@ -153,14 +128,9 @@ class UploadFunction extends Component {
         })
     }
 
-    // async 
     async handleProcessing(e) {
         e.preventDefault();
-        // handle file upload here
-        console.log(this.state.files)
-
         for (const [key, file] of Object.entries(this.state.files)) {
-            console.log(`[${key}] ${file.name}`)
             let storageRef = firebase.storage().ref(`eventpic/${file.name}`)
             await storageRef.put(file)
 
@@ -168,8 +138,6 @@ class UploadFunction extends Component {
 
             storageRef.getMetadata()
                 .then((metadata) => {
-
-                    // Metadata now contains the metadata for 'filepond/${file.name}'
                     let metadataFile = {
                         name: metadata.name,
                         size: metadata.size,
@@ -179,19 +147,16 @@ class UploadFunction extends Component {
                     }
                     let is_allow_all_panticipant = true
                     const databaseRef = firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/eventpic`);
-                    console.log(metadataFile)
                     databaseRef.push({
-                        metadataFile,is_allow_all_panticipant
+                        metadataFile, is_allow_all_panticipant
                     })
                 }).catch(function (error) {
                     console.log(`Upload error : ${error.message}`)
                 })
         }
-
     }
 
     onclickrespond = () => {
-        console.log("teasdfsf");
         api.get("/emailbakcend").then(responde => {
             console.log(responde.data);
             this.setState({
@@ -201,57 +166,8 @@ class UploadFunction extends Component {
         })
     }
 
-    handleChange = () => {
-        //this.setState({ event_id: event.target.value });
-      }
-
-    handleSubmit = () => {
-        //const { emailPaticipant } = this.state
-        console.log('work')
-        //event.preventDefault();
-        console.log("before axios");
-        // axios.post(`https://localhost:9000/test_api2`)
-        // .then(res => {
-        //     console.log(res);
-        //     console.log(res.data);
-        //   })
-        // const data = {
-        //     event_id: this.state.event_id,
-        //     user_id: this.state.keypath
-        // }
-        // axios.post(`http://localhost:9000/test_api`,data)
-        // console.log("after axios");
-        // api.get("/emailbackend").then(responde => {
-        //     console.log(responde.data);
-        //     console.log(responde.data.email)
-        //     // this.setState({
-        //     //     emailPaticipant: responde.data.email,
-        //     //     img: responde.data.img
-        //     // })
-        //     let templateParams = {
-        //         to_email: responde.data.email,
-        //         to_name: responde.data.email,
-
-        //     }
-        //     console.log(templateParams)
-
-        //     emailjs.send(
-        //         'test555',
-        //         'template_p1ojhve',
-        //         templateParams,
-        //         'user_taSKZdwaRwk1j4rwI0eXi'
-        //     )
-        // })
-        //console.log(this.state.emailPaticipant)
-        //this.props.history.push('/ListOfEvent')
-
-    }
-
-
-
     render() {
         const { rows, currentUser, auth, setFiles } = this.state;
-
         if (auth) {
             if (currentUser) {
                 return (
@@ -296,7 +212,7 @@ class UploadFunction extends Component {
                                     className="text-lg-right"
                                 >
                                     <Link to={`/Process/${this.state.event_id}`} >
-                                        <Button  className="btn-custom mt-3" id="primary" style={{ width: 300, height: 55, fontSize: "20px", borderRadius: 30 }}>
+                                        <Button className="btn-custom mt-3" id="primary" style={{ width: 300, height: 55, fontSize: "20px", borderRadius: 30 }}>
                                             Next
                                     </Button>
                                     </Link>
