@@ -38,7 +38,6 @@ class MoreDetail extends React.Component {
                     const itemsRef = firebase.database().ref(`/user/${snapshot.key}/event`)
                     itemsRef.child(self.state.event_id).on("value", (snapshot) => {
                         let item = snapshot.val()
-                        // console.log(this.state.event_id + " : " + item.name)
                         if (item) {
                             self.setState({
                                 event_id: self.state.event_id,
@@ -54,15 +53,12 @@ class MoreDetail extends React.Component {
                     })
                 })
         })
-
     }
 
     removeItem = event_id => {
         let keypath = ""
         firebase.database().ref("user").orderByChild("email").equalTo(this.state.currentUser.email)
             .on("child_added", function (snapshot) {
-                console.log("นี่คือคีย์")
-                console.log(snapshot.key)
                 keypath = snapshot.key
             })
         const itemsRef = firebase.database().ref(`user/${keypath}/event`)
@@ -90,12 +86,6 @@ class MoreDetail extends React.Component {
                                         <Card.Text>{this.state.detail}</Card.Text>
                                         <Card.Text> วันที่จัดงาน : {this.state.start_date} - {this.state.end_date} </Card.Text>
                                         <Card.Text> วันสิ้นสุดการประมวลผล : {this.state.dateline}</Card.Text>
-                                        {/* <Link to={"/ListofParticipant/" + this.state.event_id} >
-                                            <Button variant="dark my-1 mr-1">Participant</Button>
-                                        </Link >
-                                        <Link to={"/AddParticipant/" + this.state.event_id} >
-                                            <Button variant="dark m-1">Add Participant</Button>
-                                        </Link > */}
                                         <div className="text-right">
                                             <Link to={"/Upload/" + this.state.event_id} >
                                                 <Button className="btn-custom px-4 ml-2" variant="outline-dark">Process</Button>
@@ -125,7 +115,6 @@ class MoreDetail extends React.Component {
                 <div> Loading</div>
             )
         }
-
     }
 }
 

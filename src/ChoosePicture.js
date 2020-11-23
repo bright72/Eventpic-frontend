@@ -1,10 +1,8 @@
 import React, { Component, Fragment } from 'react'
-import { Link, Redirect } from 'react-router-dom'
-import { Image, ButtonGroup, Button, Card, Container, Row, Col, Modal, CardColumns, Form } from 'react-bootstrap'
-
+import { Redirect } from 'react-router-dom'
+import { Button, Card, Container, Row, Col, Modal, CardColumns, Form } from 'react-bootstrap'
 import firebase from './firebase/index'
 import Nevbar from './Nevbar.js'
-import axios from "axios"
 
 class ChoosePicture extends Component {
 
@@ -22,7 +20,6 @@ class ChoosePicture extends Component {
 
     //ใช้ตอนที่ยังไม่ Mount DOM
     async componentWillMount() {
-
         let user = await this.getUser();
         let key = await this.getKey(user)
         this.setState({
@@ -30,7 +27,6 @@ class ChoosePicture extends Component {
             user_id: key,
             auth: true
         })
-
         this.getParticipant()
         this.getAllPictureOfEvent()
     }
@@ -58,12 +54,10 @@ class ChoosePicture extends Component {
 
     getAllPictureOfEvent() {
         const { user_id, event_id } = this.state
-
         const databaseRef = firebase.database().ref(`user/${user_id}/event/${event_id}/images`)
         databaseRef.on('value', snapshot => {
             let pictures = snapshot.val()
             let tempRows = []
-
             for (const property in pictures) {
                 let row = {
                     id: property,
@@ -71,7 +65,6 @@ class ChoosePicture extends Component {
                 }
                 tempRows.push(row)
             }
-
             this.setState({
                 pictures: tempRows
             })
@@ -86,20 +79,16 @@ class ChoosePicture extends Component {
             this.setState({
                 participant: participant
             })
-
         })
     }
 
     handleChange = e => {
         const { selectPictures } = this.state
-        const { name, value } = e.target
-
+        const { value } = e.target
         let temp = selectPictures.filter(id => id === value)
-
-        if (temp == 0) {
+        if (temp === 0) {
             // not dupilcate
             selectPictures.push(value)
-
         } else {
             // dupilcate
             this.setState({
@@ -115,7 +104,7 @@ class ChoosePicture extends Component {
         const participant = {
             is_select_image: true
         }
-        if(selectPictures.length != 0){
+        if (selectPictures.length !== 0) {
             const imageRef = firebase.database().ref(`user/${user_id}/event/${event_id}/participant/${participant_id}/images`)
             selectPictures.forEach(pic => {
                 let index = pic.indexOf(",")
@@ -131,7 +120,6 @@ class ChoosePicture extends Component {
         participantRef.child(participant_id).update(participant)
         this.handleClose()
         this.props.history.push(`/ListofParticipant/${event_id}`)
-
     }
 
     handleClose = () => {
@@ -148,7 +136,6 @@ class ChoosePicture extends Component {
 
     render() {
         const { pictures, currentUser, auth, participant, selectPictures, show } = this.state
-
         //รูปทั้งหมดในอีเว่น
         let ListCheckPicture = pictures.map((pic, index) => {
             return (
@@ -218,7 +205,6 @@ class ChoosePicture extends Component {
                                 </Col>
                             </Row>
                         </Container>
-
                     </Fragment >
                 )
             }
@@ -233,7 +219,6 @@ class ChoosePicture extends Component {
                 <div>Loading</div>
             )
         }
-
     }
 }
 export default ChoosePicture

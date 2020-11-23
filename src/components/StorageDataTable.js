@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Table, Image, ButtonGroup, Button, ToggleButton, Card, Col, CardDeck, CardColumns } from 'react-bootstrap'
+import { Table, ButtonGroup, Button, ToggleButton, Card, CardColumns } from 'react-bootstrap'
 
 
 class StorageDataTable extends Component {

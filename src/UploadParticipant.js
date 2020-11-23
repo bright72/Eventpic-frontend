@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { Link, Redirect } from 'react-router-dom'
-import { Form, Button, Container, Row, Col, Modal, Card } from 'react-bootstrap'
+import { Redirect } from 'react-router-dom'
+import { Form, Container, Row, Col, Card } from 'react-bootstrap'
 
 import './Style.css'
 import Nevbar from './Nevbar'
@@ -40,7 +40,6 @@ class UploadParticipant extends Component {
         this.setState({
             files: file
         })
-        console.log(file)
     }
 
     getKey = (user) => {
@@ -60,30 +59,26 @@ class UploadParticipant extends Component {
     }
 
     handleSubmit = async e => {
-        const { event_id, files, email, organize_id } = this.state
+        const { event_id, files, organize_id } = this.state
         e.preventDefault()
         const form = e.currentTarget
         if (form.checkValidity() === true) {
-            console.log(files)
             let downloadUrlArray = [];
             for (let i = 0; i < files.length; i++) {
-                let img = files[i] ;
+                let img = files[i];
                 let storageRef = await firebase.storage().ref(`headshot/${img.lastModified}.jpg`)
                 await storageRef.put(img)
                 let downloadUrl = await storageRef.getDownloadURL()
-                console.log(downloadUrl)
-                downloadUrlArray[i]= downloadUrl        
-              }
-              await this.setState({
+                downloadUrlArray[i] = downloadUrl
+            }
+            await this.setState({
                 headshot_url: downloadUrlArray
-            })   
-            console.log(this.state.headshot_url) 
-
+            })
             const participantRef = firebase.database().ref(`user/${organize_id}/event/${event_id}/participant`)
             let item = {
-                email : this.state.email,
+                email: this.state.email,
                 participant_picture_confirm: false,
-                headshots : this.state.headshot_url
+                headshots: this.state.headshot_url
 
             }
             participantRef.push(item)
@@ -106,20 +101,6 @@ class UploadParticipant extends Component {
                 }
             });
         })
-        // const itemsRef = firebase.database().ref(`user/${organize_id}/event/${event_id}/participant`)
-        // let item = {
-        //     email: email,
-        //     is_select_image: false,
-        //     panticipant_picture_confirm: false
-        // }
-        // itemsRef.push(item)
-
-        // console.log(file)
-        // let storageRef = firebase.storage().ref(`images/`)
-        // storageRef.put(file)
-        // let downloadUrl = storageRef.getDownloadURL()
-        // console.log(downloadUrl)
-    
     }
 
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import { Navbar, Button, Container, Row, Col, Nav } from 'react-bootstrap'
+import { Navbar, Button, Nav } from 'react-bootstrap'
 import firebase from './firebase/index'
 import logo from "./LogoEventPic.svg"
 
@@ -8,7 +8,6 @@ class Nevbar extends React.Component {
 
     constructor(props) {
         super(props)
-
         this.state = {
             email: '',
             password: '',
@@ -18,35 +17,6 @@ class Nevbar extends React.Component {
             navStat: false
         }
     }
-
-    // onChange = e => {
-    //     const { name, value } = e.target
-
-    //     this.setState({
-    //         [name]: value
-    //     })
-    // }
-
-    // onSubmit = e => {
-    //     e.preventDefault()
-
-    //     const { email, password } = this.state
-    //     // TODO: implement signInWithEmailAndPassword()
-
-    //     auth
-    //         .signInWithEmailAndPassword(email, password)
-    //         .then(response => {
-    //             this.setState({
-    //                 currentUser: response.user
-    //             })
-    //         })
-    //         .catch(error => {
-    //             this.setState({
-    //                 message: error.message
-    //             })
-    //         })
-
-    // }
 
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
@@ -87,7 +57,7 @@ class Nevbar extends React.Component {
     }
 
     render() {
-        const { currentUser, redirect, navStat } = this.state
+        const { currentUser, redirect } = this.state
         if (redirect) {
             return <Redirect to="/login" />
         }
@@ -108,9 +78,9 @@ class Nevbar extends React.Component {
                     <Navbar.Collapse className="justify-content-end">
                         <Nav>
                             <Nav.Item>
-                                <Nav.Link className="mt-1" style={{ fontSize: 20}} disabled>
-                                     {currentUser.email}
-                                 </Nav.Link>
+                                <Nav.Link className="mt-1" style={{ fontSize: 20 }} disabled>
+                                    {currentUser.email}
+                                </Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
                                 {/* <Nav.Link>{currentUser.email}</Nav.Link> */}

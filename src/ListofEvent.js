@@ -60,7 +60,6 @@ class ListofEvent extends Component {
                             }
 
                         }
-                        console.log("new", newState)
                         self.setState({
                             events: newState
                         })

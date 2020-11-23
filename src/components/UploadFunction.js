@@ -1,12 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { Link, Redirect } from 'react-router-dom'
-import { Form, Row, Col, Button, Spinner, Card, Container } from 'react-bootstrap'
+import { Form, Row, Col, Button, Container } from 'react-bootstrap'
 import firebase from '../firebase/index';
 import StorageDataTable from './StorageDataTable';
 import Nevbar from '../Nevbar.js'
-import axios from "axios";
-import * as emailjs from 'emailjs-com'
-import api from '../utils/api'
 
 class UploadFunction extends Component {
 
@@ -130,7 +127,7 @@ class UploadFunction extends Component {
 
     async handleProcessing(e) {
         e.preventDefault();
-        for (const [key, file] of Object.entries(this.state.files)) {
+        for (const [file] of Object.entries(this.state.files)) {
             let storageRef = firebase.storage().ref(`eventpic/${file.name}`)
             await storageRef.put(file)
 
@@ -156,18 +153,8 @@ class UploadFunction extends Component {
         }
     }
 
-    onclickrespond = () => {
-        api.get("/emailbakcend").then(responde => {
-            console.log(responde.data);
-            this.setState({
-                emailPaticipant: responde.data.email,
-                img: responde.data.img
-            })
-        })
-    }
-
     render() {
-        const { rows, currentUser, auth, setFiles } = this.state;
+        const { rows, currentUser, auth} = this.state;
         if (auth) {
             if (currentUser) {
                 return (

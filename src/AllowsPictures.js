@@ -1,9 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { Link, Redirect } from 'react-router-dom'
-import { Image, ButtonGroup, Button, Card, Container, Row, Col, Modal, CardColumns, Form } from 'react-bootstrap'
-
+import { Button, Card, Container, Row, Col, Modal, CardColumns, Form } from 'react-bootstrap'
 import firebase from './firebase/index'
-import Nevbar from './Nevbar.js'
 
 class AllowsPictures extends Component {
 
@@ -39,8 +36,6 @@ class AllowsPictures extends Component {
         databaseRef.on('value', snapshot => {
             let pictures = snapshot.val()
             let tempRows = []
-            console.log(pictures)
-
             for (const property in pictures) {
                 let row = {
                     id: property,
@@ -48,7 +43,6 @@ class AllowsPictures extends Component {
                 }
                 tempRows.push(row)
             }
-
             this.setState({
                 pictures: tempRows
             })
@@ -57,14 +51,11 @@ class AllowsPictures extends Component {
 
     handleChange = e => {
         const { selectPictures } = this.state
-        const { name, value } = e.target
-
+        const { value } = e.target
         let temp = selectPictures.filter(id => id === value)
-
-        if (temp == 0) {
+        if (temp === 0) {
             // not dupilcate
             selectPictures.push(value)
-
         } else {
             // dupilcate
             this.setState({
@@ -76,13 +67,10 @@ class AllowsPictures extends Component {
     handleSubmit = (e) => {
         const { organize_id, event_id, participant_id, selectPictures } = this.state
         e.preventDefault()
-        console.log(selectPictures)
-        if (selectPictures.length != 0) {
+        if (selectPictures.length !== 0) {
             const ImageRef = firebase.database().ref(`user/${organize_id}/event/${event_id}/images`)
             const panticipantImageRef = firebase.database().ref(`user/${organize_id}/event/${event_id}/participant/${participant_id}/images`)
             const panticipantComfirm = firebase.database().ref(`user/${organize_id}/event/${event_id}/participant`)
-
-
             let panticipantImage = {
                 is_allow: false,
             }
@@ -92,19 +80,13 @@ class AllowsPictures extends Component {
             let confirm = {
                 panticipant_picture_confirm: true,
             }
-
             selectPictures.forEach(pic => {
                 let index = pic.indexOf(",")
                 let imageOfPanticipant = pic.slice(0, index)
                 let rootImage = pic.slice(index + 1)
-
-                console.log(`rootPicture: ${rootImage} `)
-                console.log(`pictureOfpanticipant : ${imageOfPanticipant}  `)
-
                 ImageRef.child(rootImage).update(image)
                 panticipantImageRef.child(imageOfPanticipant).update(panticipantImage)
                 panticipantComfirm.child(participant_id).update(confirm)
-
             })
         }
         this.handleClose()
@@ -124,21 +106,17 @@ class AllowsPictures extends Component {
 
     render() {
         const { pictures, pictureChecked, selectPictures, show } = this.state
-
         //รูปทั้งหมดในอีเว่น
         let ListCheckPicture = pictures.map((pic, index) => {
             return (
                 <Card key={index} >
                     <Card.Img variant="top" src={pic.metadata.orginal_image_url} />
-                    {/* <Card.Img variant="top" src={pic.metadata.orginal_image_url} onClick={this.handleChange} /> */}
                     <div id="picture-panticipant">
                         <Form.Check type="checkbox" id="panticipant" name={"checkbox-" + index} value={[pic.id, pic.metadata.id]} onChange={this.handleChange} />
                     </div>
                 </Card>
             )
         })
-
-
 
         return (
             <Fragment>
@@ -156,7 +134,6 @@ class AllowsPictures extends Component {
                                 <h1 className="mb-4">ท่านได้ทำการคัดเลือกรูปเรียบร้อยเเล้ว</h1>
                                 <h4>ขอบคุณสำหรับการอนุญาตให้นำภาพถ่ายภายในกิจกรรมไปใช้ในการประชาสัมพันธ์</h4>
                             </Col>
-
                             :
                             <Fragment>
                                 <Col
@@ -210,7 +187,6 @@ class AllowsPictures extends Component {
                 </Container>
             </Fragment >
         )
-
     }
 }
 export default AllowsPictures

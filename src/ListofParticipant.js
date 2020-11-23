@@ -28,7 +28,7 @@ class ListofParticipant extends Component {
             this.setState({
                 auth: true
             })
-            const { email } = self.state
+            
             firebase.database().ref("user").orderByChild("email").equalTo(user.email)
                 .on("child_added", function (snapshot) {
                     const itemsRef = firebase.database().ref(`user/${snapshot.key}/event/${self.state.event_id}/participant`)
@@ -42,7 +42,6 @@ class ListofParticipant extends Component {
                                 imageChecked: items[property].is_select_image,
                             })
                         }
-                        console.log(temp)
                         self.setState({
                             participant: temp
                         })
@@ -74,15 +73,15 @@ class ListofParticipant extends Component {
                                                 <Card.Body>
                                                     <Card.Title>{i.email}</Card.Title>
                                                     <div className="text-right">
-                                                    {i.imageChecked ?
-                                                        <Link to={`/ViewPicture/${event_id}/${i.id}`} className="btn-link" >
-                                                            <Button className="btn-custom mr-0" id="primary">View</Button>
-                                                        </Link>
-                                                        :
-                                                        <Link to={`./${event_id}/ChoosePicture/${i.id}`} className="btn-link" >
-                                                            <Button className="btn-custom mr-0" id="primary" style={{ width: 200 }}>CHOOSE PICTURE</Button>
-                                                        </Link>
-                                                    }
+                                                        {i.imageChecked ?
+                                                            <Link to={`/ViewPicture/${event_id}/${i.id}`} className="btn-link" >
+                                                                <Button className="btn-custom mr-0" id="primary">View</Button>
+                                                            </Link>
+                                                            :
+                                                            <Link to={`./${event_id}/ChoosePicture/${i.id}`} className="btn-link" >
+                                                                <Button className="btn-custom mr-0" id="primary" style={{ width: 200 }}>CHOOSE PICTURE</Button>
+                                                            </Link>
+                                                        }
                                                     </div>
                                                 </Card.Body>
                                             </Card>

@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { Link, Redirect } from 'react-router-dom'
-import { Image, ButtonGroup, Button, Card, Container, Row, Col, Modal, CardColumns, Form } from 'react-bootstrap'
-
+import { Redirect } from 'react-router-dom'
+import { Card, Container, Row, Col, CardColumns} from 'react-bootstrap'
 import firebase from './firebase/index'
 import Nevbar from './Nevbar.js'
 
@@ -19,9 +18,7 @@ class ViewPicture extends Component {
         show: false
     }
 
-    //ใช้ตอนที่ยังไม่ Mount DOM
     async componentWillMount() {
-
         let user = await this.getUser();
         let key = await this.getKey(user)
         this.setState({
@@ -29,7 +26,6 @@ class ViewPicture extends Component {
             user_id: key,
             auth: true
         })
-
         this.getParticipant()
         this.getAllPictureOfPaticipant()
     }
@@ -56,15 +52,11 @@ class ViewPicture extends Component {
     }
 
     getAllPictureOfPaticipant() {
-        const { user_id, event_id,participant_id } = this.state
-        console.log(participant_id)
-
+        const { user_id, event_id, participant_id } = this.state
         const databaseRef = firebase.database().ref(`user/${user_id}/event/${event_id}/participant/${participant_id}/images`)
         databaseRef.on('value', snapshot => {
             let pictures = snapshot.val()
             let tempRows = []
-            console.log(pictures)
-
             for (const property in pictures) {
                 let row = {
                     id: property,
@@ -72,7 +64,6 @@ class ViewPicture extends Component {
                 }
                 tempRows.push(row)
             }
-
             this.setState({
                 pictures: tempRows
             })
@@ -87,20 +78,16 @@ class ViewPicture extends Component {
             this.setState({
                 participant: participant
             })
-
         })
     }
 
     handleChange = e => {
         const { selectPictures } = this.state
-        const { name, value } = e.target
-
+        const { value } = e.target
         let temp = selectPictures.filter(id => id === value)
-
-        if (temp == 0) {
+        if (temp === 0) {
             // not dupilcate
             selectPictures.push(value)
-
         } else {
             // dupilcate
             this.setState({
@@ -109,21 +96,13 @@ class ViewPicture extends Component {
         }
     }
 
-
     render() {
-        const { pictures, currentUser, auth, participant, selectPictures, show } = this.state
-
+        const { pictures, currentUser, auth, participant } = this.state
         //รูปทั้งหมดในอีเว่น
         let ListCheckPicture = pictures.map((pic, index) => {
             return (
                 <Card>
                     <Card.Img variant="top" src={pic.metadata.orginal_image_url} />
-                    {/* <Card.Body>
-                        {console.log('photo', pic)}
-                        {/* <Card.Text>
-                            {pic.metadata.name}
-                        </Card.Text> */}
-                    {/* </Card.Body> */} 
                 </Card>
             )
         })
@@ -155,7 +134,6 @@ class ViewPicture extends Component {
                                 </Col>
                             </Row>
                         </Container>
-
                     </Fragment >
                 )
             }
@@ -170,7 +148,6 @@ class ViewPicture extends Component {
                 <div>Loading</div>
             )
         }
-
     }
 }
 export default ViewPicture

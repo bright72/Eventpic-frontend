@@ -1,7 +1,7 @@
 import firebase from './firebase'
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import { Form, Button, Container, Row, Col, Alert, Card, Modal } from 'react-bootstrap'
+import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap'
 import './Style.css'
 import logo from "./Component-logo.svg"
 import vectorCom from "./Component-vec.svg"
@@ -38,7 +38,6 @@ class LoginForm extends React.Component {
             firebase.auth()
                 .signInWithEmailAndPassword(email, password)
                 .then(response => {
-                    console.log("OK")
                     this.setState({
                         currentUser: response.user
                     })
@@ -82,7 +81,7 @@ class LoginForm extends React.Component {
     }
 
     render() {
-        const { showAlert, currentUser, validate, auth, show } = this.state
+        const { showAlert, currentUser, validate, auth } = this.state
         if (auth) {
             if (!currentUser) {
                 return (

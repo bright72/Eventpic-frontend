@@ -1,9 +1,7 @@
-import React, { useState } from 'react'
-// import auth from './firebase/index'
+import React from 'react'
 import firebase from 'firebase'
 import { Link, Redirect } from 'react-router-dom'
-import { Form, Button, Container, Row, Col, Input, label, Alert, Card } from 'react-bootstrap'
-import Nevbar from './Nevbar.js'
+import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap'
 import './Style.css'
 import logo from "./Component-logo.svg"
 import vectorCom from "./Component-vec.svg"
@@ -25,22 +23,12 @@ class Register extends React.Component {
         }
     }
 
-    // const handleSubmit = event => {
-    //     if (password == conPassword) {
-    //             alert(' Password Correct: ');
-    //     }
-    //     else {
-    //         alert(' Password not Correct: ');
-    //     }
-    //     event.preventDefault();
-    // }
-
     handleRegister = async (e) => {
         e.preventDefault()
         const form = e.currentTarget
         const { email, password, conPassword } = this.state
         if (form.checkValidity() === true) {
-            if (password == conPassword) {
+            if (password === conPassword) {
                 const response = await firebase.auth().createUserWithEmailAndPassword(email, password)
                     .then(response => {
                         this.setState({

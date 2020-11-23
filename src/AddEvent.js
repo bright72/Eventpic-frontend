@@ -1,12 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import { Form, Button, Container, Row, Col, Alert, Card } from 'react-bootstrap'
+import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
 import firebase from './firebase'
 import { withRouter } from 'react-router-dom'
-
-const { Group, Label, Control } = Form
 
 class AddEvent extends Component {
     constructor() {
@@ -23,10 +21,8 @@ class AddEvent extends Component {
             validate: false,
             showAlert: false
         }
-
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
-
     }
 
     componentDidMount() {
@@ -83,7 +79,7 @@ class AddEvent extends Component {
 
 
     render() {
-        const { currentUser, auth, validate, showAlert } = this.state
+        const { currentUser, auth, validate } = this.state
         if (auth) {
             if (currentUser) {
                 return (

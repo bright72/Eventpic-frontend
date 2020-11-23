@@ -8,8 +8,7 @@ class Loading extends Component {
     render() {
         return (
             <Container >
-                <Spinner animation="border" variant="danger"
-                />
+                <Spinner animation="border" variant="danger"/>
             </Container>
 
         )
