@@ -83,7 +83,7 @@ class UploadParticipant extends Component {
             let item = {
                 email : this.state.email,
                 participant_picture_confirm: false,
-                image : this.state.headshot_url
+                headshots : this.state.headshot_url
 
             }
             participantRef.push(item)
@@ -95,8 +95,6 @@ class UploadParticipant extends Component {
         }
         this.props.history.push(`/MoreDetail/${event_id}`)
     }
-
-
 
     getUser = () => {
         return new Promise((resolve, reject) => {

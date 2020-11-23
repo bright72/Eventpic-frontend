@@ -16,10 +16,13 @@ class Process extends Component {
         keypath: '',
         imageAsFile: "",
         emailPaticipant: "",
-        processimg: {},
+        img_id: "",
         original_url: "",
         par_url: "",
-        buttonstatus: true
+        process_url: "",
+        processimg: {},
+        buttonstatus: true,
+        par_key: "",
     }
 
     async componentWillMount() {
@@ -59,17 +62,18 @@ class Process extends Component {
             await eventRefPic.once('value').then((snapshot) => {
                 const url = snapshot.val() && snapshot.val().downloadURLs
                 this.setState({
-                    original_url: url
+                    original_url: url,
+                    img_id: picid
                 })
             })
 
             console.log(this.state.original_url)
-
-            const printname = []
+            const printname = {}
             const container = document.createElement('div')
             container.style.position = 'relative'
             document.body.append(container)
             document.getElementById("text").innerText = 'กำลัง Process'
+
             const labeledFaceDescriptors = await this.loadLabeledImages()
             console.log("label: ", labeledFaceDescriptors)
             const faceMatcher = await new faceapi.FaceMatcher(labeledFaceDescriptors, 0.5)
@@ -77,8 +81,8 @@ class Process extends Component {
             let image, canvas
             if (image) image.remove()
             if (canvas) canvas.remove()
-
-            image = await faceapi.fetchImage(`${this.state.original_url}`) //ไฟล์ที่เอาไปเช็ค
+            const oriurl = this.state.original_url
+            image = await faceapi.fetchImage(`${oriurl}`) //ไฟล์ที่เอาไปเช็ค
             console.log(image)
             document.getElementById("output").append(image)
             canvas = faceapi.createCanvasFromMedia(image)
@@ -94,24 +98,47 @@ class Process extends Component {
                 const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() })
                 console.log(result._label)
                 if (result._label != "unknown") {
-                    document.getElementById("printname").innerText = " \n " + result._label + " \n "
-                    printname.push({
-                        name: result._label,
+                    //document.getElementById("printname").innerText = " \n " + result._label + " \n "
+                    const participantRef = firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/participant/${result._label}/processed_pic`)
+
+                    let printname = {
+                        img_id: this.state.img_id,
+                        par_key: result._label,
+                        original_url: oriurl,
+                        process_url: oriurl,
                         status: true
-                    })
-                    console.log('work')
+                    }
+                    
+
+                    participantRef.push(printname)
+
+                    console.log('เขียนลงข้อมูล')
                 } else {
-                    console.log('not do anything')
+                    console.log('ไม่เขียนลงข้องมูล')
                 }
                 drawBox.draw(canvas)
             })
-            console.log(printname)
+            this.setState({
+                processimg: printname
+            })
         }
         document.getElementById("text").innerText = 'Process เสร็จแล้ว'
         this.setState({
             buttonstatus: false
         })
 
+
+        //const participantRef = firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/participant/${this.state.par_key}`)
+        // let item = {
+        //     img_id: this.state.img_id,
+        //     status: true,
+        //     origiurl: this.state.original_url,
+        //     process_url: this.state.original_url
+        // }
+        // this.setState({
+        //     processimg: item
+        // })
+        //participantRef.push(item)
     }
 
     loadLabeledImages = async () => {
@@ -134,19 +161,24 @@ class Process extends Component {
         })
         for (var key in val) {
             let temp = val[key].image
-            labels = val[key].email
+            //labels = val[key].email
+            labels = key
+            this.setState({
+                par_key: key
+            })
             for (var i in temp) {
                 console.log(`>>>>> ${i} : ${temp[i]}`)
-
-                //const img = await faceapi.fetchImage(`${temp[i]}`)
-                const img = await faceapi.fetchImage(`https://pbs.twimg.com/profile_images/931593868620963840/gkH-nPnB.jpg`)
+                const img = await faceapi.fetchImage(`${temp[i]}`)
+                this.setState({
+                    process_url: temp[i]
+                })
+                //const img = await faceapi.fetchImage(`https://pbs.twimg.com/profile_images/931593868620963840/gkH-nPnB.jpg`)
                 console.log("Img: ", img)
                 const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
                 console.log('descriptor: ', detections)
                 descriptions.push(detections.descriptor)
             }
         }
-
         console.log('List of Descriptor: ', descriptions)
         console.log("List of Label: ", labels)
         return new faceapi.LabeledFaceDescriptors(labels, descriptions)
