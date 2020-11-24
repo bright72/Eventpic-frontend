@@ -17,7 +17,7 @@ class UploadFunction extends Component {
         currentUser: null,
         auth: false,
         participant_id: "",
-        keypath: '',
+        keypath: "",
         imageAsFile: "",
         emailPaticipant: "",
         img: []
@@ -69,7 +69,7 @@ class UploadFunction extends Component {
     //ลบข้อมูล Metada จาก Firebase
     deleteMetaDataFromDatabase(e, rowData) {
 
-        const storageRef = firebase.storage().ref(`event_pics/${rowData.name}`)
+        const storageRef = firebase.storage().ref(`eventpics/${rowData.name}`)
         // Delete the file on storage
         storageRef.delete()
             .then(() => {
@@ -97,7 +97,7 @@ class UploadFunction extends Component {
 
             let fileData = this.state.filesMetadata[key];
 
-            let downloadUrl = await firebase.storage().ref(`event_pics/${fileData.metadataFile.name}`).getDownloadURL()
+            let downloadUrl = await firebase.storage().ref(`eventpics/${fileData.metadataFile.name}`).getDownloadURL()
             console.log(downloadUrl)
 
             let objRows = {
@@ -128,14 +128,20 @@ class UploadFunction extends Component {
 
     async handleProcessing(e) {
         e.preventDefault();
-        for (const [file] of Object.entries(this.state.files)) {
-            let storageRef = firebase.storage().ref(`event_pics/${file.name}`)
+        // handle file upload here
+        console.log(this.state.files)
+
+        for (const [key, file] of Object.entries(this.state.files)) {
+            console.log(`[${key}] ${file.name}`)
+            let storageRef = firebase.storage().ref(`eventpics/${file.name}`)
             await storageRef.put(file)
 
             let downloadUrl = await storageRef.getDownloadURL()
 
             storageRef.getMetadata()
                 .then((metadata) => {
+
+                    // Metadata now contains the metadata for 'filepond/${file.name}'
                     let metadataFile = {
                         name: metadata.name,
                         size: metadata.size,
@@ -145,6 +151,7 @@ class UploadFunction extends Component {
                     }
                     let is_allow_all_panticipant = true
                     const databaseRef = firebase.database().ref(`organizers/${this.state.keypath}/events/${this.state.event_id}/event_pics`);
+                    console.log(metadataFile)
                     databaseRef.push({
                         metadataFile, is_allow_all_panticipant
                     })
@@ -155,7 +162,7 @@ class UploadFunction extends Component {
     }
 
     render() {
-        const { rows, currentUser, auth} = this.state;
+        const { rows, currentUser, auth } = this.state;
         if (auth) {
             if (currentUser) {
                 return (
