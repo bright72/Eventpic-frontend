@@ -47,14 +47,14 @@ class Process extends Component {
 
     fetcheventimg = async () => {
         this.loadModel()// โหลด Model
-        const itemRefPic = await firebase.database().ref(`organizers/${this.state.keypath}/events/${this.state.event_id}/eventpics`)
+        const itemRefPic = await firebase.database().ref(`organizers/${this.state.keypath}/events/${this.state.event_id}/event_pics`)
         let val = null
         await itemRefPic.on("value", (snapshot) => {
             val = snapshot.val()
         })
         for (var key in val) {
             const picid = key
-            const eventRefPic = await firebase.database().ref(`organizers/${this.state.keypath}/events/${this.state.event_id}/eventpics/${picid}/metadataFile`)
+            const eventRefPic = await firebase.database().ref(`organizers/${this.state.keypath}/events/${this.state.event_id}/event_pics/${picid}/metadataFile`)
             await eventRefPic.once('value').then((snapshot) => {
                 const url = snapshot.val() && snapshot.val().downloadURLs
                 this.setState({
