@@ -44,7 +44,7 @@ class ViewPicture extends Component {
 
     getKey = (user) => {
         return new Promise((resolve, reject) => {
-            firebase.database().ref("user").orderByChild("email").equalTo(user.email)
+            firebase.database().ref("organizers").orderByChild("email").equalTo(user.email)
                 .on("child_added", function (snapshot) {
                     resolve(snapshot.key)
                 })
@@ -53,7 +53,7 @@ class ViewPicture extends Component {
 
     getAllPictureOfPaticipant() {
         const { user_id, event_id, participant_id } = this.state
-        const databaseRef = firebase.database().ref(`user/${user_id}/event/${event_id}/participant/${participant_id}/images`)
+        const databaseRef = firebase.database().ref(`organizers/${user_id}/events/${event_id}/participants/${participant_id}/processed_pic`)
         databaseRef.on('value', snapshot => {
             let pictures = snapshot.val()
             let tempRows = []

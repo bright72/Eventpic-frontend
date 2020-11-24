@@ -34,7 +34,7 @@ class Register extends React.Component {
                         this.setState({
                             redirect: true
                         })
-                        const itemsRef = firebase.database().ref('user')
+                        const itemsRef = firebase.database().ref('organizers')
                         const item = {
                             email
                         }

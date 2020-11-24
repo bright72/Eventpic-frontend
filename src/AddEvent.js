@@ -54,17 +54,17 @@ class AddEvent extends Component {
                 alert("Incorrect Date!!")
             } else {
                 let keypath = ""
-                firebase.database().ref("user").orderByChild("email").equalTo(this.state.currentUser.email)
+                firebase.database().ref("organizers").orderByChild("email").equalTo(this.state.currentUser.email)
                     .on("child_added", function (snapshot) {
                         keypath = snapshot.key
                     })
-                const itemsRef = firebase.database().ref(`user/${keypath}/event`)
+                const itemsRef = firebase.database().ref(`organizers/${keypath}/events`)
                 const item = {
                     name: name,
-                    detail: detail,
-                    start_date: start_date,
+                    start_date: start_date,                    
                     end_date: end_date,
                     dateline: dateline,
+                    detail: detail,
                 }
                 itemsRef.push(item)
                 this.props.history.push('/ListofEvent/' + this.state.event_id)

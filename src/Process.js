@@ -47,14 +47,14 @@ class Process extends Component {
 
     fetcheventimg = async () => {
         this.loadModel()// โหลด Model
-        const itemRefPic = await firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/eventpic`)
+        const itemRefPic = await firebase.database().ref(`organizers/${this.state.keypath}/events/${this.state.event_id}/eventpics`)
         let val = null
         await itemRefPic.on("value", (snapshot) => {
             val = snapshot.val()
         })
         for (var key in val) {
             const picid = key
-            const eventRefPic = await firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/eventpic/${picid}/metadataFile`)
+            const eventRefPic = await firebase.database().ref(`organizers/${this.state.keypath}/events/${this.state.event_id}/eventpics/${picid}/metadataFile`)
             await eventRefPic.once('value').then((snapshot) => {
                 const url = snapshot.val() && snapshot.val().downloadURLs
                 this.setState({
@@ -80,13 +80,13 @@ class Process extends Component {
             const results = resizedDetections.map(d => faceMatcher.findBestMatch(d.descriptor))
             results.forEach((result, i) => {
                 if (result._label !== "unknown") {
-                    const participantRef = firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/participant/${result._label}/processed_pic`)
+                    const participantRef = firebase.database().ref(`organizers/${this.state.keypath}/events/${this.state.event_id}/participants/${result._label}/processed_pic`)
                     let printname = {
-                        img_id: this.state.img_id,
+                        original_pic_id: this.state.img_id,
+                        status: true,
+                        original_pic_url: oriurl,
+                        processed_pic_url: oriurl,
                         par_key: result._label,
-                        original_url: oriurl,
-                        process_url: oriurl,
-                        status: true
                     }
                     participantRef.push(printname)
                 } else {
@@ -105,7 +105,7 @@ class Process extends Component {
         await faceapi.nets.ssdMobilenetv1.load("/weights")
         await faceapi.nets.faceRecognitionNet.load("/weights")
         await faceapi.nets.faceLandmark68Net.load("/weights")
-        const itemRefPar = await firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/participant`)
+        const itemRefPar = await firebase.database().ref(`organizers/${this.state.keypath}/events/${this.state.event_id}/participants`)
         let labels = ""
         let val = null
         let descriptions = []
@@ -144,7 +144,7 @@ class Process extends Component {
 
     getKey = (user) => {
         return new Promise((resolve, reject) => {
-            firebase.database().ref("user").orderByChild("email").equalTo(user.email)
+            firebase.database().ref("organizers").orderByChild("email").equalTo(user.email)
                 .on("child_added", function (snapshot) {
                     resolve(snapshot.key)
                 })

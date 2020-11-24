@@ -21,7 +21,7 @@ class AllowsPictures extends Component {
 
     checkPanticipantPictureConfirm() {
         const { event_id, organize_id, participant_id } = this.state
-        const databaseRef = firebase.database().ref(`user/${organize_id}/event/${event_id}/participant/${participant_id}`)
+        const databaseRef = firebase.database().ref(`organizers/${organize_id}/events/${event_id}/participants/${participant_id}`)
         databaseRef.on('value', snapshot => {
             let values = snapshot.val()
             this.setState({
@@ -32,7 +32,7 @@ class AllowsPictures extends Component {
 
     getAllPictureOfPaticipant() {
         const { event_id, organize_id, participant_id } = this.state
-        const databaseRef = firebase.database().ref(`user/${organize_id}/event/${event_id}/participant/${participant_id}/images`)
+        const databaseRef = firebase.database().ref(`organizers/${organize_id}/events/${event_id}/participants/${participant_id}/processed_pic`)
         databaseRef.on('value', snapshot => {
             let pictures = snapshot.val()
             let tempRows = []
@@ -68,9 +68,9 @@ class AllowsPictures extends Component {
         const { organize_id, event_id, participant_id, selectPictures } = this.state
         e.preventDefault()
         if (selectPictures.length !== 0) {
-            const ImageRef = firebase.database().ref(`user/${organize_id}/event/${event_id}/images`)
-            const panticipantImageRef = firebase.database().ref(`user/${organize_id}/event/${event_id}/participant/${participant_id}/images`)
-            const panticipantComfirm = firebase.database().ref(`user/${organize_id}/event/${event_id}/participant`)
+            const ImageRef = firebase.database().ref(`organizers/${organize_id}/events/${event_id}/images`)
+            const panticipantImageRef = firebase.database().ref(`organizers/${organize_id}/events/${event_id}/participants/${participant_id}/processed_pic`)
+            const panticipantComfirm = firebase.database().ref(`organizers/${organize_id}/events/${event_id}/participants`)
             let panticipantImage = {
                 is_allow: false,
             }

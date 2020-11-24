@@ -39,9 +39,9 @@ class ListofEvent extends Component {
                 auth: true
             })
             let self = this
-            firebase.database().ref("user").orderByChild("email").equalTo(user.email)
+            firebase.database().ref("organizers").orderByChild("email").equalTo(user.email)
                 .on("child_added", async function (snapshot) {
-                    const itemsRef = firebase.database().ref(`/user/${snapshot.key}/event`);
+                    const itemsRef = firebase.database().ref(`/organizers/${snapshot.key}/events`);
                     itemsRef.on('value', (snapshot) => {
                         let events = snapshot.val();
                         let newState = [];

@@ -45,7 +45,7 @@ class ChoosePicture extends Component {
 
     getKey = (user) => {
         return new Promise((resolve, reject) => {
-            firebase.database().ref("user").orderByChild("email").equalTo(user.email)
+            firebase.database().ref("organizers").orderByChild("email").equalTo(user.email)
                 .on("child_added", function (snapshot) {
                     resolve(snapshot.key)
                 })
@@ -54,7 +54,7 @@ class ChoosePicture extends Component {
 
     getAllPictureOfEvent() {
         const { user_id, event_id } = this.state
-        const databaseRef = firebase.database().ref(`user/${user_id}/event/${event_id}/images`)
+        const databaseRef = firebase.database().ref(`organizers/${user_id}/events/${event_id}/event_pics`)
         databaseRef.on('value', snapshot => {
             let pictures = snapshot.val()
             let tempRows = []
@@ -73,7 +73,7 @@ class ChoosePicture extends Component {
 
     getParticipant() {
         const { user_id, event_id, participant_id } = this.state
-        const participantRef = firebase.database().ref(`user/${user_id}/event/${event_id}/participant/${participant_id}`)
+        const participantRef = firebase.database().ref(`organizers/${user_id}/events/${event_id}/participants/${participant_id}`)
         participantRef.on("value", (snapshot) => {
             let participant = snapshot.val()
             this.setState({
@@ -100,12 +100,12 @@ class ChoosePicture extends Component {
     handleSubmit = (e) => {
         const { user_id, event_id, participant_id, selectPictures } = this.state
         e.preventDefault()
-        const participantRef = firebase.database().ref(`user/${user_id}/event/${event_id}/participant`)
+        const participantRef = firebase.database().ref(`organizers/${user_id}/events/${event_id}/participants`)
         const participant = {
             is_select_image: true
         }
         if (selectPictures.length !== 0) {
-            const imageRef = firebase.database().ref(`user/${user_id}/event/${event_id}/participant/${participant_id}/images`)
+            const imageRef = firebase.database().ref(`organizers/${user_id}/events${event_id}/participants/${participant_id}/processed_pic`)
             selectPictures.forEach(pic => {
                 let index = pic.indexOf(",")
                 let image = {

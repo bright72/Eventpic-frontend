@@ -1,5 +1,5 @@
 import React, { useState, Component } from 'react';
-import firebase, { storage } from '../firebase';
+import firebase from './firebase';
 
 const Upload = (props) => {
     const [files, setFiles] = useState([])
@@ -11,13 +11,13 @@ const Upload = (props) => {
             setFiles(prevState => [...prevState, newFile]);
         }
     };
-
     const onUploadSubmission = e => {
         e.preventDefault(); // prevent page refreshing
         const promises = [];
         files.forEach(file => {
+            console.log(file)
             const uploadTask =
-                firebase.storage().ref().child(`eventpic/${file.name}`).put(file);
+                firebase.storage().ref().child(`event_pics/${file.name}`).put(file);
             promises.push(uploadTask);
             uploadTask.on(
                 firebase.storage.TaskEvent.STATE_CHANGED,

@@ -63,15 +63,6 @@ class Nevbar extends React.Component {
         }
 
         if (currentUser) {
-            // if (!navStat) {
-            // if (navStat) {
-            //     return (
-            //         <Navbar className="navbar" id="scroll-nav" style={{ position: "fixed" }}>
-            //             <Navbar.Brand className="logo-nav" href="/"><img src={logo} /></Navbar.Brand>
-
-            //         </Navbar>
-            //     )
-            // } else {
             return (
                 <Navbar className="navbar " id="normal-nav" style={{ position: "fixed" }}>
                     <Navbar.Brand className="logo-nav" href="/"><img src={logo} /></Navbar.Brand>

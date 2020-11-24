@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Link, Redirect } from 'react-router-dom'
 import { Form, Row, Col, Button, Container } from 'react-bootstrap'
-import firebase from './firebase/index';
+import firebase from './firebase';
 import StorageDataTable from './StorageDataTable';
 import Nevbar from './Nevbar.js'
 
@@ -47,7 +47,7 @@ class UploadFunction extends Component {
 
     getKey = (user) => {
         return new Promise((resolve, reject) => {
-            firebase.database().ref("user").orderByChild("email").equalTo(user.email)
+            firebase.database().ref("organizers").orderByChild("email").equalTo(user.email)
                 .on("child_added", function (snapshot) {
                     resolve(snapshot.key)
                 })
@@ -56,7 +56,7 @@ class UploadFunction extends Component {
 
     //โหลดข้อมูล Metadata จาก Firebase
     getMetaDataFromDatabase() {
-        const databaseRef = firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id ? this.state.event_id : null}/eventpic`);
+        const databaseRef = firebase.database().ref(`organizers/${this.state.keypath}/events/${this.state.event_id ? this.state.event_id : null}/event_pics`);
         databaseRef.on('value', snapshot => {
             this.setState({
                 filesMetadata: snapshot.val()
@@ -69,11 +69,11 @@ class UploadFunction extends Component {
     //ลบข้อมูล Metada จาก Firebase
     deleteMetaDataFromDatabase(e, rowData) {
 
-        const storageRef = firebase.storage().ref(`eventpic/${rowData.name}`)
+        const storageRef = firebase.storage().ref(`event_pics/${rowData.name}`)
         // Delete the file on storage
         storageRef.delete()
             .then(() => {
-                const databaseRef = firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id ? this.state.event_id : null}/eventpic`)
+                const databaseRef = firebase.database().ref(`organizers/${this.state.keypath}/events/${this.state.event_id ? this.state.event_id : null}/event_pics`)
                 // Delete the file on realtime database
                 databaseRef.child(rowData.key).remove()
                     .then(() => {
@@ -97,7 +97,8 @@ class UploadFunction extends Component {
 
             let fileData = this.state.filesMetadata[key];
 
-            let downloadUrl = await firebase.storage().ref(`eventpic/${fileData.metadataFile.name}`).getDownloadURL()
+            let downloadUrl = await firebase.storage().ref(`event_pics/${fileData.metadataFile.name}`).getDownloadURL()
+            console.log(downloadUrl)
 
             let objRows = {
                 no: i++,
@@ -128,7 +129,7 @@ class UploadFunction extends Component {
     async handleProcessing(e) {
         e.preventDefault();
         for (const [file] of Object.entries(this.state.files)) {
-            let storageRef = firebase.storage().ref(`eventpic/${file.name}`)
+            let storageRef = firebase.storage().ref(`event_pics/${file.name}`)
             await storageRef.put(file)
 
             let downloadUrl = await storageRef.getDownloadURL()
@@ -143,7 +144,7 @@ class UploadFunction extends Component {
                         downloadURLs: downloadUrl,
                     }
                     let is_allow_all_panticipant = true
-                    const databaseRef = firebase.database().ref(`user/${this.state.keypath}/event/${this.state.event_id}/eventpic`);
+                    const databaseRef = firebase.database().ref(`organizers/${this.state.keypath}/events/${this.state.event_id}/event_pics`);
                     databaseRef.push({
                         metadataFile, is_allow_all_panticipant
                     })

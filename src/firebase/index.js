@@ -1,4 +1,4 @@
-import * as firebase from 'firebase/firebase';
+import firebase from 'firebase/app';
 import 'firebase/storage';
 import 'firebase/auth';
 import config from './config'

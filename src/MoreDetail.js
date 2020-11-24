@@ -33,9 +33,9 @@ class MoreDetail extends React.Component {
                 auth: true
             })
             let self = this
-            firebase.database().ref("user").orderByChild("email").equalTo(user.email)
+            firebase.database().ref("organizers").orderByChild("email").equalTo(user.email)
                 .on("child_added", async function (snapshot) {
-                    const itemsRef = firebase.database().ref(`/user/${snapshot.key}/event`)
+                    const itemsRef = firebase.database().ref(`/organizers/${snapshot.key}/events`)
                     itemsRef.child(self.state.event_id).on("value", (snapshot) => {
                         let item = snapshot.val()
                         if (item) {
@@ -57,11 +57,11 @@ class MoreDetail extends React.Component {
 
     removeItem = event_id => {
         let keypath = ""
-        firebase.database().ref("user").orderByChild("email").equalTo(this.state.currentUser.email)
+        firebase.database().ref("organizers").orderByChild("email").equalTo(this.state.currentUser.email)
             .on("child_added", function (snapshot) {
                 keypath = snapshot.key
             })
-        const itemsRef = firebase.database().ref(`user/${keypath}/event`)
+        const itemsRef = firebase.database().ref(`organizers/${keypath}/events`)
         itemsRef.child(event_id).remove()
         this.props.history.push('/ListofEvent')
     }

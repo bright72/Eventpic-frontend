@@ -39,9 +39,9 @@ class EditEvent extends Component {
                 auth: true
             })
             let self = this
-            firebase.database().ref("user").orderByChild("email").equalTo(user.email)
+            firebase.database().ref("organizers").orderByChild("email").equalTo(user.email)
                 .on("child_added", function (snapshot) {
-                    const itemsRef = firebase.database().ref(`/user/${snapshot.key}/event`)
+                    const itemsRef = firebase.database().ref(`/organizers/${snapshot.key}/events`)
                     itemsRef.child(self.props.match.params.id).on("value", (snapshot) => {
                         let value = snapshot.val()
                         self.setState({
@@ -79,11 +79,11 @@ class EditEvent extends Component {
             alert("กรุณากรอกวันที่ให้ถูกต้อง")
         } else {
             let keypath = ""
-            firebase.database().ref("user").orderByChild("email").equalTo(this.state.currentUser.email)
+            firebase.database().ref("organizers").orderByChild("email").equalTo(this.state.currentUser.email)
                 .on("child_added", function (snapshot) {
                     keypath = snapshot.key
                 })
-            const itemsRef = firebase.database().ref(`user/${keypath}/event`)
+            const itemsRef = firebase.database().ref(`organizers/${keypath}/events`)
             const item = {
                 name,
                 detail,
@@ -119,11 +119,11 @@ class EditEvent extends Component {
         }
 
         let keypath = ""
-        firebase.database().ref("user").orderByChild("email").equalTo(this.state.currentUser.email)
+        firebase.database().ref("organizers").orderByChild("email").equalTo(this.state.currentUser.email)
             .on("child_added", function (snapshot) {
                 keypath = snapshot.key
             })
-        const itemsRef = firebase.database().ref(`user/${keypath}/event`)
+        const itemsRef = firebase.database().ref(`organizers/${keypath}/events`)
         itemsRef.child(this.state.event_id).update(obj);
 
         this.setState({

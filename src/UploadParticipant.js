@@ -44,7 +44,7 @@ class UploadParticipant extends Component {
 
     getKey = (user) => {
         return new Promise((resolve, reject) => {
-            firebase.database().ref("user").orderByChild("email").equalTo(user.email)
+            firebase.database().ref("organizers").orderByChild("email").equalTo(user.email)
                 .on("child_added", function (snapshot) {
                     resolve(snapshot.key)
                 })
@@ -74,12 +74,10 @@ class UploadParticipant extends Component {
             await this.setState({
                 headshot_url: downloadUrlArray
             })
-            const participantRef = firebase.database().ref(`user/${organize_id}/event/${event_id}/participant`)
+            const participantRef = firebase.database().ref(`organizers/${organize_id}/events/${event_id}/participants`)
             let item = {
                 email: this.state.email,
-                participant_picture_confirm: false,
-                headshots: this.state.headshot_url
-
+                headshots: this.state.headshot_url,
             }
             participantRef.push(item)
         } else {
