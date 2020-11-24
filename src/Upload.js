@@ -15,7 +15,6 @@ const Upload = (props) => {
         e.preventDefault(); // prevent page refreshing
         const promises = [];
         files.forEach(file => {
-            console.log(file)
             const uploadTask =
                 firebase.storage().ref().child(`event_pics/${file.name}`).put(file);
             promises.push(uploadTask);
