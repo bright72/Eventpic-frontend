@@ -96,10 +96,7 @@ class UploadFunction extends Component {
         for (let key in this.state.filesMetadata) {
 
             let fileData = this.state.filesMetadata[key];
-
             let downloadUrl = await firebase.storage().ref(`eventpics/${fileData.metadataFile.name}`).getDownloadURL()
-            console.log(downloadUrl)
-
             let objRows = {
                 no: i++,
                 key: key, //ใช้เพื่อ Delete
@@ -129,10 +126,8 @@ class UploadFunction extends Component {
     async handleProcessing(e) {
         e.preventDefault();
         // handle file upload here
-        console.log(this.state.files)
-
         for (const [key, file] of Object.entries(this.state.files)) {
-            console.log(`[${key}] ${file.name}`)
+            //console.log(`[${key}] ${file.name}`)
             let storageRef = firebase.storage().ref(`eventpics/${file.name}`)
             await storageRef.put(file)
 
@@ -151,7 +146,6 @@ class UploadFunction extends Component {
                     }
                     let is_allow_all_panticipant = true
                     const databaseRef = firebase.database().ref(`organizers/${this.state.keypath}/events/${this.state.event_id}/event_pics`);
-                    console.log(metadataFile)
                     databaseRef.push({
                         metadataFile, is_allow_all_panticipant
                     })
