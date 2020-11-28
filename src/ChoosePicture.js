@@ -1,8 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import { Redirect } from 'react-router-dom'
-import { Button, Card, Container, Row, Col, Modal, CardColumns, Form } from 'react-bootstrap'
+import { Button, Card, Container, Row, Col, Modal, CardColumns, Form, Image } from 'react-bootstrap'
 import firebase from './firebase/index'
 import Nevbar from './Nevbar.js'
+import Loading from './Loading.js'
+import emailjs from 'emailjs-com';
 
 class ChoosePicture extends Component {
 
@@ -15,7 +17,12 @@ class ChoosePicture extends Component {
         pictures: [],
         participant: {},
         selectPictures: [],
-        show: false
+        show: false,
+        visibleButton: true,
+        threeShot: [],
+        templateParams: {}
+
+
     }
 
     //ใช้ตอนที่ยังไม่ Mount DOM
@@ -29,6 +36,8 @@ class ChoosePicture extends Component {
         })
         this.getParticipant()
         this.getAllPictureOfEvent()
+        this.FetchHeadshot()
+
     }
 
     getUser = () => {
@@ -53,21 +62,42 @@ class ChoosePicture extends Component {
     }
 
     getAllPictureOfEvent() {
-        const { user_id, event_id } = this.state
-        const databaseRef = firebase.database().ref(`organizers/${user_id}/events/${event_id}/event_pics`)
+        const { user_id, event_id, participant_id } = this.state
+        const databaseRef = firebase.database().ref(`organizers/${user_id}/events/${event_id}/participants/${participant_id}/processed_pic`)
         databaseRef.on('value', snapshot => {
             let pictures = snapshot.val()
             let tempRows = []
-            for (const property in pictures) {
+            for (const key in pictures) {
                 let row = {
-                    id: property,
-                    metadata: pictures[property].metadataFile
+                    original_id: pictures[key].original_pic_id,
+                    processed_id: key,
+                    processed_url: pictures[key].processed_pic_url
                 }
                 tempRows.push(row)
             }
             this.setState({
                 pictures: tempRows
             })
+        })
+    }
+
+    FetchHeadshot = () => {
+        let headshots = this.state.participant.headshots_url
+        let temp = headshots.map((url, index) => {
+            return (
+                <Image
+                    src={url}
+                    rounded
+                    height={200}
+                    width={200}
+                    key={index}
+                    style={{ marginRight: 20, marginBottom: 15, objectFit: "cover" }}
+                />
+            )
+        })
+        console.log(temp)
+        this.setState({
+            threeShot: temp
         })
     }
 
@@ -86,7 +116,7 @@ class ChoosePicture extends Component {
         const { selectPictures } = this.state
         const { value } = e.target
         let temp = selectPictures.filter(id => id === value)
-        if (temp === 0) {
+        if (temp.length === 0) {
             // not dupilcate
             selectPictures.push(value)
         } else {
@@ -100,25 +130,50 @@ class ChoosePicture extends Component {
     handleSubmit = (e) => {
         const { user_id, event_id, participant_id, selectPictures } = this.state
         e.preventDefault()
-        const participantRef = firebase.database().ref(`organizers/${user_id}/events/${event_id}/participants`)
-        const participant = {
-            is_select_image: true
-        }
-        if (selectPictures.length !== 0) {
-            const imageRef = firebase.database().ref(`organizers/${user_id}/events${event_id}/participants/${participant_id}/processed_pic`)
-            selectPictures.forEach(pic => {
-                let index = pic.indexOf(",")
-                let image = {
-                    id: pic.slice(0, index),
-                    orginal_image_url: pic.slice(index + 1),
-                    processed_image_url: "",
-                    is_allow: true,
-                }
-                imageRef.push(image)
-            })
-        }
-        participantRef.child(participant_id).update(participant)
+        const participantImageRef = firebase.database().ref(`organizers/${user_id}/events/${event_id}/participants/${participant_id}`)
+        selectPictures.forEach(key => {
+            participantImageRef.child(`/processed_pic/${key}`).remove()
+        })
+        this.setState({
+            visibleButton: false
+        })
         this.handleClose()
+    }
+
+    sendEmail = () => {
+        // ส่ง email ไปเเล้ว ต้องเซต organize_picture_confirm: true ด้วยนะ
+        console.log("test")
+        const { participant, event_id, user_id, templateParams, participant_id } = this.state
+
+        console.log(templateParams)
+
+        const event = firebase.database().ref(`organizers/${user_id}/events/${event_id}`)
+        event.on("value", (snapshot) => {
+            let eventdetail = snapshot.val()
+            console.log(eventdetail)
+            let templateParams = {
+                to_email: participant.email,
+                event_name: eventdetail.name,
+                event_date: eventdetail.start_date,
+                event_dateline: eventdetail.dateline,
+                event_url: `https://eventpic.tk/allow/${user_id}/${event_id}/${participant_id}`
+            }
+            console.log(templateParams)
+            emailjs.send(
+                'EventPic',
+                'template_p1ojhve',
+                templateParams,
+                'user_taSKZdwaRwk1j4rwI0eXi'
+            )
+        })
+
+        let confirm = {
+            organize_picture_confirm: true,
+        }
+
+        const organizeConfirm = firebase.database().ref(`organizers/${user_id}/events/${event_id}/participants/${participant_id}`)
+        organizeConfirm.update(confirm)
+        console.log("finish")
         this.props.history.push(`/ListofParticipant/${event_id}`)
     }
 
@@ -135,18 +190,14 @@ class ChoosePicture extends Component {
     }
 
     render() {
-        const { pictures, currentUser, auth, participant, selectPictures, show } = this.state
-        //รูปทั้งหมดในอีเว่น
+        const { pictures, currentUser, auth, participant, selectPictures, show, visibleButton, threeShot } = this.state
         let ListCheckPicture = pictures.map((pic, index) => {
             return (
                 <Card>
-                    <Card.Img variant="top" src={pic.metadata.downloadURLs} />
-                    <Card.Body>
-                        <Card.Text>
-                            <Form.Check inline type="checkbox" name={"checkbox-" + index} value={[pic.id, pic.metadata.downloadURLs]} onChange={this.handleChange} />
-                            {pic.metadata.name}
-                        </Card.Text>
-                    </Card.Body>
+                    <Card.Img variant="top" src={pic.processed_url} />
+                    <div id="picture-panticipant">
+                        <Form.Check type="checkbox" id="panticipant" name={"checkbox-" + index} value={pic.processed_id} onChange={this.handleChange} />
+                    </div>
                 </Card>
             )
         })
@@ -160,17 +211,29 @@ class ChoosePicture extends Component {
                             <Row className="mb-4">
                                 <Col
                                     xs={{ span: 12 }}
-                                    sm={{ span: 8, offset: 2 }}
-                                    md={{ span: 8, offset: 2 }}
-                                    lg={{ span: 8, offset: 2 }}
+                                    sm={{ span: 12 }}
+                                    md={{ span: 10, offset: 1 }}
+                                    lg={{ span: 10, offset: 1 }}
+                                    className="text-center mb-2"
                                 >
-                                    <h2 className="mb-4">กรุณาเลือกรูปของ {participant.email}</h2>
+                                    {threeShot}
                                 </Col>
                                 <Col
                                     xs={{ span: 12 }}
-                                    sm={{ span: 8, offset: 2 }}
-                                    md={{ span: 8, offset: 2 }}
+                                    sm={{ span: 12 }}
+                                    md={{ span: 10, offset: 1 }}
+                                    lg={{ span: 10, offset: 1 }}
+                                    className="text-center mb-2"
+                                >
+                                    <h2 >ตรวจสอบภาพถ่ายของ {participant.email}</h2>
+                                    <p>กรุณาเลือกภาพถ่ายที่ไม่มีบุคคลจากภาพถ่ายใบหน้าด้านบน และทำการลบ ก่อนที่จะยืนยันทำการส่งอีเมล์</p>
+                                </Col>
+                                <Col
+                                    xs={{ span: 12 }}
+                                    sm={{ span: 12 }}
+                                    md={{ span: 10, offset: 1 }}
                                     lg={{ span: 8, offset: 2 }}
+                                    className="mb-3"
                                 >
                                     <CardColumns>
                                         {ListCheckPicture}
@@ -178,31 +241,38 @@ class ChoosePicture extends Component {
                                 </Col>
                                 <Col
                                     xs={{ span: 12 }}
-                                    sm={{ span: 8, offset: 2 }}
-                                    md={{ span: 8, offset: 2 }}
+                                    sm={{ span: 12 }}
+                                    md={{ span: 10, offset: 1 }}
                                     lg={{ span: 8, offset: 2 }}
-                                    className="text-center"
+                                    className="text-right"
                                 >
-                                    <Button className="btn-custom mt-3" id="primary" onClick={this.handleShow}>
-                                        OK
+                                    <Button className="btn-custom mr-2" id="primary" onClick={this.handleShow} disabled={!visibleButton} >
+                                        ยืนยัน และ ลบภาพถ่าย
                                     </Button>
-                                    <Modal show={show} onHide={this.handleClose}>
-                                        <Modal.Header closeButton>
-                                            <Modal.Title>Confirm Send Email</Modal.Title>
-                                        </Modal.Header>
-                                        <Modal.Body>
-                                            {selectPictures.length !== 0 ? `คุณต้องการยืนยันการส่งอีกเมลให้แก่ผู้เข้าร่วมใช่หรือไม่ (หากยืนยันเเล้วไม่สามารถแก้ไขภายหลังได้)` : `ผู้เข้าร่วมคนนี้ไม่มีรูปภาพใช่หรือไม่ (หากยืนยันเเล้วไม่สามารถแก้ไขภายหลังได้)`}
-                                        </Modal.Body>
-                                        <Modal.Footer>
-                                            <Button variant="secondary" className="btn-custom" onClick={this.handleClose}>
-                                                Close
-                                            </Button>
-                                            <Button className="btn-custom" id="primary" onClick={this.handleSubmit} >
-                                                Confirm
-                                            </Button>
-                                        </Modal.Footer>
-                                    </Modal>
+                                    <Button className="btn-custom" id="primary" onClick={this.sendEmail} disabled={visibleButton} >
+                                       ส่งอีเมล์
+                                    </Button>
                                 </Col>
+                                <Modal show={show} onHide={this.handleClose}>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>การตรวจสอบรูปภาพ</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        {selectPictures.length !== 0 ?
+                                            <p>ต้องการลบภาพถ่ายที่คุณเลือกใช่หรือไม่ (หากยืนยันเเล้วไม่สามารถแก้ไขภายหลังได้)</p>
+                                            :
+                                            <p>คุณไม่ได้เลือกภาพถ่าย ภาพถ่ายทั้งหมดถูกต้องเเล้วใช่หรือไม่ (หากยืนยันเเล้วไม่สามารถแก้ไขภายหลังได้)</p>
+                                        }
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <Button variant="secondary" className="btn-custom" onClick={this.handleClose}>
+                                            ปิด
+                                            </Button>
+                                        <Button className="btn-custom" id="primary" onClick={this.handleSubmit} >
+                                            ยืนยัน
+                                            </Button>
+                                    </Modal.Footer>
+                                </Modal>
                             </Row>
                         </Container>
                     </Fragment >
@@ -216,7 +286,7 @@ class ChoosePicture extends Component {
         }
         else {
             return (
-                <div>Loading</div>
+               <Loading/>
             )
         }
     }

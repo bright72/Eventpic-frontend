@@ -4,6 +4,7 @@ import { Button, Container, Col, Card, Row, Dropdown } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
 import './Style.css'
 import firebase from './firebase'
+import Loading from './Loading.js'
 
 class ListofEvent extends Component {
 
@@ -77,50 +78,49 @@ class ListofEvent extends Component {
                     <Fragment>
                         <Nevbar />
                         <Container fluid>
-                                {
-                                    this.state.events.map((item) => {
-                                        return (
-                                            <Col
-                                                xs={12}
-                                                sm={{ span: 10, offset: 1 }}
-                                                md={{ span: 10, offset: 1 }}
-                                                lg={{ span: 8, offset: 2 }}
-                                                className="mt-4"
-                                            >
-                                                <Card className="form-card p-2" id="list-card">
-                                                        <Row>
-                                                            <Col>
-                                                                <Card.Body>
-                                                                    <Row>
-                                                                        <Col md={{ span: 10 }}>
-                                                                            <Card.Title className="title-event pt-1">{item.name}</Card.Title>
-                                                                        </Col>
-                                                                    </Row>
-                                                                    <Row>
-                                                                        <Col>
-                                                                            <Card.Text className="form" id="show-detail"><span className="title-lable">DETAIL: </span>{item.detail}</Card.Text>
-                                                                            <Card.Text className="form mt-1"><span className="title-lable">START DATE: </span>{item.start_date}</Card.Text>
-                                                                            <Card.Text className="form mt-1"><span className="title-lable">END DATE: </span>{item.end_date}</Card.Text>
-                                                                        </Col>
-                                                                    </Row>
-                                                                    <Row>
-                                                                        <Col></Col>
-                                                                        <Col>
-                                                                            <div className="mt-4 text-right">
-                                                                                <Link to={"/MoreDetail/" + item.event_id} className="btn-link">
-                                                                                    <Button className="btn-custom mr-0" id="secondary" >VIEW MORE</Button>
-                                                                                </Link>
-                                                                            </div>
-                                                                        </Col>
-                                                                    </Row>
-                                                                </Card.Body>
-                                                            </Col>
-                                                        </Row>
-                                                </Card>
-                                            </Col>
-                                        )
-                                    })
-                                }
+                            {
+                                this.state.events.map((item) => {
+                                    return (
+                                        <Col
+                                            xs={12}
+                                            sm={{ span: 10, offset: 1 }}
+                                            md={{ span: 10, offset: 1 }}
+                                            lg={{ span: 8, offset: 2 }}
+                                            className="mt-4"
+                                        >
+                                            <Card className="form-card p-2" id="list-card">
+                                                <Row>
+                                                    <Col>
+                                                        <Card.Body>
+                                                            <Row>
+                                                                <Col md={{ span: 10 }}>
+                                                                    <Card.Title className="title-event pt-1">{item.name}</Card.Title>
+                                                                </Col>
+                                                            </Row>
+                                                            <Row>
+                                                                <Col>
+                                                                    <Card.Text className="form" id="show-detail"><span className="title-lable">รายละเอียด: </span>{item.detail}</Card.Text>
+                                                                    <Card.Text className="form mt-1"><span className="title-lable">วันที่จัดงาน: </span>{item.start_date}-{item.end_date}</Card.Text>
+                                                                </Col>
+                                                            </Row>
+                                                            <Row>
+                                                                <Col></Col>
+                                                                <Col>
+                                                                    <div className="mt-4 text-right">
+                                                                        <Link to={"/MoreDetail/" + item.event_id} className="btn-link">
+                                                                            <Button className="btn-custom mr-0" id="secondary" >เพิ่มเติม</Button>
+                                                                        </Link>
+                                                                    </div>
+                                                                </Col>
+                                                            </Row>
+                                                        </Card.Body>
+                                                    </Col>
+                                                </Row>
+                                            </Card>
+                                        </Col>
+                                    )
+                                })
+                            }
                         </Container>
                     </Fragment>
                 )
@@ -132,7 +132,7 @@ class ListofEvent extends Component {
             }
         } else {
             return (
-                <div>Loading</div>
+                <Loading />
             )
         }
 

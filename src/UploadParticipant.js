@@ -4,8 +4,9 @@ import { Form, Container, Row, Col, Card } from 'react-bootstrap'
 
 import './Style.css'
 import Nevbar from './Nevbar'
+import Loading from './Loading.js'
 import firebase from './firebase'
-import WebcamCapture from './CaptureParticipapnt'
+import WebcamCapture from './CaptureParticipant'
 
 
 class UploadParticipant extends Component {
@@ -20,7 +21,6 @@ class UploadParticipant extends Component {
         showAlert: false,
         participant: {},
         files: [],
-        headshot_url: [],
         image: {}
     }
 
@@ -59,27 +59,29 @@ class UploadParticipant extends Component {
     }
 
     handleSubmit = async e => {
-        const { event_id, files, organize_id } = this.state
+        const { event_id, files, organize_id, email } = this.state
         e.preventDefault()
         const form = e.currentTarget
         if (form.checkValidity() === true) {
-            let downloadUrlArray = [];
+            const participantRef = firebase.database().ref(`organizers/${organize_id}/events/${event_id}/participants`)
+            let object_1 = {
+                email: email,
+                panticipant_picture_confirm: false,
+                organize_picture_confirm:false
+            }
+            let x = participantRef.push(object_1)
+            let participant_id = x.key
+            let headshots_url = []
+
             for (let i = 0; i < files.length; i++) {
-                let img = files[i];
-                let storageRef = await firebase.storage().ref(`headshot/${img.lastModified}.jpg`)
+                let img = files[i]
+                let storageRef = await firebase.storage().ref(`headshot/${participant_id}/${img.lastModified}.jpg`)
                 await storageRef.put(img)
                 let downloadUrl = await storageRef.getDownloadURL()
-                downloadUrlArray[i] = downloadUrl
+                headshots_url.push(downloadUrl)
             }
-            await this.setState({
-                headshot_url: downloadUrlArray
-            })
-            const participantRef = firebase.database().ref(`organizers/${organize_id}/events/${event_id}/participants`)
-            let item = {
-                email: this.state.email,
-                headshots: this.state.headshot_url,
-            }
-            participantRef.push(item)
+            participantRef.child(`${participant_id}/headshots_url`).update(headshots_url)
+
         } else {
             this.setState({
                 validate: true
@@ -120,7 +122,7 @@ class UploadParticipant extends Component {
                                     style={{ marginTop: 20 }}
                                 >
                                     <Card className="form-card" className="py-4">
-                                        <h2 className="title-lable mt-4 pt-3 text-center" id="card-title">PARTICIPANT</h2>
+                                        <h2 className="title-lable mt-4 pt-3 text-center" id="card-title">เพิ่มผู้เข้าร่วมกิจกรรม</h2>
                                         <Form noValidate validated={validate} onSubmit={this.handleSubmit} className="form px-4 mx-4">
                                             <Row className="mt-4">
                                                 <Col
@@ -129,9 +131,9 @@ class UploadParticipant extends Component {
                                                     md={{ span: 8, offset: 2 }}
                                                     lg={{ span: 6, offset: 3 }}
                                                 >
-                                                    <Form.Label className="title-lable">EMAIL</Form.Label>
+                                                    <Form.Label className="title-lable">อีเมล์</Form.Label>
                                                     <Form.Group controlId="formBasicEmail" >
-                                                        <Form.Control className="form form-input" name="email" onChange={this.handleChange} type="email" placeholder="Email" required />
+                                                        <Form.Control className="form form-input" name="email" onChange={this.handleChange} type="email" placeholder="อีเมล์" required />
                                                     </Form.Group>
                                                 </Col>
                                             </Row>
@@ -151,7 +153,7 @@ class UploadParticipant extends Component {
             }
         } else {
             return (
-                <div>Loading</div>
+               <Loading/>
             )
         }
 

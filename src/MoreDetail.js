@@ -3,6 +3,7 @@ import { Link, Redirect } from 'react-router-dom'
 import { Button, Container, Col, Card } from 'react-bootstrap'
 import firebase from './firebase'
 import Nevbar from './Nevbar.js'
+import Loading from './Loading.js'
 
 class MoreDetail extends React.Component {
 
@@ -88,14 +89,17 @@ class MoreDetail extends React.Component {
                                         <Card.Text> วันสิ้นสุดการประมวลผล : {this.state.dateline}</Card.Text>
                                         <div className="text-right">
                                             <Link to={"/Upload/" + this.state.event_id} >
-                                                <Button className="btn-custom px-4 ml-2" variant="outline-dark">Process</Button>
+                                                <Button className="btn-custom px-4 ml-2" variant="outline-dark">ประมวลผลภาพถ่าย</Button>
                                             </Link >
                                             <Link to={"/EditEvent/" + this.state.event_id} >
-                                                <Button className="btn-custom px-4 ml-2" variant="outline-dark" >Edit</Button>
+                                                <Button className="btn-custom px-4 ml-2" variant="outline-dark">แก้ไข</Button>
                                             </Link>
-                                            <Button className="btn-custom px-4 ml-2" variant="outline-dark" onClick={() => this.removeItem(this.state.event_id)}>Delete</Button>
+                                            <Button className="btn-custom px-4 ml-2" variant="outline-dark" onClick={() => this.removeItem(this.state.event_id)}>ลบ</Button>
                                             <Link to={"/UploadParticipant/" + this.state.event_id} >
-                                                <Button className="btn-custom px-4 ml-2" variant="outline-dark">Add Participant</Button>
+                                                <Button className="btn-custom px-4 ml-2" variant="outline-dark">เพิ่มผู้เข้าร่วม</Button>
+                                            </Link >
+                                            <Link to={"/ListofParticipant/" + this.state.event_id} >
+                                                <Button className="btn-custom px-4 ml-2" variant="outline-dark">รายการผู้เข้าร่วม</Button>
                                             </Link >
                                         </div>
                                     </Card.Body>
@@ -112,7 +116,7 @@ class MoreDetail extends React.Component {
             }
         } else {
             return (
-                <div> Loading</div>
+                <Loading/>
             )
         }
     }

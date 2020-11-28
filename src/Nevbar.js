@@ -75,10 +75,10 @@ class Nevbar extends React.Component {
                             </Nav.Item>
                             <Nav.Item>
                                 {/* <Nav.Link>{currentUser.email}</Nav.Link> */}
-                                <Nav.Link><Link to="/AddEvent"><Button className="btn-custom" variant="outline-dark">ADD EVENT</Button></Link></Nav.Link>
+                                <Nav.Link><Link to="/AddEvent"><Button className="btn-custom" variant="outline-dark">เพิ่มกิจกรรม</Button></Link></Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link><Button onClick={this.logout} className="btn-custom" id="secondary">LOGOUT</Button></Nav.Link>
+                                <Nav.Link><Button onClick={this.logout} className="btn-custom" id="secondary">ออกจากระบบ</Button></Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </Navbar.Collapse>
@@ -95,7 +95,7 @@ class Nevbar extends React.Component {
                         <Navbar.Text>
                             {/* <Link to="/ListofEvent" className="mr-3"><Button variant="light">Event</Button></Link> */}
                             {/* <Link to="/AddEvent" className="mr-3"><Button variant="light">Add Event</Button></Link> */}
-                            <Link to="/Login" className="mr-3"><Button variant="light">Login</Button></Link>
+                            <Link to="/Login" className="mr-3"><Button variant="light">เข้าสู่ระบบ</Button></Link>
                         </Navbar.Text>
                     </Navbar.Collapse>
                 </Navbar>

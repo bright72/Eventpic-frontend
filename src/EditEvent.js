@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { Link, withRouter, Redirect } from 'react-router-dom';
 import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
+import Loading from './Loading.js'
 import './Style.css'
 import firebase from './firebase'
 
@@ -155,43 +156,43 @@ class EditEvent extends Component {
                                     style={{ marginTop: 20 }}
                                 >
                                     <Card className="form-card p-2">
-                                        <h1 className="title-lable my-4 text-center text-uppercase">Edit Event</h1>
+                                        <h1 className="title-lable my-4 text-center text-uppercase">แก้ไขกิจกรรม </h1>
                                         <Form onSubmit={this.handleSubmit} className="form px-4">
-                                            <Label className="title-lable text-center text-uppercase">Event Name</Label>
+                                            <Label className="title-lable text-center text-uppercase">ชื่อกิจกรรม</Label>
                                             <Group>
-                                                <Control className="form form-input" id="form-input" name="name" value={this.state.name} onChange={this.handleChange} type="text" placeholder="Name of Event" />
+                                                <Control className="form form-input" id="form-input" name="name" value={this.state.name} onChange={this.handleChange} type="text" placeholder="ชื่อกิจกรรม" />
                                             </Group>
                                             <Form.Group controlId="exampleForm.ControlTextarea1">
-                                                <Form.Label className="title-lable text-center text-uppercase">Event Detail</Form.Label>
-                                                <Form.Control className="form form-input" id="form-input" name="detail" value={this.state.detail} onChange={this.handleChange} type="text" placeholder="Detail of event" as="textarea" rows="5" />
+                                                <Form.Label className="title-lable text-center text-uppercase">รายละเอียดกิจกรรม</Form.Label>
+                                                <Form.Control className="form form-input" id="form-input" name="detail" value={this.state.detail} onChange={this.handleChange} type="text" placeholder="รายละเอียดกิจกรรม" as="textarea" rows="5" />
                                             </Form.Group>
                                             <Form.Row>
                                                 <Col>
-                                                    <Label className="title-lable text-center text-uppercase">Start date</Label>
+                                                    <Label className="title-lable text-center text-uppercase">วันเริ่มงาน</Label>
                                                     <Group>
-                                                        <Control className="form form-input" id="form-input" name="start_date" value={this.state.start_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
+                                                        <Control className="form form-input" id="form-input" name="start_date" value={this.state.start_date} onChange={this.handleChange} type="date" placeholder="วันเริ่มงาน" />
                                                     </Group>
                                                 </Col>
                                                 <Col>
-                                                    <Label className="title-lable text-center text-uppercase">End date</Label>
+                                                    <Label className="title-lable text-center text-uppercase">วันสิ้นสุดงาน</Label>
                                                     <Group>
-                                                        <Control className="form form-input" id="form-input" name="end_date" value={this.state.end_date} onChange={this.handleChange} type="date" placeholder="Date of Event" />
+                                                        <Control className="form form-input" id="form-input" name="end_date" value={this.state.end_date} onChange={this.handleChange} type="date" placeholder="วันสิ้นสุดงาน" />
                                                     </Group>
                                                 </Col>
                                             </Form.Row>
-                                            <Label className="title-lable text-center text-uppercase">Dateline</Label>
+                                            <Label className="title-lable text-center text-uppercase">วันสิ้นสุดการขออนุญาตภาพถ่าย</Label>
                                             <Group>
-                                                <Control className="form form-input" id="form-input" name="dateline" value={this.state.dateline} onChange={this.handleChange} type="date" placeholder="Dateline" />
+                                                <Control className="form form-input" id="form-input" name="dateline" value={this.state.dateline} onChange={this.handleChange} type="date" placeholder="วันสิ้นสุดการขออนุญาตภาพถ่าย" />
                                             </Group>
                                             <Row className="mb-4 text-center" style={{ marginTop: "35px" }}>
                                                 <Col>
                                                     <Link to={"/MoreDetail/" + this.state.event_id} >
                                                         <Button className="btn-custom text-uppercase m-1" id="secondary" >
-                                                            CANCLE
+                                                            ยกเลิก
                                                                     </Button>
                                                     </Link>
                                                     <Button variant="dark" className="btn-custom text-uppercase m-1" id="primary" onClick={this.handleSubmit} >
-                                                        Submit
+                                                        ยืนยัน
                                                     </Button>
                                                 </Col>
                                             </Row>
@@ -210,7 +211,7 @@ class EditEvent extends Component {
             }
         } else {
             return (
-                <div> Loading</div>
+                <Loading/>
             )
         }
 

@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { Redirect } from 'react-router-dom'
-import { Container } from 'react-bootstrap'
+import { Container, ProgressBar, Spinner, Row, Col } from 'react-bootstrap'
 import firebase from './firebase';
 import Nevbar from './Nevbar.js'
 import * as faceapi from 'face-api.js'
+import Loading from './Loading.js'
 
 class Process extends Component {
 
@@ -16,13 +17,9 @@ class Process extends Component {
         keypath: '',
         imageAsFile: "",
         emailPaticipant: "",
-        img_id: "",
-        original_url: "",
-        par_url: "",
-        process_url: "",
-        processimg: {},
-        buttonstatus: true,
-        par_key: "",
+        progress: 0,
+        countData: 0,
+        allDataLength: 0,
     }
 
     async componentWillMount() {
@@ -36,6 +33,19 @@ class Process extends Component {
         this.fetcheventimg()
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        const { countData, allDataLength } = this.state
+        if (countData !== prevState.countData) {
+            this.setState({
+                progress: Math.floor(countData * 100 / allDataLength)
+            })
+        }
+    }
+
+    componentWillUnmount(){
+        
+    }
+
     loadModel = async () => {
         Promise.all([
             faceapi.nets.ssdMobilenetv1.load('/weights'),
@@ -44,90 +54,97 @@ class Process extends Component {
         ])
     }
 
-
     fetcheventimg = async () => {
-        this.loadModel()// โหลด Model
-        const itemRefPic = await firebase.database().ref(`organizers/${this.state.keypath}/events/${this.state.event_id}/event_pics`)
-        let val = null
+        const { keypath, event_id } = this.state
+        await this.loadModel()
+        await faceapi.nets.ssdMobilenetv1.load("/weights")
+        await faceapi.nets.faceRecognitionNet.load("/weights")
+        await faceapi.nets.faceLandmark68Net.load("/weights")
+        const itemRefPic = await firebase.database().ref(`organizers/${keypath}/events/${event_id}/event_pics`)
+        let val
         await itemRefPic.on("value", (snapshot) => {
             val = snapshot.val()
+            this.setState({
+                allDataLength: Object.keys(val).length
+            })
         })
         for (var key in val) {
             const picid = key
-            const eventRefPic = await firebase.database().ref(`organizers/${this.state.keypath}/events/${this.state.event_id}/event_pics/${picid}/metadataFile`)
+            let original_url
+            const eventRefPic = await firebase.database().ref(`organizers/${keypath}/events/${event_id}/event_pics/${picid}/metadataFile`)
             await eventRefPic.once('value').then((snapshot) => {
-                const url = snapshot.val() && snapshot.val().downloadURLs
-                this.setState({
-                    original_url: url,
-                    img_id: picid
-                })
+                original_url = snapshot.val().downloadURLs
             })
-            const printname = {}
-            document.getElementById("text").innerText = 'กำลังประมวลผลภาพถ่าย โปรดรอสักครู่...'
-            const labeledFaceDescriptors = await this.loadLabeledImages()
-            const faceMatcher = await new faceapi.FaceMatcher(labeledFaceDescriptors, 0.5)
 
             let image, canvas
             if (image) image.remove()
             if (canvas) canvas.remove()
-            const oriurl = this.state.original_url
-            image = await faceapi.fetchImage(`${oriurl}`) //ไฟล์ที่เอาไปเช็ค
-            canvas = faceapi.createCanvasFromMedia(image)
+            image = await faceapi.fetchImage(`${original_url}`)
+            canvas = await faceapi.createCanvasFromMedia(image)
             const displaySize = { width: image.width, height: image.height }
             faceapi.matchDimensions(canvas, displaySize)
             const detections = await faceapi.detectAllFaces(image).withFaceLandmarks().withFaceDescriptors()
-            const resizedDetections = await faceapi.resizeResults(detections, displaySize)
-            const results = resizedDetections.map(d => faceMatcher.findBestMatch(d.descriptor))
-            results.forEach((result, i) => {
-                if (result._label !== "unknown") {
-                    const participantRef = firebase.database().ref(`organizers/${this.state.keypath}/events/${this.state.event_id}/participants/${result._label}/processed_pic`)
-                    let printname = {
-                        original_pic_id: this.state.img_id,
-                        status: true,
-                        original_pic_url: oriurl,
-                        processed_pic_url: oriurl,
-                        par_key: result._label,
+            const resizedDetections = faceapi.resizeResults(detections, displaySize)
+
+            let all_label = await this.loadLabeledImages()
+
+
+            await all_label.forEach(label_descriptor => {
+                const labeledFaceDescriptors = label_descriptor
+                const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.5)
+
+                const results = resizedDetections.map(d => faceMatcher.findBestMatch(d.descriptor))
+
+                // loop ตามจำนวนคนในรูป => หาว่ามีเจ้าของอยู่ในรูปไหม คือ result._label
+                results.forEach((result, i) => {
+                    if (result._label !== "unknown") {
+                        const participantRef = firebase.database().ref(`organizers/${keypath}/events/${event_id}/participants/${result._label}/processed_pic`)
+                        let printname = {
+                            original_pic_id: picid,
+                            original_pic_url: original_url,
+                            processed_pic_url: original_url,
+                            is_allow: false,
+                        }
+                        participantRef.push(printname)
                     }
-                    participantRef.push(printname)
-                } else {
-                }
+                })
             })
+
             this.setState({
-                processimg: printname
+                countData: this.state.countData + 1
             })
         }
-        document.getElementById("text").innerText = 'Process เสร็จแล้ว'
-        this.props.history.push(`/ListofParticipant/${this.state.event_id}`)
+
+        this.props.history.push(`/ListofParticipant/${event_id}`)
     }
 
     loadLabeledImages = async () => {
-        this.loadModel()// โหลด Model
         await faceapi.nets.ssdMobilenetv1.load("/weights")
         await faceapi.nets.faceRecognitionNet.load("/weights")
         await faceapi.nets.faceLandmark68Net.load("/weights")
         const itemRefPar = await firebase.database().ref(`organizers/${this.state.keypath}/events/${this.state.event_id}/participants`)
-        let labels = ""
         let val = null
+        let label = ""
         let descriptions = []
+        let label_descriptors = []
         itemRefPar.on("value", (snapshot) => {
             val = snapshot.val()
         })
+        //panticipants
         for (var key in val) {
-            let temp = val[key].image
-            labels = key
-            this.setState({
-                par_key: key
-            })
+            let temp = val[key].headshots_url
+            label = key
+            // 3 image of panticipant
             for (var i in temp) {
                 const img = await faceapi.fetchImage(`${temp[i]}`)
-                this.setState({
-                    process_url: temp[i]
-                })
+
                 const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
                 descriptions.push(detections.descriptor)
             }
+            label_descriptors.push(new faceapi.LabeledFaceDescriptors(label, descriptions))
+            descriptions = []
         }
-        return new faceapi.LabeledFaceDescriptors(labels, descriptions)
+        return label_descriptors
     }
 
     getUser = () => {
@@ -152,15 +169,29 @@ class Process extends Component {
     }
 
     render() {
-        const { currentUser, auth } = this.state;
+        const { currentUser, auth, progress } = this.state
         if (auth) {
             if (currentUser) {
                 return (
                     <Fragment>
                         <Nevbar />
                         <Container fluid>
-                            <h1 id="text">กำลังประมวลผลภาพถ่าย</h1>
-                            <div id="output"></div>
+                            <Row>
+                                <Col
+                                    xs={{ span: 12 }}
+                                    sm={{ span: 8, offset: 2 }}
+                                    md={{ span: 8, offset: 2 }}
+                                    lg={{ span: 8, offset: 2 }}
+                                    className="text-center"
+                                    style={{ marginTop: 150 }}
+                                >
+                                    <h2 className="mb-4">
+                                        <Spinner animation="grow" variant="primary" className="mr-4 mb-2" />
+                                        กำลังประมวลผลภาพ...
+                                    </h2>
+                                    <ProgressBar striped animated variant="info" now={progress} label={`${progress}%`} />
+                                </Col>
+                            </Row>
                         </Container>
                     </Fragment>
                 );
@@ -173,7 +204,7 @@ class Process extends Component {
         }
         else {
             return (
-                <div>Loading</div>
+                <Loading />
             )
         }
     }

@@ -24,7 +24,7 @@ class StorageDataTable extends Component {
                 <tr key={r.no + r.name}>
                     <td>{++index}</td>
                     <td>{r.name}</td>
-                    <td><a href="#" onClick={(e) => this.props.deleteData(e, r)}>Delete</a></td>
+                    <td><a href="#" onClick={(e) => this.props.deleteData(e, r)}>ลบ</a></td>
                 </tr>
             )
         })
@@ -35,10 +35,10 @@ class StorageDataTable extends Component {
                     <Card.Img variant="top" src={r.downloadURLs} />
                     <Card.Body>
                         <Card.Text>{r.name}</Card.Text>
-                        <Button className="btn-custom mt-3" id="primary"
+                        <Button className="btn-custom mt-3" variant="danger"
                             onClick={(e) => this.props.deleteData(e, r)}
-                            style={{ width: 300, height: 55, fontSize: "20px", borderRadius: 30 }}>
-                            Delete
+                            style={{ width: "100%", fontSize: "20px", borderRadius: 30 }}>
+                            ลบ
                         </Button>
                     </Card.Body>
                 </Card>
@@ -69,9 +69,9 @@ class StorageDataTable extends Component {
                     <Table striped bordered hover style={{ fontSize: 22 }}>
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>File Name</th>
-                                <th>Delete</th>
+                                <th></th>
+                                <th>ชื่อภาพถ่าย</th>
+                                <th>ลบ</th>
                             </tr>
                         </thead>
                         <tbody>

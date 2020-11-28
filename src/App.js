@@ -12,7 +12,6 @@ import ListofParticipant from './ListofParticipant';
 import ViewPicture from './ViewPicture';
 import ChoosePicture from './ChoosePicture';
 import AllowsPictures from './AllowsPictures';
-import CaptureParticipapnt from './CaptureParticipapnt';
 import Process from './Process';
 import './Style.css'
 
@@ -32,8 +31,7 @@ const App = () => (
       <Route exact path="/ListofParticipant/:event_id/ChoosePicture/:participant_id" component={ChoosePicture} />
       <Route exact path="/ViewPicture/:event_id/:participant_id" component={ViewPicture} />
       <Route exact path="/allow/:organize_id/:event_id/:participant_id" component={AllowsPictures} />
-      <Route exact path="/CaptureParticipapnt" component={CaptureParticipapnt} />
-      <Route exact path="/Process/:event_id" component={Process} />
+      <Route exact path="/Process/:event_id/" component={Process} />
       
     </Switch>
   </Router>

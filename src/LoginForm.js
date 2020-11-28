@@ -6,6 +6,7 @@ import './Style.css'
 import logo from "./Component-logo.svg"
 import vectorCom from "./Component-vec.svg"
 import graCom from "./Component-gra.svg"
+import Loading from './Loading.js'
 
 class LoginForm extends React.Component {
 
@@ -101,45 +102,45 @@ class LoginForm extends React.Component {
                                             <img src={vectorCom} style={{ position: "absolute", bottom: 30, right: "40px" }} />
                                         </Col>
                                         <Col>
-                                            <h2 className="title-lable my-4 pt-3 text-center" id="card-title"> LOGIN</h2>
+                                            <h2 className="title-lable my-4 pt-3 text-center" id="card-title"> เข้าสู่ระบบ</h2>
                                             <Form noValidate validated={validate} onSubmit={this.onSubmit} className="form m-4 px-4">
-                                                <Form.Label className="title-lable">EMAIL</Form.Label>
+                                                <Form.Label className="title-lable">อีเมล์</Form.Label>
                                                 <Form.Group controlId="formBasicEmail" >
-                                                    <Form.Control className="form form-input" id="form-input" name="email" type="email" onChange={this.onChange} placeholder="Email" required />
+                                                    <Form.Control className="form form-input" id="form-input" name="email" type="email" onChange={this.onChange} placeholder="อีเมล์" required />
                                                     <Form.Control.Feedback type="invalid">
-                                                        Please enter email.
+                                                        กรอกอีเมล์
                                                     </Form.Control.Feedback>
                                                 </Form.Group>
-                                                <Form.Label className="title-lable">PASSWORD</Form.Label>
+                                                <Form.Label className="title-lable">รหัสผ่าน</Form.Label>
                                                 <Form.Group controlId="formBasicPassword" className="">
-                                                    <Form.Control className="form form-input" id="form-input" name="password" onChange={this.onChange} type="password" placeholder="Password" required />
+                                                    <Form.Control className="form form-input" id="form-input" name="password" onChange={this.onChange} type="password" placeholder="รหัสผ่าน" required />
                                                     <Form.Control.Feedback type="invalid">
-                                                        Please enter password.
+                                                        กรอกรหัสผ่าน
                                                     </Form.Control.Feedback>
                                                 </Form.Group>
                                                 <Row>
                                                     <Col className="text-right">
-                                                        <Link to="#" className="link-path">Forgot password?</Link>
+                                                        <Link to="#" className="link-path">ลืมรหัสผ่าน?</Link>
                                                     </Col>
                                                 </Row>
                                                 <Row>
                                                     <Col className="text-left">
                                                         {showAlert ?
-                                                            <div className="alert-text">Email or password is incorrect</div>
+                                                            <div className="alert-text">อีเมล์ หรือ รหัสผ่าน ไม่ถูกต้อง</div>
                                                             :
                                                             ""
                                                         }
                                                     </Col>
                                                 </Row>
                                                 <Button variant="secondary" block id="primary-auth" className="btn-custom mt-3 mb-4" type="submit" >
-                                                    LOGIN
+                                                    เข้าสู่ระบบ
                                                 </Button>
                                                 <div className="divider mt-5">
-                                                    <span className="divider-title">Don't have an account?</span>
+                                                    <span className="divider-title">ยังไม่มีบัญชีผู้ใช้ </span>
                                                 </div>
                                                 <Link to="/Register" className="btn-link">
                                                     <Button variant="secondary" block id="secondary-auth" className="btn-custom mt-5 mb-6" >
-                                                        REGISTER
+                                                        ลงทะเบียน
                                             </Button>
                                                 </Link>
                                             </Form>
@@ -158,7 +159,7 @@ class LoginForm extends React.Component {
             }
         } else {
             return (
-                <div>Loading</div>
+                <Loading/>
             )
         }
 

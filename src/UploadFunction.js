@@ -4,6 +4,7 @@ import { Form, Row, Col, Button, Container } from 'react-bootstrap'
 import firebase from './firebase';
 import StorageDataTable from './StorageDataTable';
 import Nevbar from './Nevbar.js'
+import Loading from './Loading.js'
 
 class UploadFunction extends Component {
 
@@ -123,6 +124,7 @@ class UploadFunction extends Component {
         })
     }
 
+    // ไฟล์ที่อัพโหลดต้องเป็นภาษาอังกฤษเท่านั้นนะ
     async handleProcessing(e) {
         e.preventDefault();
         // handle file upload here
@@ -135,8 +137,6 @@ class UploadFunction extends Component {
 
             storageRef.getMetadata()
                 .then((metadata) => {
-
-                    // Metadata now contains the metadata for 'filepond/${file.name}'
                     let metadataFile = {
                         name: metadata.name,
                         size: metadata.size,
@@ -171,13 +171,13 @@ class UploadFunction extends Component {
                                     lg={{ span: 8, offset: 2 }}
                                 >
                                     <Form onSubmit={this.handleProcessing.bind(this)} className="text-center">
-                                        <h2 className="mb-3">Select Picture of Event</h2>
+                                        <h2 className="mb-3">ทำการอัพโหลดภาพถ่ายในกิจกรรม</h2>
                                         <Form.Control
                                             multiple
                                             type="file"
                                             onChange={this.handleImageAsFile.bind(this)}
                                         />
-                                        <Button type="submit" className="btn-custom mt-3" id="primary" style={{ width: 280, height: 60, fontSize: "21px", borderRadius: 30 }}>Upload Event Picture</Button>
+                                        <Button type="submit" className="btn-custom mt-3" id="primary" style={{ width: 280, height: 60, fontSize: "21px", borderRadius: 30 }}>อัพโหลด</Button>
                                     </Form>
                                 </Col>
                                 <Col
@@ -202,7 +202,7 @@ class UploadFunction extends Component {
                                 >
                                     <Link to={`/Process/${this.state.event_id}`} >
                                         <Button className="btn-custom mt-3" id="primary" style={{ width: 300, height: 55, fontSize: "20px", borderRadius: 30 }}>
-                                            Next
+                                            ประมวลผลภาพถ่าย
                                     </Button>
                                     </Link>
                                 </Col>
@@ -219,7 +219,7 @@ class UploadFunction extends Component {
         }
         else {
             return (
-                <div>Loading</div>
+               <Loading/>
             )
         }
     }

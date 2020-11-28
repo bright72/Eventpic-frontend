@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap'
 import Nevbar from './Nevbar.js'
+import Loading from './Loading.js'
 import './Style.css'
 import firebase from './firebase'
 import { withRouter } from 'react-router-dom'
@@ -61,7 +62,7 @@ class AddEvent extends Component {
                 const itemsRef = firebase.database().ref(`organizers/${keypath}/events`)
                 const item = {
                     name: name,
-                    start_date: start_date,                    
+                    start_date: start_date,
                     end_date: end_date,
                     dateline: dateline,
                     detail: detail,
@@ -95,56 +96,56 @@ class AddEvent extends Component {
                                     style={{ marginTop: 20 }}
                                 >
                                     <Card className="form-card p-2">
-                                        <h1 className="title-lable my-4 text-center text-uppercase">Add Event</h1>
+                                        <h1 className="title-lable my-4 text-center text-uppercase">เพิ่มกิจกรรม</h1>
                                         <Form noValidate validated={validate} onSubmit={this.handleSubmit} className="form px-4">
-                                            <Form.Label className="title-lable text-center text-uppercase">Name of Event</Form.Label>
+                                            <Form.Label className="title-lable text-center text-uppercase">ชื่อกิจกรรม</Form.Label>
                                             <Form.Group >
-                                                <Form.Control className="form form-input" id="form-input" name="name" value={this.state.name} onChange={this.handleChange} type="text" placeholder="Name of Event" required />
+                                                <Form.Control className="form form-input" id="form-input" name="name" value={this.state.name} onChange={this.handleChange} type="text" placeholder="ชื่อกิจกรรม" required />
                                                 <Form.Control.Feedback type="invalid">
-                                                    Please Enter Name of Event
+                                                    กรุณากรอกชื่อกิจกรรม
                                                         </Form.Control.Feedback>
                                             </Form.Group>
-                                            <Form.Label className="title-lable text-center text-uppercase">Detail of event</Form.Label>
+                                            <Form.Label className="title-lable text-center text-uppercase">รายละเอียดกิจกรรม</Form.Label>
                                             <Form.Group controlId="exampleForm.ControlTextarea1">
-                                                <Form.Control className="form form-input" id="form-input" name="detail" value={this.state.detail} onChange={this.handleChange} type="text" placeholder="Detail of event" as="textarea" rows="5" required />
+                                                <Form.Control className="form form-input" id="form-input" name="detail" value={this.state.detail} onChange={this.handleChange} type="text" placeholder="รายละเอียดกิจกรรม" as="textarea" rows="5" required />
                                                 <Form.Control.Feedback type="invalid">
-                                                    Please Enter Detail of event
+                                                    กรุณากรอกรายละเอียดกิจกรรม
                                                         </Form.Control.Feedback>
                                             </Form.Group>
                                             <Form.Row>
                                                 <Col>
-                                                    <Form.Label className="title-lable text-center text-uppercase">Start Date of Event</Form.Label>
+                                                    <Form.Label className="title-lable text-center text-uppercase">วันเริ่มงาน</Form.Label>
                                                     <Form.Group >
                                                         <Form.Control className="form form-input" id="form-input" name="start_date" value={this.state.start_date} onChange={this.handleChange} type="date" placeholder="Date of Event" required />
                                                         <Form.Control.Feedback type="invalid">
-                                                            Please Select Start Date of Event
+                                                            กรุณากรอกวันเริ่มงาน
                                                                 </Form.Control.Feedback>
                                                     </Form.Group>
                                                 </Col>
                                                 <Col>
-                                                    <Form.Label className="title-lable text-center text-uppercase">End Date of Event</Form.Label>
+                                                    <Form.Label className="title-lable text-center text-uppercase">วันสิ้นสุดงาน</Form.Label>
                                                     <Form.Group >
-                                                        <Form.Control className="form form-input" id="form-input" name="end_date" value={this.state.end_date} onChange={this.handleChange} type="date" placeholder="Date of Event" required />
+                                                        <Form.Control className="form form-input" id="form-input" name="end_date" value={this.state.end_date} onChange={this.handleChange} type="date" placeholder="วันสิ้นสุดงาน" required />
                                                         <Form.Control.Feedback type="invalid">
-                                                            Please Select End Date of Event
+                                                            กรุณากรอกวันสิ้นสุดงาน
                                                                 </Form.Control.Feedback>
                                                     </Form.Group>
                                                 </Col>
                                             </Form.Row>
-                                            <Form.Label className="title-lable text-center text-uppercase">Dateline</Form.Label>
+                                            <Form.Label className="title-lable text-center text-uppercase">วันสิ้นสุดการขออนุญาตภาพถ่าย</Form.Label>
                                             <Form.Group >
-                                                <Form.Control className="form form-input" id="form-input" name="dateline" value={this.state.dateline} onChange={this.handleChange} type="date" placeholder="Dateline" required />
+                                                <Form.Control className="form form-input" id="form-input" name="dateline" value={this.state.dateline} onChange={this.handleChange} type="date" placeholder="วันสิ้นสุดการขออนุญาตภาพถ่าย" required />
                                                 <Form.Control.Feedback type="invalid">
-                                                    Please Select Dateline
+                                                    กรุณากรอกวันสิ้นสุดการขออนุญาตภาพถ่าย
                                                         </Form.Control.Feedback>
                                             </Form.Group>
                                             <Row className="mb-4 text-center" style={{ marginTop: "35px" }}>
                                                 <Col>
                                                     <Link to="/ListofEvent"><Button className="btn-custom text-uppercase m-1" id="secondary" >
-                                                        Cancle
+                                                        ยกเลิก
                                                                 </Button></Link>
                                                     <Button className="btn-custom text-uppercase m-1" id="primary" type="submit" >
-                                                        Submit
+                                                        ยืนยัน
                                                                 </Button>
                                                 </Col>
                                             </Row>
@@ -163,7 +164,7 @@ class AddEvent extends Component {
             }
         } else {
             return (
-                <div>Loading</div>
+                <Loading />
             )
         }
 

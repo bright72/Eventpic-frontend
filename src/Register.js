@@ -7,6 +7,7 @@ import logo from "./Component-logo.svg"
 import vectorCom from "./Component-vec.svg"
 import graCom from "./Component-gra.svg"
 
+
 class Register extends React.Component {
 
     constructor(props) {

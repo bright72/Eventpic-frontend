@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Button, Card, Container, Row, Col, Modal, CardColumns, Form } from 'react-bootstrap'
+import { Button, Card, Container, Row, Col, Modal, CardColumns, Form, Spinner } from 'react-bootstrap'
 import firebase from './firebase/index'
 
 class AllowsPictures extends Component {
@@ -15,8 +15,8 @@ class AllowsPictures extends Component {
     }
 
     async componentWillMount() {
-        this.checkPanticipantPictureConfirm()
-        this.getAllPictureOfPaticipant()
+        await this.checkPanticipantPictureConfirm()
+        await this.getAllPictureOfPaticipant()
     }
 
     checkPanticipantPictureConfirm() {
@@ -36,10 +36,11 @@ class AllowsPictures extends Component {
         databaseRef.on('value', snapshot => {
             let pictures = snapshot.val()
             let tempRows = []
-            for (const property in pictures) {
+            for (const key in pictures) {
                 let row = {
-                    id: property,
-                    metadata: pictures[property]
+                    original_id: pictures[key].original_pic_id,
+                    processed_id: key,
+                    processed_url: pictures[key].processed_pic_url
                 }
                 tempRows.push(row)
             }
@@ -52,8 +53,9 @@ class AllowsPictures extends Component {
     handleChange = e => {
         const { selectPictures } = this.state
         const { value } = e.target
+        console.log(value)
         let temp = selectPictures.filter(id => id === value)
-        if (temp === 0) {
+        if (temp.length === 0) {
             // not dupilcate
             selectPictures.push(value)
         } else {
@@ -67,24 +69,18 @@ class AllowsPictures extends Component {
     handleSubmit = (e) => {
         const { organize_id, event_id, participant_id, selectPictures } = this.state
         e.preventDefault()
+        console.log(selectPictures)
         if (selectPictures.length !== 0) {
-            const ImageRef = firebase.database().ref(`organizers/${organize_id}/events/${event_id}/images`)
             const panticipantImageRef = firebase.database().ref(`organizers/${organize_id}/events/${event_id}/participants/${participant_id}/processed_pic`)
             const panticipantComfirm = firebase.database().ref(`organizers/${organize_id}/events/${event_id}/participants`)
             let panticipantImage = {
-                is_allow: false,
-            }
-            let image = {
-                is_allow_all_panticipant: false,
+                is_allow: true,
             }
             let confirm = {
                 panticipant_picture_confirm: true,
             }
             selectPictures.forEach(pic => {
-                let index = pic.indexOf(",")
-                let imageOfPanticipant = pic.slice(0, index)
-                let rootImage = pic.slice(index + 1)
-                ImageRef.child(rootImage).update(image)
+                let imageOfPanticipant = pic
                 panticipantImageRef.child(imageOfPanticipant).update(panticipantImage)
                 panticipantComfirm.child(participant_id).update(confirm)
             })
@@ -105,14 +101,14 @@ class AllowsPictures extends Component {
     }
 
     render() {
-        const { pictures, pictureChecked, selectPictures, show } = this.state
+        const { pictures, pictureChecked, selectPictures, show, loading } = this.state
         //รูปทั้งหมดในอีเว่น
         let ListCheckPicture = pictures.map((pic, index) => {
             return (
                 <Card key={index} >
-                    <Card.Img variant="top" src={pic.metadata.orginal_image_url} />
+                    <Card.Img variant="top" src={pic.processed_url} />
                     <div id="picture-panticipant">
-                        <Form.Check type="checkbox" id="panticipant" name={"checkbox-" + index} value={[pic.id, pic.metadata.id]} onChange={this.handleChange} />
+                        <Form.Check type="checkbox" id="panticipant" name={"checkbox-" + index} value={pic.processed_id} onChange={this.handleChange} />
                     </div>
                 </Card>
             )
@@ -120,11 +116,10 @@ class AllowsPictures extends Component {
 
         return (
             <Fragment>
-                {/* <Nevbar /> */}
                 <Container fluid>
                     <Row className="mb-4">
-                        {pictureChecked ?
-                            <Col
+                        { pictureChecked ?
+                         <Col
                                 xs={{ span: 12 }}
                                 sm={{ span: 8, offset: 2 }}
                                 md={{ span: 8, offset: 2 }}
@@ -142,7 +137,7 @@ class AllowsPictures extends Component {
                                     md={{ span: 8, offset: 2 }}
                                     lg={{ span: 8, offset: 2 }}
                                 >
-                                    <h2 className="text-center mb-4">กรุณาเลือกรูปที่ท่าน "ไม่อนุญาต" ให้นำไปใช้ในการประชาสัมพันธ์</h2>
+                                    <h2 className="text-center mb-4">กรุณาเลือกรูปที่ท่าน "อนุญาต" ให้นำไปใช้ในการประชาสัมพันธ์</h2>
                                 </Col>
                                 <Col
                                     xs={{ span: 12 }}
@@ -162,21 +157,21 @@ class AllowsPictures extends Component {
                                     className="text-center"
                                 >
                                     <Button className="btn-custom mt-3" id="primary" onClick={this.handleShow}>
-                                        OK
+                                        อนุญาต
                                     </Button>
                                     <Modal show={show} onHide={this.handleClose}>
                                         <Modal.Header closeButton>
-                                            <Modal.Title>Confirm Send Email</Modal.Title>
+                                            <Modal.Title>Confirm Your Photo</Modal.Title>
                                         </Modal.Header>
                                         <Modal.Body>
-                                            {selectPictures.length !== 0 ? `คุณต้องการยืนยันการส่งอีกเมลให้แก่ผู้เข้าร่วมใช่หรือไม่ (หากยืนยันเเล้วไม่สามารถแก้ไขภายหลังได้)` : `ผู้เข้าร่วมคนนี้ไม่มีรูปภาพใช่หรือไม่ (หากยืนยันเเล้วไม่สามารถแก้ไขภายหลังได้)`}
+                                            {selectPictures.length !== 0 ? `ทุกรูปที่ท่านเลือกอาจถูกนำไปใช้ในการประชาสัมพันธ์ ท่านตรวจสอบรูปภาพเรียบร้อยเเล้วใช่หรือไม่ (หากยืนยันเเล้วไม่สามารถแก้ไขภายหลังได้)` : `ท่านไม่อนุญาตให้ทางผู้จัดนำรูปไปใช้ในการประสัมพันธ์เลยใช่หรือไม่`}
                                         </Modal.Body>
                                         <Modal.Footer>
                                             <Button variant="secondary" className="btn-custom" onClick={this.handleClose}>
-                                                Close
+                                                ปิด
                                             </Button>
                                             <Button className="btn-custom" id="primary" onClick={this.handleSubmit} >
-                                                Confirm
+                                                ยืนยัน
                                             </Button>
                                         </Modal.Footer>
                                     </Modal>

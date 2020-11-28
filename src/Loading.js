@@ -7,9 +7,10 @@ class Loading extends Component {
 
     render() {
         return (
-            <Container >
-                <Spinner animation="border" variant="danger"/>
-            </Container>
+            <h2 className="mt-5 text-center" >
+                <Spinner animation="grow" variant="primary" className="mr-4 mb-2" />
+                    รอสักครู่...
+            </h2>
 
         )
     }

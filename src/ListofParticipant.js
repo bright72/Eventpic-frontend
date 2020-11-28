@@ -3,6 +3,7 @@ import { Link, Redirect } from 'react-router-dom'
 import { Button, Container, Col, Card } from 'react-bootstrap'
 import firebase from './firebase'
 import Nevbar from './Nevbar.js'
+import Loading from './Loading.js'
 
 class ListofParticipant extends Component {
 
@@ -28,7 +29,6 @@ class ListofParticipant extends Component {
             this.setState({
                 auth: true
             })
-            
             firebase.database().ref("organizers").orderByChild("email").equalTo(user.email)
                 .on("child_added", function (snapshot) {
                     const itemsRef = firebase.database().ref(`organizers/${snapshot.key}/events/${self.state.event_id}/participants`)
@@ -39,7 +39,7 @@ class ListofParticipant extends Component {
                             temp.push({
                                 id: property,
                                 email: items[property].email,
-                                imageChecked: items[property].is_select_image,
+                                imageChecked: items[property].organize_picture_confirm,
                             })
                         }
                         self.setState({
@@ -75,11 +75,11 @@ class ListofParticipant extends Component {
                                                     <div className="text-right">
                                                         {i.imageChecked ?
                                                             <Link to={`/ViewPicture/${event_id}/${i.id}`} className="btn-link" >
-                                                                <Button className="btn-custom mr-0" id="primary">View</Button>
+                                                                <Button className="btn-custom mr-0" id="primary">ดูภาพถ่าย</Button>
                                                             </Link>
                                                             :
                                                             <Link to={`./${event_id}/ChoosePicture/${i.id}`} className="btn-link" >
-                                                                <Button className="btn-custom mr-0" id="primary" style={{ width: 200 }}>CHOOSE PICTURE</Button>
+                                                                <Button className="btn-custom mr-0" id="primary" style={{ width: 200 }}>ตรวจสอบภาพถ่าย</Button>
                                                             </Link>
                                                         }
                                                     </div>
@@ -100,7 +100,7 @@ class ListofParticipant extends Component {
             }
         } else {
             return (
-                <div> Loading</div>
+                <Loading />
             )
         }
     }
