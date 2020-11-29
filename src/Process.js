@@ -31,17 +31,8 @@ class Process extends Component {
             auth: true
         })
 
-        const { event_id, keypath } = this.state
+        this.fetcheventimg()
 
-        const eventRef = firebase.database().ref(`organizers/${keypath}/events/${event_id}`)
-        eventRef.on("value", (snapshot) => {
-            let val = snapshot.val()
-            if (val.is_pic_processed) {
-                this.props.history.push(`/ListofParticipant/${event_id}`)
-            } else {
-                this.fetcheventimg()
-            }
-        })
 
 
     }
@@ -49,6 +40,7 @@ class Process extends Component {
     componentDidUpdate(prevProps, prevState) {
         const { countData, allDataLength } = this.state
         if (countData !== prevState.countData) {
+            console.log(countData)
             this.setState({
                 progress: Math.floor(countData * 100 / allDataLength)
             })
@@ -68,11 +60,13 @@ class Process extends Component {
         let val
         await itemRefPic.on("value", (snapshot) => {
             val = snapshot.val()
+            console.log(val)
             this.setState({
                 allDataLength: Object.keys(val).length
             })
         })
         for (var key in val) {
+            console.log(val[key])
             const picid = key
             let original_url
             const eventRefPic = await firebase.database().ref(`organizers/${keypath}/events/${event_id}/event_pics/${picid}/metadataFile`)
@@ -91,7 +85,6 @@ class Process extends Component {
             const resizedDetections = faceapi.resizeResults(detections, displaySize)
 
             let all_label = await this.loadLabeledImages()
-
 
             await all_label.forEach(label_descriptor => {
                 const labeledFaceDescriptors = label_descriptor
@@ -113,7 +106,6 @@ class Process extends Component {
                     }
                 })
             })
-
             this.setState({
                 countData: this.state.countData + 1
             })
