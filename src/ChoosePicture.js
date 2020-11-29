@@ -223,10 +223,10 @@ class ChoosePicture extends Component {
                                     sm={{ span: 12 }}
                                     md={{ span: 10, offset: 1 }}
                                     lg={{ span: 10, offset: 1 }}
-                                    className="text-center mb-2"
+                                    className="text-center mb-4"
                                 >
                                     <h2 >ตรวจสอบภาพถ่ายของ {participant.email}</h2>
-                                    <p>กรุณาเลือกภาพถ่ายที่ไม่มีบุคคลจากภาพถ่ายใบหน้าด้านบน และทำการลบ ก่อนที่จะยืนยันทำการส่งอีเมล์</p>
+                                    <h5>กรุณาเลือกภาพถ่ายที่ <span style={{color:"red"}}>"ไม่มี"</span> บุคคลจากภาพถ่ายใบหน้าด้านบน และทำการลบ ก่อนที่จะยืนยันทำการส่งอีเมล์</h5>
                                 </Col>
                                 <Col
                                     xs={{ span: 12 }}

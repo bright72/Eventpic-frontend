@@ -7,7 +7,7 @@ class StorageDataTable extends Component {
     constructor() {
         super()
         this.state = {
-            radioValue: '1',
+            radioValue: '2',
         }
     }
 
@@ -35,11 +35,14 @@ class StorageDataTable extends Component {
                     <Card.Img variant="top" src={r.downloadURLs} />
                     <Card.Body>
                         <Card.Text>{r.name}</Card.Text>
-                        <Button className="btn-custom mt-3" variant="danger"
-                            onClick={(e) => this.props.deleteData(e, r)}
-                            style={{ width: "100%", fontSize: "20px", borderRadius: 30 }}>
-                            ลบ
+                        <div className="text-right">
+                            <Button className="btn-custom mt-3" variant="danger"
+                                onClick={(e) => this.props.deleteData(e, r)}
+                                style={{ padding: "5px 25px", fontSize: "18px", borderRadius: 30 }}
+                            >
+                                ลบ
                         </Button>
+                        </div>
                     </Card.Body>
                 </Card>
             )
@@ -79,7 +82,7 @@ class StorageDataTable extends Component {
                         </tbody>
                     </Table>
                     :
-                    <CardColumns>
+                    <CardColumns style={{ columnCount: 5 }}>
                         {BoxsOfPicture}
                     </CardColumns>
                 }

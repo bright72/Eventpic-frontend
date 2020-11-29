@@ -32,7 +32,16 @@ class UploadFunction extends Component {
             keypath: key,
             auth: true
         })
-        this.getMetaDataFromDatabase()
+
+        const eventRef = firebase.database().ref(`organizers/${this.state.keypath}/events/${this.state.event_id}`)
+        eventRef.on("value", (snapshot) => {
+            let val = snapshot.val()
+            if (val.is_pic_processed) {
+                this.props.history.push(`/MoreDetail/${this.state.event_id}`)
+            } else {
+                this.getMetaDataFromDatabase()
+            }
+        })
     }
 
     getUser = () => {
@@ -156,7 +165,7 @@ class UploadFunction extends Component {
     }
 
     render() {
-        const { rows, currentUser, auth } = this.state;
+        const { rows, currentUser, auth } = this.state
         if (auth) {
             if (currentUser) {
                 return (

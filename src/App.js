@@ -1,18 +1,20 @@
-import React from 'react';
+import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Login from './LoginForm.js'
 import Register from './Register.js'
-import AddEvent from './AddEvent.js';
-import ListofEvent from './ListofEvent.js';
-import EditEvent from './EditEvent.js';
-import MoreDetail from './MoreDetail.js';
+import AddEvent from './AddEvent.js'
+import ListofEvent from './ListofEvent.js'
+import EditEvent from './EditEvent.js'
+import MoreDetail from './MoreDetail.js'
 import Upload from './UploadFunction.js'
-import UploadParticipant from './UploadParticipant';
-import ListofParticipant from './ListofParticipant';
-import ViewPicture from './ViewPicture';
-import ChoosePicture from './ChoosePicture';
-import AllowsPictures from './AllowsPictures';
-import Process from './Process';
+import UploadParticipant from './UploadParticipant'
+import ListofParticipant from './ListofParticipant'
+import ViewPicture from './ViewPicture'
+import ChoosePicture from './ChoosePicture'
+import AllowsPictures from './AllowsPictures'
+import Process from './Process'
+import DownloadPicture from './DownloadPictureOfEvent'
+
 import './Style.css'
 
 const App = () => (
@@ -32,6 +34,8 @@ const App = () => (
       <Route exact path="/ViewPicture/:event_id/:participant_id" component={ViewPicture} />
       <Route exact path="/allow/:organize_id/:event_id/:participant_id" component={AllowsPictures} />
       <Route exact path="/Process/:event_id/" component={Process} />
+      <Route exact path="/DownloadPictures/:event_id" component={DownloadPicture} />
+
       
     </Switch>
   </Router>

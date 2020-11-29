@@ -104,7 +104,7 @@ class ViewPicture extends Component {
         //รูปทั้งหมดในอีเว่น
         let ListCheckPicture = pictures.map((pic, index) => {
             return (
-                <Card>
+                <Card border={participant.panticipant_picture_confirm ? "danger": "success"}>
                     <Card.Img variant="top" src={pic.processed_url} />
                     {participant.panticipant_picture_confirm ?
                         <Card.Body>

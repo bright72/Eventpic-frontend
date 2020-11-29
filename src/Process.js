@@ -30,7 +30,20 @@ class Process extends Component {
             keypath: key,
             auth: true
         })
-        this.fetcheventimg()
+
+        const { event_id, keypath } = this.state
+
+        const eventRef = firebase.database().ref(`organizers/${keypath}/events/${event_id}`)
+        eventRef.on("value", (snapshot) => {
+            let val = snapshot.val()
+            if (val.is_pic_processed) {
+                this.props.history.push(`/ListofParticipant/${event_id}`)
+            } else {
+                this.fetcheventimg()
+            }
+        })
+
+
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -42,21 +55,12 @@ class Process extends Component {
         }
     }
 
-    componentWillUnmount(){
-        
-    }
+    componentWillUnmount() {
 
-    loadModel = async () => {
-        Promise.all([
-            faceapi.nets.ssdMobilenetv1.load('/weights'),
-            faceapi.nets.faceRecognitionNet.load('/weights'),
-            faceapi.nets.faceLandmark68Net.load('/weights'),
-        ])
     }
 
     fetcheventimg = async () => {
         const { keypath, event_id } = this.state
-        await this.loadModel()
         await faceapi.nets.ssdMobilenetv1.load("/weights")
         await faceapi.nets.faceRecognitionNet.load("/weights")
         await faceapi.nets.faceLandmark68Net.load("/weights")
@@ -114,14 +118,12 @@ class Process extends Component {
                 countData: this.state.countData + 1
             })
         }
-
+        const eventRef = firebase.database().ref(`organizers/${keypath}/events/${event_id}`)
+        eventRef.update({ is_pic_processed: true })
         this.props.history.push(`/ListofParticipant/${event_id}`)
     }
 
     loadLabeledImages = async () => {
-        await faceapi.nets.ssdMobilenetv1.load("/weights")
-        await faceapi.nets.faceRecognitionNet.load("/weights")
-        await faceapi.nets.faceLandmark68Net.load("/weights")
         const itemRefPar = await firebase.database().ref(`organizers/${this.state.keypath}/events/${this.state.event_id}/participants`)
         let val = null
         let label = ""

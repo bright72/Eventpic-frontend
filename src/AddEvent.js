@@ -66,6 +66,7 @@ class AddEvent extends Component {
                     end_date: end_date,
                     dateline: dateline,
                     detail: detail,
+                    is_pic_processed: false
                 }
                 itemsRef.push(item)
                 this.props.history.push('/ListofEvent/' + this.state.event_id)

@@ -67,7 +67,7 @@ class UploadParticipant extends Component {
             let object_1 = {
                 email: email,
                 panticipant_picture_confirm: false,
-                organize_picture_confirm:false
+                organize_picture_confirm:false,
             }
             let x = participantRef.push(object_1)
             let participant_id = x.key

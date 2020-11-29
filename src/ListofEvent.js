@@ -88,7 +88,7 @@ class ListofEvent extends Component {
                                             lg={{ span: 8, offset: 2 }}
                                             className="mt-4"
                                         >
-                                            <Card className="form-card p-2" id="list-card">
+                                            <Card className="p-2" style={{ borderRadius: 20}}>
                                                 <Row>
                                                     <Col>
                                                         <Card.Body>
