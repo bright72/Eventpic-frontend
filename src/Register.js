@@ -98,19 +98,19 @@ class Register extends React.Component {
                                     <img src={vectorCom} style={{ position: "absolute", bottom: 30, right: "40px" }} />
                                 </Col>
                                 <Col>
-                                    <h2 className="title-lable my-4 pt-3 text-center" id="card-title">REGISTER</h2>
+                                    <h2 className="title-lable my-4 pt-3 text-center" id="card-title">ลงทะเบียน</h2>
                                     <Form noValidate validated={validate} onSubmit={this.handleRegister} className="form m-4 px-4">
-                                        <Form.Label className="title-lable">EMAIL</Form.Label>
+                                        <Form.Label className="title-lable">อีเมล์</Form.Label>
                                         <Form.Group controlId="formBasicEmail" >
-                                            <Form.Control className="form form-input"  name="email" onChange={this.onChange} type="email" placeholder="Email" required />
+                                            <Form.Control className="form form-input"  name="email" onChange={this.onChange} type="email" placeholder="อีเมล์" required />
                                         </Form.Group>
-                                        <Form.Label className="title-lable">PASSWORD</Form.Label>
+                                        <Form.Label className="title-lable">รหัสผ่าน</Form.Label>
                                         <Form.Group controlId="formBasicPassword">
-                                            <Form.Control className="form form-input"  name="password" onChange={this.onChange} type="password" placeholder="Password" required />
+                                            <Form.Control className="form form-input"  name="password" onChange={this.onChange} type="password" placeholder="รหัสผ่าน" required />
                                         </Form.Group>
-                                        <Form.Label className="title-lable">CONFIRM PASSWORD</Form.Label>
+                                        <Form.Label className="title-lable">ยืนยันรหัสผ่าน</Form.Label>
                                         <Form.Group controlId="formBasicPassword">
-                                            <Form.Control className="form form-input"  name="conPassword" onChange={this.onChange} type="password" placeholder="Confirm Password" required />
+                                            <Form.Control className="form form-input"  name="conPassword" onChange={this.onChange} type="password" placeholder="ยืนยันรหัสผ่าน" required />
                                         </Form.Group>
                                         <Row className="mt-3">
                                             <Col className="text-left">
@@ -122,9 +122,9 @@ class Register extends React.Component {
                                             </Col>
                                         </Row>
                                         <Button id="primary-auth" block type="submit" className="btn-custom my-4" >
-                                            REGISTER
+                                            ลงทะเบียน
                                 </Button>
-                                        <p className="divider-title mt-4 mb-5 text-center">Already have an account? <Link to="/Login" className="link-path">Login</Link></p>
+                                        <p className="divider-title mt-4 mb-5 text-center">มีบัญชีผู้ใช้แล้ว ? <Link to="/Login" className="link-path">เข้าสู่ระบบ</Link></p>
                                     </Form>
                                 </Col>
                             </Row>

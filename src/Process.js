@@ -183,6 +183,7 @@ class Process extends Component {
                                         <Spinner animation="grow" variant="primary" className="mr-4 mb-2" />
                                         กำลังประมวลผลภาพ...
                                     </h2>
+                                    <h5>ห้ามปิดหน้าต่างนี้จนกว่าจะทำการประมวลผลเสร็จสมบูรณ์</h5>
                                     <ProgressBar striped animated variant="info" now={progress} label={`${progress}%`} />
                                 </Col>
                             </Row>

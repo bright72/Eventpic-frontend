@@ -165,6 +165,7 @@ class ChoosePicture extends Component {
                 templateParams,
                 'user_taSKZdwaRwk1j4rwI0eXi'
             )
+            console.log("Finish")
         })
 
         let confirm = {
@@ -252,6 +253,7 @@ class ChoosePicture extends Component {
                                     <Button className="btn-custom" id="primary" onClick={this.sendEmail} disabled={visibleButton} >
                                        ส่งอีเมล์
                                     </Button>
+                                    {console.log("01111111111111111")}
                                 </Col>
                                 <Modal show={show} onHide={this.handleClose}>
                                     <Modal.Header closeButton>
