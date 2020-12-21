@@ -1,13 +1,12 @@
-# EventPic is image verification and authorization system.
+# EventPic is Pictures Verification and Authorization System.
 
-## Application Feature
+## Application Features
 
 Event Management
-- Manage Events
-- Manage Participants
-- Manage Event Pictures
-- Sending Emails
-- Manage Events
+- Events Management (Add, Edit, Delete)
+- Participants Management
+- Event Pictures Management
+- Sending Emails to request permission
 
 Process image
 - Recognize Participants
@@ -70,14 +69,8 @@ Process image
 - Storage: Firebase Cloud Storage
 - Cloudflare
 
-### Design
-
-- Figma
-- Adobe Illustrator
-
 ### Tools
 
 - Version Control: GitHub, GitHub Desktop
 - Team Management: Trello, Google Drive
-- API Testing: Postman
 - IDE: Visual Studio Code
