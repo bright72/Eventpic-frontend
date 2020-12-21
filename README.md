@@ -54,6 +54,7 @@ Process image
 ## Implement Firebase and EmailJS Configuration
 
 Configuration firebase file path in src/firebase/config.js
+
 Configuration EmailJS user in src/ChoosePicture.js edit emailjs.send() fuction line 162
 
 ## Tools & Technique
