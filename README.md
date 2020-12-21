@@ -50,6 +50,11 @@ Process image
 8.) Docker Container Status
 
     $ sudo docker ps
+    
+## Implement Firebase and EmailJS Configuration
+
+Configuration firebase file path in src/firebase/config.js
+Configuration EmailJS user in src/ChoosePicture.js edit emailjs.send() fuction line 162
 
 ## Tools & Technique
 ### Web Application
@@ -57,6 +62,8 @@ Process image
 - Language: HTML, JavaScript, CSS
 - Framework: React, Bootstrap
 - E-mail API: EmailJS
+- face recognition API: face-api.js
+  https://github.com/justadudewhohacks/face-api.js/
 
 ### Server & Infrastructure
 
