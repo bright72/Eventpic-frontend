@@ -8,7 +8,7 @@ Event Management
 - Event Pictures Management
 - Sending Emails to request permission
 
-Process image
+Image Processing
 - Recognize Participants
 - Comparing Pictures
 
@@ -51,11 +51,11 @@ Process image
 
     $ sudo docker ps
     
-## Implement Firebase and EmailJS Configuration
+## Firebase and EmailJS Configuration
 
-Configuration firebase file path in src/firebase/config.js
+Firebase configuration file in this path 'src/firebase/config.js'
 
-Configuration EmailJS user in src/ChoosePicture.js edit emailjs.send() fuction line 162
+EmailJS user configuration in this path 'src/ChoosePicture.js' config emailjs.send() fuction in line 162
 
 ## Tools & Technique
 ### Web Application
