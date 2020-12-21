@@ -1,6 +1,6 @@
-## EventPic is image verification and authorization system.
+# EventPic is image verification and authorization system.
 
-# Application Feature
+## Application Feature
 
 Event Management
 - Manage Events
@@ -13,7 +13,7 @@ Process image
 - Recognize Participants
 - Comparing Pictures
 
-# Install Application base on CentOS 7
+## Install Application base on CentOS 7
 
 1.) Install Epel-release (Extra Packages for Enterprise Linux) 
     $ sudo yum install epel-release
@@ -45,12 +45,12 @@ Process image
     $ sudo docker ps
 
 ## Tools & Technique
-# Web Application
+### Web Application
 - Language: HTML, JavaScript, CSS
 - Framework: React, Bootstrap
 - E-mail API: EmailJS
 
-# Server & Infrastructure
+### Server & Infrastructure
 - Cloud Provider: Metrabyte Cloud
 - Operator System: CentOS
 - Container Management: Docker Container
@@ -60,11 +60,11 @@ Process image
 - Storage: Firebase Cloud Storage
 - Cloudflare
 
-# Design
+### Design
 - Figma
 - Adobe Illustrator
 
-# Tools
+### Tools
 - Version Control: GitHub, GitHub Desktop
 - Team Management: Trello, Google Drive
 - API Testing: Postman
